@@ -15,7 +15,9 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    database_url: str = Field(default="postgresql+psycopg://postgres:postgres@localhost:5432/ai_logistics")
+    database_url: str = Field(
+        default="postgresql+psycopg://postgres:postgres@localhost:5432/ai_logistics"
+    )
     secret_key: str = Field(default="change-me")
     algorithm: str = Field(default="HS256")
     access_token_expire_minutes: int = Field(default=30)

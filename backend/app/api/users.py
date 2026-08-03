@@ -2,15 +2,13 @@
 
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
-
 from app.dependencies.auth import get_current_admin, get_current_dispatcher
 from app.dependencies.database import get_db
 from app.repositories.user_repository import UserRepository
 from app.schemas.user import UserCreate, UserResponse, UserUpdate
 from app.services.user_service import UserService
-
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -41,7 +39,9 @@ def get_user(
 
     user = user_service.get_user(user_id)
     if user is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found."
+        )
 
     return user
 
@@ -68,7 +68,9 @@ def update_user(
 
     user = user_service.update_user(user_id, payload)
     if user is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found."
+        )
 
     return user
 
@@ -83,6 +85,8 @@ def delete_user(
 
     user = user_service.delete_user(user_id)
     if user is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found."
+        )
 
     return user

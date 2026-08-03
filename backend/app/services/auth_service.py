@@ -1,6 +1,7 @@
 """Authentication business logic for user registration and login."""
 
-from app.core.security import create_access_token, hash_password, verify_password
+from app.core.security import (create_access_token, hash_password,
+                               verify_password)
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
 from app.schemas.auth import LoginRequest, Token

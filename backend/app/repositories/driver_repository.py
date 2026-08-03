@@ -3,10 +3,9 @@
 from typing import Any
 from uuid import UUID
 
+from app.models.driver import Driver, DriverStatus
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-
-from app.models.driver import Driver, DriverStatus
 
 
 class DriverRepository:
@@ -37,14 +36,17 @@ class DriverRepository:
         statement = select(Driver).where(Driver.user_id == user_id)
         return self.db.scalar(statement)
 
+    def get_by_license_number(self, license_number: str) -> Driver | None:
+        """Return a driver by license number if it exists."""
+
+        statement = select(Driver).where(Driver.license_number == license_number)
+        return self.db.scalar(statement)
+
     def get_all(self, skip: int = 0, limit: int = 100) -> list[Driver]:
         """Return drivers ordered by newest first with pagination."""
 
         statement = (
-            select(Driver)
-            .order_by(Driver.created_at.desc())
-            .offset(skip)
-            .limit(limit)
+            select(Driver).order_by(Driver.created_at.desc()).offset(skip).limit(limit)
         )
         return list(self.db.scalars(statement).all())
 

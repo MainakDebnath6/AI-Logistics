@@ -1,16 +1,14 @@
 """Authentication dependencies for JWT-protected endpoints."""
 
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
-from pydantic import ValidationError
-from sqlalchemy.orm import Session
-
 from app.core.security import decode_access_token
 from app.dependencies.database import get_db
 from app.models.user import User, UserRole
 from app.repositories.user_repository import UserRepository
 from app.schemas.auth import TokenData
-
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from pydantic import ValidationError
+from sqlalchemy.orm import Session
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 

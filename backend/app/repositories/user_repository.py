@@ -2,10 +2,9 @@
 
 from uuid import UUID
 
+from app.models.user import User
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-
-from app.models.user import User
 
 
 class UserRepository:
@@ -38,7 +37,9 @@ class UserRepository:
     def get_all(self, skip: int = 0, limit: int = 100) -> list[User]:
         """Return users ordered by newest first with pagination."""
 
-        statement = select(User).order_by(User.created_at.desc()).offset(skip).limit(limit)
+        statement = (
+            select(User).order_by(User.created_at.desc()).offset(skip).limit(limit)
+        )
         return list(self.db.scalars(statement).all())
 
     def update(self, user: User) -> User:
