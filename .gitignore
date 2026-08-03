@@ -1,0 +1,30 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Environment
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# References (do not track)
+fleetbase/
+vroom/
+smart-logistics/
+
+# Node
+node_modules/
+dist/
+build/
+
+# Logs
+*.log

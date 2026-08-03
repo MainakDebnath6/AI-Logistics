@@ -1,0 +1,1 @@
+"""JWT-ready security helpers reserved for future authentication wiring."""
