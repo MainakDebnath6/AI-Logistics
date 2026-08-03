@@ -1,34 +1,41 @@
-"""Authentication routes for user registration and JWT login."""
+"""Authentication routes for registration and login."""
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from app.dependencies.auth import get_current_active_user
 from app.dependencies.database import get_db
-from app.models.user import User
-from app.schemas.user import TokenResponse, UserCreate, UserLogin, UserResponse
+from app.repositories.user_repository import UserRepository
+from app.schemas.auth import LoginRequest, Token
+from app.schemas.user import UserCreate, UserResponse
 from app.services.auth_service import AuthService
 
 
-router = APIRouter(prefix="/auth", tags=["Auth"])
+router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
-@router.post("/register", response_model=UserResponse, status_code=201)
-def register_user(payload: UserCreate, session: Session = Depends(get_db)) -> UserResponse:
-    """Create a new user account."""
+def get_auth_service(db: Session = Depends(get_db)) -> AuthService:
+    """Build the auth service for the active database session."""
 
-    return AuthService().register_user(session, payload)
-
-
-@router.post("/login", response_model=TokenResponse)
-def login_user(payload: UserLogin, session: Session = Depends(get_db)) -> TokenResponse:
-    """Authenticate a user and return a bearer token."""
-
-    return AuthService().authenticate_user(session, payload)
+    return AuthService(UserRepository(db))
 
 
-@router.get("/me", response_model=UserResponse)
-def read_current_user(current_user: User = Depends(get_current_active_user)) -> UserResponse:
-    """Return the authenticated user profile."""
+@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+def register(payload: UserCreate, auth_service: AuthService = Depends(get_auth_service)) -> UserResponse:
+    """Register a new user account."""
 
-    return UserResponse.model_validate(current_user)
+    try:
+        user = auth_service.register(payload)
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+
+    return UserResponse.model_validate(user)
+
+
+@router.post("/login", response_model=Token)
+def login(payload: LoginRequest, auth_service: AuthService = Depends(get_auth_service)) -> Token:
+    """Authenticate a user and return an access token."""
+
+    try:
+        return auth_service.login(payload)
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc)) from exc

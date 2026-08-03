@@ -1,45 +1,51 @@
 """Authentication business logic for user registration and login."""
 
-from fastapi import HTTPException, status
-from sqlalchemy.orm import Session
-
 from app.core.security import create_access_token, hash_password, verify_password
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
-from app.schemas.user import TokenResponse, UserCreate, UserLogin, UserResponse
+from app.schemas.auth import LoginRequest, Token
+from app.schemas.user import UserCreate
 
 
 class AuthService:
-    """Coordinate user registration, login, and token creation."""
+    """Coordinate user registration and login flows."""
 
-    def __init__(self, user_repository: UserRepository | None = None) -> None:
-        self.user_repository = user_repository or UserRepository()
+    def __init__(self, repository: UserRepository) -> None:
+        """Initialize the service with a user repository."""
 
-    def register_user(self, session: Session, payload: UserCreate) -> UserResponse:
-        """Create a new user account after validating uniqueness."""
+        self.repository = repository
 
-        existing_user = self.user_repository.get_by_email(session, payload.email)
+    def register(self, user_data: UserCreate) -> User:
+        """Register a new user after enforcing email uniqueness."""
+
+        existing_user = self.repository.get_by_email(str(user_data.email))
         if existing_user is not None:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="A user with that email already exists.")
+            raise ValueError("Email already registered.")
 
         user = User(
-            email=payload.email,
-            full_name=payload.full_name,
-            password_hash=hash_password(payload.password),
-            role=payload.role,
+            full_name=user_data.full_name,
+            email=str(user_data.email),
+            hashed_password=hash_password(user_data.password),
+            role=user_data.role,
+            is_active=True,
         )
-        created_user = self.user_repository.create(session, user)
-        return UserResponse.model_validate(created_user)
+        return self.repository.create(user)
 
-    def authenticate_user(self, session: Session, payload: UserLogin) -> TokenResponse:
-        """Validate credentials and return a JWT token response."""
+    def login(self, login_data: LoginRequest) -> Token:
+        """Authenticate a user and return a signed access token."""
 
-        user = self.user_repository.get_by_email(session, payload.email)
-        if user is None or not verify_password(payload.password, user.password_hash):
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials.")
+        user = self.repository.get_by_email(str(login_data.email))
+        if user is None:
+            raise ValueError("Invalid email or password.")
 
-        if not user.is_active:
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User account is inactive.")
+        if not verify_password(login_data.password, user.hashed_password):
+            raise ValueError("Invalid email or password.")
 
-        access_token = create_access_token(subject=str(user.id), additional_claims={"role": user.role.value})
-        return TokenResponse(access_token=access_token)
+        access_token = create_access_token(
+            data={
+                "user_id": str(user.id),
+                "email": str(user.email),
+                "role": user.role.value,
+            }
+        )
+        return Token(access_token=access_token, token_type="bearer")
