@@ -37,6 +37,12 @@ class DriverRepository:
         statement = select(Driver).where(Driver.user_id == user_id)
         return self.db.scalar(statement)
 
+    def get_by_license_number(self, license_number: str) -> Driver | None:
+        """Return a driver by license number if it exists."""
+
+        statement = select(Driver).where(Driver.license_number == license_number)
+        return self.db.scalar(statement)
+
     def get_all(self, skip: int = 0, limit: int = 100) -> list[Driver]:
         """Return drivers ordered by newest first with pagination."""
 

@@ -2,13 +2,17 @@
 
 from datetime import datetime
 from enum import Enum
+from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from sqlalchemy import Boolean, DateTime, Enum as SAEnum, Index, String, func
 from sqlalchemy.dialects.postgresql import UUID as PostgreSQLUUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
+
+if TYPE_CHECKING:
+    from app.models.driver import Driver
 
 
 class UserRole(str, Enum):
@@ -49,4 +53,11 @@ class User(Base):
         server_default=func.now(),
         onupdate=func.now(),
         nullable=False,
+    )
+
+    driver: Mapped["Driver | None"] = relationship(
+        "Driver",
+        back_populates="user",
+        uselist=False,
+        lazy="selectin",
     )
