@@ -3,10 +3,9 @@
 from typing import Any
 from uuid import UUID
 
+from app.models.driver import Driver, DriverStatus
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-
-from app.models.driver import Driver, DriverStatus
 
 
 class DriverRepository:
@@ -47,10 +46,7 @@ class DriverRepository:
         """Return drivers ordered by newest first with pagination."""
 
         statement = (
-            select(Driver)
-            .order_by(Driver.created_at.desc())
-            .offset(skip)
-            .limit(limit)
+            select(Driver).order_by(Driver.created_at.desc()).offset(skip).limit(limit)
         )
         return list(self.db.scalars(statement).all())
 

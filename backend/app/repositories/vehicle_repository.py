@@ -3,10 +3,9 @@
 from typing import Any
 from uuid import UUID
 
+from app.models.vehicle import Vehicle, VehicleStatus
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-
-from app.models.vehicle import Vehicle, VehicleStatus
 
 
 class VehicleRepository:

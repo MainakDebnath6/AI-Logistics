@@ -5,22 +5,12 @@ from enum import Enum
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
-from sqlalchemy import (
-    Boolean,
-    DateTime,
-    Enum as SAEnum,
-    Float,
-    ForeignKey,
-    Index,
-    Integer,
-    String,
-    func,
-    text,
-)
+from app.db.base import Base
+from sqlalchemy import Boolean, DateTime
+from sqlalchemy import Enum as SAEnum
+from sqlalchemy import Float, ForeignKey, Index, Integer, String, func, text
 from sqlalchemy.dialects.postgresql import UUID as PostgreSQLUUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from app.db.base import Base
 
 if TYPE_CHECKING:
     from app.models.user import User

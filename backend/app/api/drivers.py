@@ -2,16 +2,14 @@
 
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Response, status
-from sqlalchemy.orm import Session
-
 from app.dependencies.auth import get_current_admin, get_current_dispatcher
 from app.dependencies.database import get_db
 from app.models.user import User
 from app.repositories.driver_repository import DriverRepository
 from app.schemas.driver import DriverCreate, DriverResponse, DriverUpdate
 from app.services.driver_service import DriverService
-
+from fastapi import APIRouter, Depends, Response, status
+from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/drivers", tags=["Drivers"])
 

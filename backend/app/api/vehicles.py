@@ -2,16 +2,14 @@
 
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Response, status
-from sqlalchemy.orm import Session
-
 from app.dependencies.auth import get_current_admin, get_current_dispatcher
 from app.dependencies.database import get_db
 from app.models.user import User
 from app.repositories.vehicle_repository import VehicleRepository
 from app.schemas.vehicle import VehicleCreate, VehicleResponse, VehicleUpdate
 from app.services.vehicle_service import VehicleService
-
+from fastapi import APIRouter, Depends, Response, status
+from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/vehicles", tags=["Vehicles"])
 

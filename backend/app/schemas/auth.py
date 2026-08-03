@@ -2,9 +2,8 @@
 
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, EmailStr
-
 from app.models.user import UserRole
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 
 class LoginRequest(BaseModel):

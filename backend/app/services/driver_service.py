@@ -2,12 +2,10 @@
 
 from uuid import UUID
 
-from fastapi import HTTPException, status
-
 from app.models.driver import Driver
 from app.repositories.driver_repository import DriverRepository
 from app.schemas.driver import DriverCreate, DriverUpdate
-
+from fastapi import HTTPException, status
 
 DRIVER_NOT_FOUND = "Driver not found."
 INVALID_CAPACITY = "max_capacity must be greater than 0."
@@ -103,10 +101,7 @@ class DriverService:
     ) -> Driver:
         """Update the mutable fields for a driver."""
 
-        if (
-            driver_data.max_capacity is not None
-            and driver_data.max_capacity <= 0
-        ):
+        if driver_data.max_capacity is not None and driver_data.max_capacity <= 0:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=INVALID_CAPACITY,
@@ -123,9 +118,7 @@ class DriverService:
             driver_data.license_number is not None
             and driver_data.license_number != driver.license_number
         ):
-            existing = self.repository.get_by_license_number(
-                driver_data.license_number
-            )
+            existing = self.repository.get_by_license_number(driver_data.license_number)
             if existing is not None:
                 raise HTTPException(
                     status_code=status.HTTP_409_CONFLICT,

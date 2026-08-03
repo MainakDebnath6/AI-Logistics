@@ -2,12 +2,10 @@
 
 from uuid import UUID
 
-from fastapi import HTTPException, status
-
 from app.models.vehicle import Vehicle
 from app.repositories.vehicle_repository import VehicleRepository
 from app.schemas.vehicle import VehicleCreate, VehicleUpdate
-
+from fastapi import HTTPException, status
 
 VEHICLE_NOT_FOUND = "Vehicle not found."
 DUPLICATE_REGISTRATION_NUMBER = "Registration number already exists."
@@ -77,7 +75,10 @@ class VehicleService:
         if "fuel_level" in data:
             self._validate_fuel_level(data["fuel_level"])
 
-        if "registration_number" in data and data["registration_number"] != vehicle.registration_number:
+        if (
+            "registration_number" in data
+            and data["registration_number"] != vehicle.registration_number
+        ):
             self._ensure_registration_number_is_unique(data["registration_number"])
 
         return self.repository.update(vehicle, data)
@@ -97,7 +98,9 @@ class VehicleService:
     def _ensure_registration_number_is_unique(self, registration_number: str) -> None:
         """Raise an error when a registration number already exists."""
 
-        existing_vehicle = self.repository.get_by_registration_number(registration_number)
+        existing_vehicle = self.repository.get_by_registration_number(
+            registration_number
+        )
         if existing_vehicle is not None:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,

@@ -5,11 +5,12 @@ from enum import Enum
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
-from sqlalchemy import Boolean, DateTime, Enum as SAEnum, Index, String, func
+from app.db.base import Base
+from sqlalchemy import Boolean, DateTime
+from sqlalchemy import Enum as SAEnum
+from sqlalchemy import Index, String, func
 from sqlalchemy.dialects.postgresql import UUID as PostgreSQLUUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from app.db.base import Base
 
 if TYPE_CHECKING:
     from app.models.driver import Driver
@@ -28,18 +29,20 @@ class User(Base):
 
     __tablename__ = "users"
     __table_args__ = (
-    Index("ix_users_role", "role"),
-    Index("ix_users_is_active", "is_active"),
-    Index("ix_users_created_at", "created_at"),
-)
+        Index("ix_users_role", "role"),
+        Index("ix_users_is_active", "is_active"),
+        Index("ix_users_created_at", "created_at"),
+    )
 
-    id: Mapped[UUID] = mapped_column(PostgreSQLUUID(as_uuid=True), primary_key=True, default=uuid4)
+    id: Mapped[UUID] = mapped_column(
+        PostgreSQLUUID(as_uuid=True), primary_key=True, default=uuid4
+    )
     full_name: Mapped[str] = mapped_column(String(255), nullable=False)
     email: Mapped[str] = mapped_column(
-    String(320),
-    unique=True,
-    nullable=False,
-)
+        String(320),
+        unique=True,
+        nullable=False,
+    )
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
     role: Mapped[UserRole] = mapped_column(
         SAEnum(UserRole, name="user_role"),
@@ -47,7 +50,9 @@ class User(Base):
         default=UserRole.DRIVER,
     )
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),

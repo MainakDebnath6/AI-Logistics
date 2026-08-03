@@ -2,11 +2,11 @@
 
 from datetime import datetime, timedelta, timezone
 
-from jose import jwt  # pyright: ignore[reportMissingImports]
-from jose.exceptions import ExpiredSignatureError, JWTError  # pyright: ignore[reportMissingImports]
-from passlib.context import CryptContext
-
 from app.core.config import get_settings
+from jose import jwt  # pyright: ignore[reportMissingImports]
+from jose.exceptions import (  # pyright: ignore[reportMissingImports]
+    ExpiredSignatureError, JWTError)
+from passlib.context import CryptContext
 
 pwd_context = CryptContext(
     schemes=["bcrypt"],
