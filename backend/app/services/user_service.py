@@ -1,49 +1,65 @@
-"""Business logic for user CRUD operations."""
+"""Business logic for user operations."""
 
 from uuid import UUID
 
-from fastapi import HTTPException, status
-from sqlalchemy.orm import Session
-
+from app.core.security import hash_password
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
-from app.schemas.user import UserCreate, UserResponse, UserUpdate
+from app.schemas.user import UserCreate, UserUpdate
 
 
 class UserService:
-    """Coordinate user creation and retrieval use-cases."""
+    """Coordinate user persistence and business rules."""
 
-    def __init__(self, user_repository: UserRepository | None = None) -> None:
-        self.user_repository = user_repository or UserRepository()
+    def __init__(self, repository: UserRepository) -> None:
+        """Initialize the service with a user repository."""
 
-    def create_user(self, session: Session, payload: UserCreate) -> UserResponse:
-        """Create a user after checking that the email is unique."""
+        self.repository = repository
 
-        existing_user = self.user_repository.get_by_email(session, payload.email)
-        if existing_user is not None:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="A user with that email already exists.")
+    def create_user(self, user_data: UserCreate) -> User:
+        """Create a new user record."""
 
         user = User(
-            full_name=payload.full_name,
-            email=payload.email,
-            hashed_password=payload.hashed_password,
-            role=payload.role,
-            is_active=payload.is_active,
+            full_name=user_data.full_name,
+            email=str(user_data.email),
+            hashed_password=hash_password(user_data.password),
+            role=user_data.role,
+            is_active=True,
         )
-        created_user = self.user_repository.create_user(session, user)
-        return UserResponse.model_validate(created_user)
+        return self.repository.create(user)
 
-    def get_user(self, session: Session, user_id: UUID) -> UserResponse:
-        """Return a single user by identifier."""
+    def get_user(self, user_id: UUID) -> User | None:
+        """Return a user by identifier."""
 
-        user = self.user_repository.get_by_id(session, user_id)
+        return self.repository.get_by_id(user_id)
+
+    def list_users(self, skip: int = 0, limit: int = 100) -> list[User]:
+        """Return users with pagination."""
+
+        return self.repository.get_all(skip=skip, limit=limit)
+
+    def update_user(self, user_id: UUID, user_data: UserUpdate) -> User | None:
+        """Update the mutable fields for a user."""
+
+        user = self.repository.get_by_id(user_id)
         if user is None:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
+            return None
 
-        return UserResponse.model_validate(user)
+        if user_data.full_name is not None:
+            user.full_name = user_data.full_name
+        if user_data.role is not None:
+            user.role = user_data.role
+        if user_data.is_active is not None:
+            user.is_active = user_data.is_active
 
-    def list_users(self, session: Session) -> list[UserResponse]:
-        """Return all users in the system."""
+        return self.repository.update(user)
 
-        users = self.user_repository.get_all(session)
-        return [UserResponse.model_validate(user) for user in users]
+    def delete_user(self, user_id: UUID) -> User | None:
+        """Delete a user by identifier."""
+
+        user = self.repository.get_by_id(user_id)
+        if user is None:
+            return None
+
+        self.repository.delete(user)
+        return user
