@@ -171,8 +171,8 @@ export default function FormModal({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
-          <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-4 sm:px-5">
+        <form onSubmit={handleSubmit} className="flex flex-col">
+          <div className="max-h-[62vh] space-y-4 overflow-y-auto px-4 pb-5 pt-4 sm:max-h-[68vh] sm:px-5">
             {errorMessage ? (
               <p className="rounded-lg border border-rose-500/40 bg-rose-500/10 px-3 py-2 text-sm text-rose-300">
                 {errorMessage}

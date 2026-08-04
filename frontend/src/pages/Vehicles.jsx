@@ -33,10 +33,27 @@ const VEHICLE_CREATE_FIELDS = [
 ];
 
 const VEHICLE_EDIT_FIELDS = [
-  { name: "registration_number", label: "Registration Number", required: true, placeholder: "WB-02-AB-1122" },
-  { name: "model", label: "Model", required: true, placeholder: "Tata Ace" },
-  { name: "manufacturer", label: "Manufacturer", required: true, placeholder: "Tata" },
-  { name: "capacity", label: "Capacity", type: "number", required: true, min: 1, step: 1, inputMode: "numeric" },
+  { name: "registration_number", label: "Registration Number", placeholder: "WB-02-AB-1122" },
+  { name: "model", label: "Model", placeholder: "Tata Ace" },
+  { name: "manufacturer", label: "Manufacturer", placeholder: "Tata" },
+  {
+    name: "capacity",
+    label: "Capacity",
+    type: "number",
+    min: 1,
+    step: 1,
+    inputMode: "numeric",
+    validate: (raw) => {
+      if (raw === "" || raw === null || raw === undefined) {
+        return "";
+      }
+      const parsed = Number(raw);
+      if (!Number.isInteger(parsed) || parsed <= 0) {
+        return "Capacity must be a positive integer.";
+      }
+      return "";
+    },
+  },
   {
     name: "status",
     label: "Status",
@@ -47,6 +64,67 @@ const VEHICLE_EDIT_FIELDS = [
       { label: "Maintenance", value: "maintenance" },
       { label: "Out of Service", value: "out_of_service" },
     ],
+  },
+  {
+    name: "current_latitude",
+    label: "Current Latitude",
+    type: "number",
+    placeholder: "22.5726",
+    min: -90,
+    max: 90,
+    step: "any",
+    inputMode: "decimal",
+    validate: (raw) => {
+      if (raw === "" || raw === null || raw === undefined) {
+        return "";
+      }
+      const parsed = Number(raw);
+      if (Number.isNaN(parsed) || parsed < -90 || parsed > 90) {
+        return "Latitude must be between -90 and 90.";
+      }
+      return "";
+    },
+  },
+  {
+    name: "current_longitude",
+    label: "Current Longitude",
+    type: "number",
+    placeholder: "88.3639",
+    min: -180,
+    max: 180,
+    step: "any",
+    inputMode: "decimal",
+    validate: (raw) => {
+      if (raw === "" || raw === null || raw === undefined) {
+        return "";
+      }
+      const parsed = Number(raw);
+      if (Number.isNaN(parsed) || parsed < -180 || parsed > 180) {
+        return "Longitude must be between -180 and 180.";
+      }
+      return "";
+    },
+  },
+  {
+    name: "fuel_level",
+    label: "Fuel Level (%)",
+    type: "number",
+    placeholder: "75",
+    min: 0,
+    max: 100,
+    step: "any",
+    inputMode: "decimal",
+    validate: (raw) => {
+      if (raw === "" || raw === null || raw === undefined) {
+        return "";
+      }
+      const parsed = Number(raw);
+      if (Number.isNaN(parsed) || parsed < 0 || parsed > 100) {
+        return "Fuel level must be between 0 and 100.";
+      }
+      return "";
+    },
+    fullWidth: true,
   },
   { name: "is_active", label: "Active", type: "checkbox" },
 ];
@@ -90,7 +168,18 @@ function toPayload(values, mode) {
   if (payload.capacity !== undefined) {
     payload.capacity = Number(payload.capacity);
   }
-  payload.is_active = Boolean(values.is_active);
+  if (payload.current_latitude !== undefined) {
+    payload.current_latitude = Number(payload.current_latitude);
+  }
+  if (payload.current_longitude !== undefined) {
+    payload.current_longitude = Number(payload.current_longitude);
+  }
+  if (payload.fuel_level !== undefined) {
+    payload.fuel_level = Number(payload.fuel_level);
+  }
+  if (Object.prototype.hasOwnProperty.call(values, "is_active")) {
+    payload.is_active = Boolean(values.is_active);
+  }
 
   if (mode === "create") {
     return {
@@ -107,6 +196,9 @@ function toPayload(values, mode) {
     manufacturer: payload.manufacturer,
     capacity: payload.capacity,
     status: payload.status,
+    current_latitude: payload.current_latitude,
+    current_longitude: payload.current_longitude,
+    fuel_level: payload.fuel_level,
     is_active: payload.is_active,
   };
 
@@ -164,6 +256,11 @@ export default function Vehicles() {
         accessor: (row) => row.model || "-",
       },
       {
+        key: "manufacturer",
+        header: "Manufacturer",
+        accessor: (row) => row.manufacturer || "-",
+      },
+      {
         key: "capacity",
         header: "Capacity",
         accessor: (row) => row.capacity ?? "-",
@@ -175,7 +272,7 @@ export default function Vehicles() {
         accessor: (row) => row.status || "-",
         render: (value) => (
           <span className="inline-flex rounded-full border border-slate-700 px-2 py-0.5 text-xs capitalize text-slate-200">
-            {value || "unknown"}
+            {String(value || "unknown").replaceAll("_", " ")}
           </span>
         ),
       },
@@ -184,6 +281,12 @@ export default function Vehicles() {
         header: "Active",
         accessor: (row) => (row.is_active ? "Yes" : "No"),
         searchable: false,
+      },
+      {
+        key: "fuel_level",
+        header: "Fuel %",
+        accessor: (row) => (row.fuel_level === null || row.fuel_level === undefined ? "-" : row.fuel_level),
+        align: "right",
       },
     ],
     []
@@ -300,7 +403,7 @@ export default function Vehicles() {
         columns={columns}
         loading={loading}
         searchable
-        searchPlaceholder="Search vehicles by registration, model, or status..."
+        searchPlaceholder="Search vehicles by registration, model, manufacturer, or status..."
         emptyMessage="No vehicles found. Add your first vehicle to build fleet capacity."
         rowKey="id"
         actions={(row) => (
