@@ -64,5 +64,5 @@ class User(Base):
         "Driver",
         back_populates="user",
         uselist=False,
-        lazy="selectin",
+        lazy="select",
     )

@@ -8,9 +8,13 @@ from uuid import UUID, uuid4
 from app.db.base import Base
 from sqlalchemy import Boolean, DateTime
 from sqlalchemy import Enum as SAEnum
-from sqlalchemy import Float, ForeignKey, Index, Integer, String, func, text
+from sqlalchemy import Float, Index, Integer, String, func, text
 from sqlalchemy.dialects.postgresql import UUID as PostgreSQLUUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.models.order import Order
+
+VEHICLE_ORDER_FK = getattr(Order, "assigned_vehicle_id")
 
 if TYPE_CHECKING:
     from app.models.driver import Driver
@@ -70,12 +74,6 @@ class Vehicle(Base):
         server_default=VehicleStatus.AVAILABLE.value,
     )
 
-    current_driver_id: Mapped[UUID | None] = mapped_column(
-        PostgreSQLUUID(as_uuid=True),
-        ForeignKey("drivers.id", ondelete="SET NULL"),
-        nullable=True,
-    )
-
     current_latitude: Mapped[float | None] = mapped_column(
         Float,
         nullable=True,
@@ -111,7 +109,17 @@ class Vehicle(Base):
         nullable=False,
     )
 
-    current_driver: Mapped["Driver | None"] = relationship(
+    driver: Mapped["Driver | None"] = relationship(
         "Driver",
+        back_populates="vehicle",
+        foreign_keys="Driver.vehicle_id",
+        uselist=False,
+        lazy="selectin",
+    )
+
+    orders: Mapped[list["Order"]] = relationship(
+        "Order",
+        back_populates="assigned_vehicle",
+        foreign_keys=[VEHICLE_ORDER_FK],
         lazy="selectin",
     )
