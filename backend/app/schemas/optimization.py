@@ -10,6 +10,9 @@ class OptimizationRequest(BaseModel):
 	driver_ids: list[UUID]
 	vehicle_ids: list[UUID]
 	order_ids: list[UUID]
+	time_windows_enabled: bool = False
+	priority_enabled: bool = False
+	optimization_timeout_seconds: int = 5
 
 
 class OptimizationStop(BaseModel):
