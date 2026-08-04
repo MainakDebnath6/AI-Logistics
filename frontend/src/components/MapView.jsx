@@ -43,11 +43,13 @@ function toNumber(value) {
 }
 
 function extractRoutePolyline(route) {
-  if (!Array.isArray(route?.route_coordinates)) {
-    return [];
-  }
+  const geometry = Array.isArray(route?.road_geometry)
+    ? route.road_geometry
+    : Array.isArray(route?.route_coordinates)
+      ? route.route_coordinates
+      : [];
 
-  return route.route_coordinates
+  return geometry
     .map((point) => {
       const lat = toNumber(point?.latitude);
       const lng = toNumber(point?.longitude);

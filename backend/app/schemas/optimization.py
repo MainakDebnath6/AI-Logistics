@@ -66,6 +66,9 @@ class OptimizedRoute(BaseModel):
 	total_orders: int
 	stops: list[OptimizationStop]
 	route_coordinates: list[RouteCoordinate]
+	road_geometry: list[RouteCoordinate] = []
+	distance: float | None = None
+	duration: float | None = None
 
 
 class OptimizationResponse(BaseModel):

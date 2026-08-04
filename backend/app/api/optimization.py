@@ -17,6 +17,7 @@ from app.repositories.order_repository import OrderRepository
 from app.repositories.vehicle_repository import VehicleRepository
 from app.schemas.optimization import OptimizationRequest, OptimizationResponse
 from app.services.route_optimizer import RouteOptimizerService
+from app.services.routing_service import RoutingService
 
 
 router = APIRouter(
@@ -40,10 +41,16 @@ def get_order_repository(db: Session = Depends(get_db)) -> OrderRepository:
 	return OrderRepository(db)
 
 
-def get_route_optimizer_service(
+def get_routing_service() -> RoutingService:
+	"""Create a road routing service instance."""
+	return RoutingService()
+
+
+def get_route_optimizer_service_with_routing(
+	routing_service: RoutingService = Depends(get_routing_service),
 ) -> RouteOptimizerService:
 	"""Create a route optimizer service instance."""
-	return RouteOptimizerService()
+	return RouteOptimizerService(routing_service=routing_service)
 
 
 def _missing_ids(requested_ids: Sequence[UUID], found_ids: Sequence[UUID]) -> list[UUID]:
@@ -99,7 +106,7 @@ def optimize_routes(
 	driver_repository: DriverRepository = Depends(get_driver_repository),
 	vehicle_repository: VehicleRepository = Depends(get_vehicle_repository),
 	order_repository: OrderRepository = Depends(get_order_repository),
-	optimizer_service: RouteOptimizerService = Depends(get_route_optimizer_service),
+	optimizer_service: RouteOptimizerService = Depends(get_route_optimizer_service_with_routing),
 ) -> OptimizationResponse:
 	"""Optimize routes for the requested drivers, vehicles, and orders."""
 	if not _is_dispatcher_or_admin(current_dispatcher):

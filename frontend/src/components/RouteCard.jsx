@@ -31,6 +31,10 @@ function getDemand(route) {
   return toNumber(route?.total_demand);
 }
 
+function getDurationMinutes(route) {
+  return toNumber(route?.total_duration_minutes);
+}
+
 function formatDistance(value) {
   if (typeof value !== "number") {
     return "--";
@@ -43,6 +47,13 @@ function formatDemand(value) {
     return "--";
   }
   return value.toLocaleString();
+}
+
+function formatDuration(value) {
+  if (typeof value !== "number") {
+    return "--";
+  }
+  return `${value.toFixed(1)} min`;
 }
 
 function StopRow({ stop, index }) {
@@ -80,6 +91,7 @@ export default function RouteCard({
 
   const stops = useMemo(() => getStops(route), [route]);
   const distance = useMemo(() => getDistance(route), [route]);
+  const durationMinutes = useMemo(() => getDurationMinutes(route), [route]);
   const totalDemand = useMemo(() => getDemand(route), [route]);
   const totalOrders = useMemo(() => toNumber(route?.total_orders), [route]);
 
@@ -113,7 +125,7 @@ export default function RouteCard({
         ) : null}
       </div>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+      <div className="mt-4 grid gap-3 sm:grid-cols-4">
         <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
           <p className="text-xs uppercase tracking-wide text-slate-400">Stops</p>
           <p className="mt-1 text-lg font-semibold text-white">{totalOrders ?? stops.length}</p>
@@ -125,6 +137,10 @@ export default function RouteCard({
         <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
           <p className="text-xs uppercase tracking-wide text-slate-400">Distance</p>
           <p className="mt-1 text-lg font-semibold text-white">{formatDistance(distance)}</p>
+        </div>
+        <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
+          <p className="text-xs uppercase tracking-wide text-slate-400">Duration</p>
+          <p className="mt-1 text-lg font-semibold text-white">{formatDuration(durationMinutes)}</p>
         </div>
       </div>
 

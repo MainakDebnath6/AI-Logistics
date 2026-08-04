@@ -18,6 +18,7 @@ from app.schemas.optimization import (
 	OptimizationVehicle,
 	RouteCoordinate,
 )
+from app.services.routing_service import RoutingService
 
 
 class _OptimizationDataModel(TypedDict):
@@ -41,9 +42,10 @@ class _RuntimeOptimizationOptions(TypedDict):
 class RouteOptimizerService:
 	"""Service that computes capacitated routes using Google OR-Tools."""
 
-	def __init__(self) -> None:
+	def __init__(self, routing_service: RoutingService | None = None) -> None:
 		"""Initialize optimizer service with application defaults."""
 		self._settings = get_settings()
+		self._routing_service = routing_service or RoutingService()
 		self._runtime_options: _RuntimeOptimizationOptions = {
 			"time_windows_enabled": False,
 			"priority_enabled": False,
@@ -325,8 +327,21 @@ class RouteOptimizerService:
 				index = next_index
 
 			if stops:
-				route_distance_m = self._compute_path_distance_m(route_coordinates)
-				route_duration_minutes = self._estimate_duration_minutes(route_distance_m)
+				fallback_distance_m = self._compute_path_distance_m(route_coordinates)
+				fallback_duration_minutes = self._estimate_duration_minutes(fallback_distance_m)
+
+				road_geometry = list(route_coordinates)
+				distance_meters = float(fallback_distance_m)
+				duration_seconds = float(fallback_duration_minutes * 60.0)
+
+				road_route = self._routing_service.build_road_route(route_coordinates)
+				if road_route is not None:
+					road_geometry = road_route.road_geometry
+					distance_meters = float(road_route.distance_meters)
+					duration_seconds = float(road_route.duration_seconds)
+
+				route_distance_km = round(distance_meters / 1000.0, 3)
+				route_duration_minutes = round(duration_seconds / 60.0, 2)
 				driver = drivers[vehicle_idx]
 				vehicle = vehicles[vehicle_idx]
 				driver_full_name = getattr(getattr(driver, "user", None), "full_name", None) or f"Driver {driver.id}"
@@ -342,15 +357,18 @@ class RouteOptimizerService:
 							registration_number=vehicle.registration_number,
 							capacity=int(vehicle.capacity),
 						),
-						total_distance_km=round(route_distance_m / 1000.0, 3),
+						total_distance_km=route_distance_km,
 						total_duration_minutes=route_duration_minutes,
 						total_demand=route_demand,
 						total_orders=len(stops),
 						stops=stops,
 						route_coordinates=route_coordinates,
+						road_geometry=road_geometry,
+						distance=distance_meters,
+						duration=duration_seconds,
 					)
 				)
-				total_distance_m += route_distance_m
+				total_distance_m += int(round(distance_meters))
 
 		return routes, total_distance_m
 
