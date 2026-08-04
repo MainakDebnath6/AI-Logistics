@@ -11,6 +11,9 @@ from sqlalchemy import Enum as SAEnum
 from sqlalchemy import Float, ForeignKey, Index, Integer, String, func, text
 from sqlalchemy.dialects.postgresql import UUID as PostgreSQLUUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from app.models.order import Order
+
+DRIVER_ORDER_FK = getattr(Order, "assigned_driver_id")
 
 if TYPE_CHECKING:
     from app.models.user import User
@@ -118,5 +121,13 @@ class Driver(Base):
     vehicle: Mapped["Vehicle | None"] = relationship(
         "Vehicle",
         back_populates="driver",
+        foreign_keys=[vehicle_id],
+        lazy="selectin",
+    )
+
+    orders: Mapped[list["Order"]] = relationship(
+        "Order",
+        back_populates="assigned_driver",
+        foreign_keys=[DRIVER_ORDER_FK],
         lazy="selectin",
     )

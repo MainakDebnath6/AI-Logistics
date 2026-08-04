@@ -30,6 +30,21 @@ class VehicleRepository:
         statement = select(Vehicle).where(Vehicle.id == vehicle_id)
         return self.db.scalar(statement)
 
+    def get_by_ids(self, vehicle_ids: list[UUID]) -> list[Vehicle]:
+        """Return vehicles matching the provided identifiers in request order."""
+
+        if not vehicle_ids:
+            return []
+
+        statement = select(Vehicle).where(Vehicle.id.in_(vehicle_ids))
+        vehicles = list(self.db.scalars(statement).all())
+        vehicles_by_id = {vehicle.id: vehicle for vehicle in vehicles}
+        return [
+            vehicles_by_id[vehicle_id]
+            for vehicle_id in vehicle_ids
+            if vehicle_id in vehicles_by_id
+        ]
+
     def get_by_registration_number(
         self,
         registration_number: str,

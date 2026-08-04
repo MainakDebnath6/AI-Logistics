@@ -39,7 +39,6 @@ class VehicleUpdate(BaseModel):
         gt=0,
     )
     status: VehicleStatus | None = None
-    current_driver_id: UUID | None = None
     current_latitude: float | None = Field(
         default=None,
         ge=-90.0,
@@ -69,7 +68,6 @@ class VehicleResponse(BaseModel):
     manufacturer: str
     capacity: int
     status: VehicleStatus
-    current_driver_id: UUID | None
     current_latitude: float | None
     current_longitude: float | None
     fuel_level: float | None

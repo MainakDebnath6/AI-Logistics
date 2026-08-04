@@ -30,6 +30,21 @@ class DriverRepository:
         statement = select(Driver).where(Driver.id == driver_id)
         return self.db.scalar(statement)
 
+    def get_by_ids(self, driver_ids: list[UUID]) -> list[Driver]:
+        """Return drivers matching the provided identifiers in request order."""
+
+        if not driver_ids:
+            return []
+
+        statement = select(Driver).where(Driver.id.in_(driver_ids))
+        drivers = list(self.db.scalars(statement).all())
+        drivers_by_id = {driver.id: driver for driver in drivers}
+        return [
+            drivers_by_id[driver_id]
+            for driver_id in driver_ids
+            if driver_id in drivers_by_id
+        ]
+
     def get_by_user_id(self, user_id: UUID) -> Driver | None:
         """Return a driver by linked user identifier if it exists."""
 

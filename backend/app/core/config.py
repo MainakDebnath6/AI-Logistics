@@ -22,6 +22,16 @@ class Settings(BaseSettings):
     algorithm: str = Field(default="HS256")
     access_token_expire_minutes: int = Field(default=30)
 
+    optimization_timeout_seconds: int = Field(default=5)
+    optimization_default_depot_latitude: float = Field(default=0.0)
+    optimization_default_depot_longitude: float = Field(default=0.0)
+    optimization_default_strategy: str = Field(default="GUIDED_LOCAL_SEARCH")
+
+    analytics_default_average_eta: float = Field(default=0.0)
+    analytics_default_total_distance: float = Field(default=0.0)
+    analytics_default_route_efficiency: float = Field(default=0.0)
+    analytics_default_on_time_delivery_percentage: float = Field(default=0.0)
+
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
