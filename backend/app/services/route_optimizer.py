@@ -199,7 +199,7 @@ class RouteOptimizerService:
 		]
 		coordinates = [depot_coord, *order_coords]
 
-		demands = [0, *[int(order.quantity) for order in orders]]
+		demands = [0, *[int(order.demand) for order in orders]]
 		vehicle_capacities = [int(vehicle.capacity) for vehicle in selected_vehicles]
 
 		if sum(vehicle_capacities) < sum(demands):
