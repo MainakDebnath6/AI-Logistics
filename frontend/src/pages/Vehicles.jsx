@@ -10,20 +10,121 @@ import {
   updateVehicle,
 } from "../services/vehicleService";
 
-const VEHICLE_FIELDS = [
-  { name: "plate_number", label: "Plate Number", required: true, placeholder: "WB-02-AB-1122" },
+const VEHICLE_CREATE_FIELDS = [
+  { name: "registration_number", label: "Registration Number", required: true, placeholder: "WB-02-AB-1122" },
   { name: "model", label: "Model", required: true, placeholder: "Tata Ace" },
-  { name: "capacity", label: "Capacity", type: "number", required: true, min: 1, step: 1 },
+  { name: "manufacturer", label: "Manufacturer", required: true, placeholder: "Tata" },
+  {
+    name: "capacity",
+    label: "Capacity",
+    type: "number",
+    required: true,
+    min: 1,
+    step: 1,
+    inputMode: "numeric",
+    validate: (raw) => {
+      const parsed = Number(raw);
+      if (!Number.isInteger(parsed) || parsed <= 0) {
+        return "Capacity must be a positive integer.";
+      }
+      return "";
+    },
+  },
+];
+
+const VEHICLE_EDIT_FIELDS = [
+  { name: "registration_number", label: "Registration Number", placeholder: "WB-02-AB-1122" },
+  { name: "model", label: "Model", placeholder: "Tata Ace" },
+  { name: "manufacturer", label: "Manufacturer", placeholder: "Tata" },
+  {
+    name: "capacity",
+    label: "Capacity",
+    type: "number",
+    min: 1,
+    step: 1,
+    inputMode: "numeric",
+    validate: (raw) => {
+      if (raw === "" || raw === null || raw === undefined) {
+        return "";
+      }
+      const parsed = Number(raw);
+      if (!Number.isInteger(parsed) || parsed <= 0) {
+        return "Capacity must be a positive integer.";
+      }
+      return "";
+    },
+  },
   {
     name: "status",
     label: "Status",
     type: "select",
-    required: true,
     options: [
       { label: "Available", value: "available" },
-      { label: "In Transit", value: "in_transit" },
+      { label: "In Use", value: "in_use" },
       { label: "Maintenance", value: "maintenance" },
+      { label: "Out of Service", value: "out_of_service" },
     ],
+  },
+  {
+    name: "current_latitude",
+    label: "Current Latitude",
+    type: "number",
+    placeholder: "22.5726",
+    min: -90,
+    max: 90,
+    step: "any",
+    inputMode: "decimal",
+    validate: (raw) => {
+      if (raw === "" || raw === null || raw === undefined) {
+        return "";
+      }
+      const parsed = Number(raw);
+      if (Number.isNaN(parsed) || parsed < -90 || parsed > 90) {
+        return "Latitude must be between -90 and 90.";
+      }
+      return "";
+    },
+  },
+  {
+    name: "current_longitude",
+    label: "Current Longitude",
+    type: "number",
+    placeholder: "88.3639",
+    min: -180,
+    max: 180,
+    step: "any",
+    inputMode: "decimal",
+    validate: (raw) => {
+      if (raw === "" || raw === null || raw === undefined) {
+        return "";
+      }
+      const parsed = Number(raw);
+      if (Number.isNaN(parsed) || parsed < -180 || parsed > 180) {
+        return "Longitude must be between -180 and 180.";
+      }
+      return "";
+    },
+  },
+  {
+    name: "fuel_level",
+    label: "Fuel Level (%)",
+    type: "number",
+    placeholder: "75",
+    min: 0,
+    max: 100,
+    step: "any",
+    inputMode: "decimal",
+    validate: (raw) => {
+      if (raw === "" || raw === null || raw === undefined) {
+        return "";
+      }
+      const parsed = Number(raw);
+      if (Number.isNaN(parsed) || parsed < 0 || parsed > 100) {
+        return "Fuel level must be between 0 and 100.";
+      }
+      return "";
+    },
+    fullWidth: true,
   },
   { name: "is_active", label: "Active", type: "checkbox" },
 ];
@@ -52,7 +153,7 @@ function getErrorMessage(error, fallback) {
   return fallback;
 }
 
-function toPayload(values) {
+function toPayload(values, mode) {
   const payload = { ...values };
 
   Object.keys(payload).forEach((key) => {
@@ -67,15 +168,47 @@ function toPayload(values) {
   if (payload.capacity !== undefined) {
     payload.capacity = Number(payload.capacity);
   }
-  payload.is_active = Boolean(values.is_active);
+  if (payload.current_latitude !== undefined) {
+    payload.current_latitude = Number(payload.current_latitude);
+  }
+  if (payload.current_longitude !== undefined) {
+    payload.current_longitude = Number(payload.current_longitude);
+  }
+  if (payload.fuel_level !== undefined) {
+    payload.fuel_level = Number(payload.fuel_level);
+  }
+  if (Object.prototype.hasOwnProperty.call(values, "is_active")) {
+    payload.is_active = Boolean(values.is_active);
+  }
 
-  return payload;
+  if (mode === "create") {
+    return {
+      registration_number: payload.registration_number,
+      model: payload.model,
+      manufacturer: payload.manufacturer,
+      capacity: payload.capacity,
+    };
+  }
+
+  return {
+    registration_number: payload.registration_number,
+    model: payload.model,
+    manufacturer: payload.manufacturer,
+    capacity: payload.capacity,
+    status: payload.status,
+    current_latitude: payload.current_latitude,
+    current_longitude: payload.current_longitude,
+    fuel_level: payload.fuel_level,
+    is_active: payload.is_active,
+  };
+
 }
 
 export default function Vehicles() {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("create");
@@ -86,6 +219,11 @@ export default function Vehicles() {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [vehicleToDelete, setVehicleToDelete] = useState(null);
+
+  const vehicleFormFields = useMemo(
+    () => (modalMode === "create" ? VEHICLE_CREATE_FIELDS : VEHICLE_EDIT_FIELDS),
+    [modalMode]
+  );
 
   const fetchVehicles = useCallback(async () => {
     setLoading(true);
@@ -108,14 +246,19 @@ export default function Vehicles() {
   const columns = useMemo(
     () => [
       {
-        key: "plate_number",
-        header: "Plate",
-        accessor: (row) => row.plate_number || row.plate || "-",
+        key: "registration_number",
+        header: "Registration",
+        accessor: (row) => row.registration_number || "-",
       },
       {
         key: "model",
         header: "Model",
         accessor: (row) => row.model || "-",
+      },
+      {
+        key: "manufacturer",
+        header: "Manufacturer",
+        accessor: (row) => row.manufacturer || "-",
       },
       {
         key: "capacity",
@@ -129,7 +272,7 @@ export default function Vehicles() {
         accessor: (row) => row.status || "-",
         render: (value) => (
           <span className="inline-flex rounded-full border border-slate-700 px-2 py-0.5 text-xs capitalize text-slate-200">
-            {value || "unknown"}
+            {String(value || "unknown").replaceAll("_", " ")}
           </span>
         ),
       },
@@ -139,6 +282,12 @@ export default function Vehicles() {
         accessor: (row) => (row.is_active ? "Yes" : "No"),
         searchable: false,
       },
+      {
+        key: "fuel_level",
+        header: "Fuel %",
+        accessor: (row) => (row.fuel_level === null || row.fuel_level === undefined ? "-" : row.fuel_level),
+        align: "right",
+      },
     ],
     []
   );
@@ -147,12 +296,14 @@ export default function Vehicles() {
     setModalMode("create");
     setActiveVehicle(null);
     setFormError("");
+    setSuccessMessage("");
     setModalOpen(true);
   }
 
   async function handleEditClick(vehicle) {
     setModalMode("edit");
     setFormError("");
+    setSuccessMessage("");
     setSaving(true);
     setModalOpen(true);
 
@@ -177,11 +328,13 @@ export default function Vehicles() {
     setFormError("");
 
     try {
-      const payload = toPayload(values);
+      const payload = toPayload(values, modalMode);
       if (modalMode === "create") {
         await createVehicle(payload);
+        setSuccessMessage("Vehicle created successfully.");
       } else if (activeVehicle?.id) {
         await updateVehicle(activeVehicle.id, payload);
+        setSuccessMessage("Vehicle updated successfully.");
       }
 
       setModalOpen(false);
@@ -203,6 +356,7 @@ export default function Vehicles() {
     setError("");
     try {
       await deleteVehicle(vehicleToDelete.id);
+      setSuccessMessage("Vehicle deleted successfully.");
       setDeleteOpen(false);
       setVehicleToDelete(null);
       await fetchVehicles();
@@ -238,12 +392,18 @@ export default function Vehicles() {
         </p>
       ) : null}
 
+      {successMessage ? (
+        <p className="rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">
+          {successMessage}
+        </p>
+      ) : null}
+
       <DataTable
         data={vehicles}
         columns={columns}
         loading={loading}
         searchable
-        searchPlaceholder="Search vehicles by plate, model, or status..."
+        searchPlaceholder="Search vehicles by registration, model, manufacturer, or status..."
         emptyMessage="No vehicles found. Add your first vehicle to build fleet capacity."
         rowKey="id"
         actions={(row) => (
@@ -270,7 +430,7 @@ export default function Vehicles() {
         isOpen={modalOpen}
         mode={modalMode}
         title={modalMode === "create" ? "Add Vehicle" : "Edit Vehicle"}
-        fields={VEHICLE_FIELDS}
+        fields={vehicleFormFields}
         initialValues={activeVehicle || {}}
         loading={saving}
         errorMessage={formError}
@@ -286,7 +446,7 @@ export default function Vehicles() {
       <DeleteDialog
         isOpen={deleteOpen}
         title="Delete Vehicle"
-        message={`Are you sure you want to delete vehicle ${vehicleToDelete?.plate_number || vehicleToDelete?.plate || "record"}? This action cannot be undone.`}
+        message={`Are you sure you want to delete vehicle ${vehicleToDelete?.registration_number || "record"}? This action cannot be undone.`}
         loading={deleting}
         onCancel={() => {
           if (!deleting) {

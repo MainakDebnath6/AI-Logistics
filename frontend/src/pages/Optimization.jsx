@@ -53,6 +53,7 @@ function getStops(route) {
 
 function getDistance(route) {
   return (
+    toNumber(route?.total_distance_km) ??
     toNumber(route?.total_distance) ??
     toNumber(route?.distance) ??
     toNumber(route?.route_distance) ??
@@ -75,6 +76,7 @@ function extractSummary(result, routes) {
     toNumber(result?.metrics?.total_routes);
 
   const explicitTotalDistance =
+    toNumber(result?.total_distance_km) ??
     toNumber(result?.total_distance) ??
     toNumber(result?.summary?.total_distance) ??
     toNumber(result?.metrics?.total_distance);

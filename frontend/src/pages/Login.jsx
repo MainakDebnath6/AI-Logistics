@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { getApiErrorMessage } from "../services/api";
 
 export default function Login() {
   const { login, isAuthenticated } = useAuth();
@@ -32,8 +33,7 @@ export default function Login() {
       await login({ email: email.trim(), password });
       navigate(redirectTo, { replace: true });
     } catch (err) {
-      const detail = err?.response?.data?.detail;
-      setError(typeof detail === "string" ? detail : "Unable to sign in. Please check your credentials.");
+      setError(getApiErrorMessage(err, "Unable to sign in. Please check your credentials."));
     } finally {
       setSubmitting(false);
     }

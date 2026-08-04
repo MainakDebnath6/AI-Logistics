@@ -1,7 +1,5 @@
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
-import api, { AUTH_TOKEN_KEY } from "../services/api";
-
-const AUTH_USER_KEY = "auth_current_user";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import api, { AUTH_TOKEN_KEY, AUTH_USER_KEY } from "../services/api";
 
 const AuthContext = createContext(null);
 
@@ -39,6 +37,10 @@ function buildCurrentUser(token, responseData) {
     return responseData.user;
   }
 
+  if (responseData?.data?.user && typeof responseData.data.user === "object") {
+    return responseData.data.user;
+  }
+
   const payload = decodeJwtPayload(token);
   if (!payload) {
     return null;
@@ -55,6 +57,7 @@ function buildCurrentUser(token, responseData) {
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem(AUTH_TOKEN_KEY));
   const [currentUser, setCurrentUser] = useState(() => readStoredUser());
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   const logout = useCallback(() => {
     localStorage.removeItem(AUTH_TOKEN_KEY);
@@ -63,18 +66,55 @@ export function AuthProvider({ children }) {
     setCurrentUser(null);
   }, []);
 
-  const login = useCallback(async ({ email, password }) => {
-    const form = new URLSearchParams();
-    form.append("username", email);
-    form.append("password", password);
+  useEffect(() => {
+    const storedToken = localStorage.getItem(AUTH_TOKEN_KEY);
+    const storedUser = readStoredUser();
 
-    const response = await api.post("/auth/login", form, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
+    setToken(storedToken);
+    setCurrentUser(storedUser);
+    setIsAuthLoading(false);
+  }, []);
+
+  useEffect(() => {
+    function handleUnauthorized() {
+      setToken(null);
+      setCurrentUser(null);
+      localStorage.removeItem(AUTH_TOKEN_KEY);
+      localStorage.removeItem(AUTH_USER_KEY);
+    }
+
+    function handleStorage(event) {
+      if (event.key !== AUTH_TOKEN_KEY && event.key !== AUTH_USER_KEY) {
+        return;
+      }
+
+      setToken(localStorage.getItem(AUTH_TOKEN_KEY));
+      setCurrentUser(readStoredUser());
+    }
+
+    window.addEventListener("auth:unauthorized", handleUnauthorized);
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      window.removeEventListener("auth:unauthorized", handleUnauthorized);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, []);
+
+  const login = useCallback(async ({ email, password }) => {
+    const response = await api.post("/auth/login", {
+      email,
+      password,
     });
 
-    const nextToken = response?.data?.access_token ?? response?.data?.token ?? null;
+    const nextToken =
+      response?.data?.access_token ??
+      response?.data?.accessToken ??
+      response?.data?.token ??
+      response?.data?.data?.access_token ??
+      response?.data?.data?.accessToken ??
+      null;
+
     if (!nextToken) {
       throw new Error("No access token returned by login endpoint.");
     }
@@ -100,9 +140,10 @@ export function AuthProvider({ children }) {
       logout,
       currentUser,
       token,
+      isAuthLoading,
       isAuthenticated: Boolean(token),
     }),
-    [login, logout, currentUser, token]
+    [login, logout, currentUser, token, isAuthLoading]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

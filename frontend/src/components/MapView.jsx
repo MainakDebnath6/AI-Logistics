@@ -74,8 +74,8 @@ function readCoordinate(source, latKeyCandidates, lngKeyCandidates) {
 function readLatLng(source) {
   return readCoordinate(
     source,
-    ["lat", "latitude", "driver_latitude", "pickup_latitude", "dropoff_latitude"],
-    ["lng", "lon", "longitude", "driver_longitude", "pickup_longitude", "dropoff_longitude"]
+    ["lat", "latitude", "driver_latitude", "pickup_latitude", "delivery_latitude", "dropoff_latitude"],
+    ["lng", "lon", "longitude", "driver_longitude", "pickup_longitude", "delivery_longitude", "dropoff_longitude"]
   );
 }
 

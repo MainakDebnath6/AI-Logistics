@@ -106,6 +106,16 @@ const quickActions = [
   },
 ];
 
+function DashboardCardSkeleton() {
+  return (
+    <article className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
+      <div className="h-3 w-28 animate-pulse rounded bg-slate-800" />
+      <div className="mt-3 h-8 w-24 animate-pulse rounded bg-slate-800" />
+      <div className="mt-3 h-3 w-20 animate-pulse rounded bg-slate-800" />
+    </article>
+  );
+}
+
 export default function Dashboard() {
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -151,18 +161,6 @@ export default function Dashboard() {
 
     return [
       {
-        title: "Total Drivers",
-        value: formatInteger(analytics.totalDrivers),
-        icon: <UsersIcon />,
-        color: "teal",
-      },
-      {
-        title: "Total Vehicles",
-        value: formatInteger(analytics.totalVehicles),
-        icon: <TruckIcon />,
-        color: "blue",
-      },
-      {
         title: "Total Orders",
         value: formatInteger(analytics.totalOrders),
         icon: <PackageIcon />,
@@ -181,10 +179,22 @@ export default function Dashboard() {
         color: "amber",
       },
       {
-        title: "Fleet Utilization",
-        value: formatPercentage(analytics.fleetUtilization),
+        title: "Vehicle Utilization",
+        value: formatPercentage(analytics.vehicleUtilization),
         icon: <GaugeIcon />,
         color: "cyan",
+      },
+      {
+        title: "Driver Utilization",
+        value: formatPercentage(analytics.driverUtilization),
+        icon: <UsersIcon />,
+        color: "teal",
+      },
+      {
+        title: "Route Efficiency",
+        value: formatPercentage(analytics.routeEfficiency),
+        icon: <TruckIcon />,
+        color: "blue",
       },
     ];
   }, [analytics]);
@@ -202,10 +212,21 @@ export default function Dashboard() {
       </header>
 
       {loading ? (
-        <LoadingSpinner size="lg" label="Loading fleet dashboard..." fullScreen />
+        <>
+          <LoadingSpinner size="md" label="Loading fleet dashboard..." />
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <DashboardCardSkeleton key={index} />
+            ))}
+          </div>
+        </>
       ) : error ? (
         <div className="rounded-xl border border-rose-500/40 bg-rose-500/10 p-4 text-sm text-rose-200">
           {error}
+        </div>
+      ) : !analytics ? (
+        <div className="rounded-xl border border-dashed border-slate-700 bg-slate-900/50 p-6 text-sm text-slate-300">
+          No analytics data available for the dashboard yet.
         </div>
       ) : (
         <>

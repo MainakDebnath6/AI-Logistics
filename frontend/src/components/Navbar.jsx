@@ -38,7 +38,7 @@ function BellIcon() {
   );
 }
 
-export default function Navbar({ onToggleSidebar, onToggleCollapse, isSidebarCollapsed }) {
+export default function Navbar({ onToggleSidebar, onToggleCollapse, isSidebarOpen, isSidebarCollapsed }) {
   const { currentUser, logout } = useAuth();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -63,7 +63,7 @@ export default function Navbar({ onToggleSidebar, onToggleCollapse, isSidebarCol
           onClick={onToggleSidebar}
           className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-700 bg-slate-900 text-slate-200 transition hover:bg-slate-800 md:hidden"
           aria-label="Open menu"
-          aria-expanded={mobileMenuOpen}
+          aria-expanded={isSidebarOpen}
         >
           <MenuIcon />
         </button>

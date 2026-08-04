@@ -73,22 +73,6 @@ export function normalizeDashboardAnalytics(payload) {
   const source = normalizePayload(payload);
 
   return {
-    totalDrivers: pickNumber(source, [
-      "total_drivers",
-      "totalDrivers",
-      "drivers.total",
-      "drivers.count",
-      "summary.total_drivers",
-      "dashboard.total_drivers",
-    ]),
-    totalVehicles: pickNumber(source, [
-      "total_vehicles",
-      "totalVehicles",
-      "vehicles.total",
-      "vehicles.count",
-      "summary.total_vehicles",
-      "dashboard.total_vehicles",
-    ]),
     totalOrders: pickNumber(source, [
       "total_orders",
       "totalOrders",
@@ -111,14 +95,15 @@ export function normalizeDashboardAnalytics(payload) {
       "summary.pending_orders",
       "dashboard.pending_orders",
     ]),
+    totalDrivers: null,
+    totalVehicles: null,
     fleetUtilization: pickNumber(source, [
-      "fleet_utilization",
-      "fleetUtilization",
-      "utilization.fleet",
-      "summary.fleet_utilization",
-      "dashboard.fleet_utilization",
+      "vehicle_utilization_percentage",
+      "vehicle_utilization",
+      "vehicleUtilization",
     ]),
     vehicleUtilization: pickNumber(source, [
+      "vehicle_utilization_percentage",
       "vehicle_utilization",
       "vehicleUtilization",
       "utilization.vehicle",
@@ -126,6 +111,7 @@ export function normalizeDashboardAnalytics(payload) {
       "dashboard.vehicle_utilization",
     ]),
     driverUtilization: pickNumber(source, [
+      "driver_utilization_percentage",
       "driver_utilization",
       "driverUtilization",
       "utilization.driver",
@@ -133,6 +119,7 @@ export function normalizeDashboardAnalytics(payload) {
       "dashboard.driver_utilization",
     ]),
     routeEfficiency: pickNumber(source, [
+      "route_efficiency_percentage",
       "route_efficiency",
       "routeEfficiency",
       "efficiency.route",
@@ -140,6 +127,7 @@ export function normalizeDashboardAnalytics(payload) {
       "dashboard.route_efficiency",
     ]),
     averageEta: pickNumber(source, [
+      "average_eta_minutes",
       "average_eta",
       "averageEta",
       "eta.average",
@@ -147,6 +135,7 @@ export function normalizeDashboardAnalytics(payload) {
       "dashboard.average_eta",
     ]),
     onTimeDelivery: pickNumber(source, [
+      "on_time_delivery_percentage",
       "on_time_delivery",
       "onTimeDelivery",
       "delivery.on_time",
@@ -154,6 +143,7 @@ export function normalizeDashboardAnalytics(payload) {
       "dashboard.on_time_delivery",
     ]),
     distanceCovered: pickNumber(source, [
+      "average_route_distance_km",
       "distance_covered",
       "distanceCovered",
       "distance.total",
@@ -211,11 +201,7 @@ export function buildUtilizationBreakdown(analytics) {
     return [];
   }
 
-  const candidates = [
-    { name: "Fleet", value: analytics.fleetUtilization },
-    { name: "Vehicles", value: analytics.vehicleUtilization },
-    { name: "Drivers", value: analytics.driverUtilization },
-  ];
+  const candidates = [{ name: "Vehicles", value: analytics.vehicleUtilization }, { name: "Drivers", value: analytics.driverUtilization }];
 
   return candidates.filter((item) => typeof item.value === "number");
 }
