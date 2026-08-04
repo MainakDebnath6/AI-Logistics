@@ -60,6 +60,7 @@ function getStopLabel(stop, index) {
 
 function getDistance(route) {
   return (
+    toNumber(route?.total_distance_km) ??
     toNumber(route?.total_distance) ??
     toNumber(route?.distance) ??
     toNumber(route?.route_distance) ??

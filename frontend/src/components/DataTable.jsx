@@ -1,6 +1,46 @@
 import { useMemo, useState } from "react";
 import LoadingSpinner from "./LoadingSpinner";
 
+function TableSkeleton({ columnsCount = 4, rows = 6 }) {
+  return (
+    <div className="overflow-x-auto">
+      <table className="min-w-full divide-y divide-slate-800">
+        <thead className="bg-slate-950/40">
+          <tr>
+            {Array.from({ length: columnsCount }).map((_, index) => (
+              <th key={index} className="px-4 py-3">
+                <div className="h-3 w-20 animate-pulse rounded bg-slate-800" />
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-800">
+          {Array.from({ length: rows }).map((_, rowIndex) => (
+            <tr key={rowIndex}>
+              {Array.from({ length: columnsCount }).map((__, colIndex) => (
+                <td key={colIndex} className="px-4 py-3">
+                  <div className="h-3.5 w-full max-w-[180px] animate-pulse rounded bg-slate-800/90" />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function EmptyState({ message }) {
+  return (
+    <div className="p-8 text-center text-sm text-slate-300">
+      <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full border border-slate-700 bg-slate-950/60 text-slate-400">
+        ☐
+      </div>
+      <p>{message}</p>
+    </div>
+  );
+}
+
 function toSearchText(value) {
   if (value === null || value === undefined) {
     return "";
@@ -130,14 +170,15 @@ export default function DataTable({
       </header>
 
       {loading ? (
-        <div className="p-8">
+        <div className="space-y-3 p-4">
           <LoadingSpinner label="Loading records..." />
+          <TableSkeleton columnsCount={normalizedColumns.length + (actions ? 1 : 0)} />
         </div>
       ) : paginatedData.length === 0 ? (
-        <div className="p-8 text-center text-sm text-slate-300">{emptyMessage}</div>
+        <EmptyState message={emptyMessage} />
       ) : (
         <>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto" role="region" aria-label="Data table container">
             <table className="min-w-full divide-y divide-slate-800">
               <thead className="bg-slate-950/40">
                 <tr>
@@ -210,7 +251,7 @@ export default function DataTable({
               {Math.min(safePage * pageSize, totalItems)} of {totalItems}
             </p>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
                 onClick={handlePrevPage}

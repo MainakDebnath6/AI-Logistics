@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import DataTable from "../components/DataTable";
 import DeleteDialog from "../components/DeleteDialog";
 import FormModal from "../components/FormModal";
+import api from "../services/api";
+import { getVehicles } from "../services/vehicleService";
 import {
   createDriver,
   deleteDriver,
@@ -10,24 +12,84 @@ import {
   updateDriver,
 } from "../services/driverService";
 
-const DRIVER_FIELDS = [
-  { name: "full_name", label: "Full Name", required: true, placeholder: "Alex Carter" },
-  { name: "email", label: "Email", type: "email", required: true, placeholder: "alex@fleet.com" },
-  { name: "phone_number", label: "Phone Number", required: true, placeholder: "+1-555-0101" },
-  { name: "license_number", label: "License Number", required: true, placeholder: "DL-2026-1142" },
-  {
-    name: "status",
-    label: "Status",
-    type: "select",
-    required: true,
-    options: [
-      { label: "Active", value: "active" },
-      { label: "Inactive", value: "inactive" },
-      { label: "On Leave", value: "on_leave" },
-    ],
-  },
-  { name: "is_available", label: "Available for Dispatch", type: "checkbox" },
-];
+function getCreateFields(userOptions, vehicleOptions, optionsLoading) {
+  return [
+    {
+      name: "user_id",
+      label: "Driver User",
+      type: "searchable-select",
+      required: true,
+      options: userOptions,
+      disabled: optionsLoading,
+      searchPlaceholder: "Search users by name or email...",
+    },
+    {
+      name: "vehicle_id",
+      label: "Assigned Vehicle",
+      type: "searchable-select",
+      options: vehicleOptions,
+      disabled: optionsLoading,
+      searchPlaceholder: "Search vehicles by registration or model...",
+    },
+    {
+      name: "phone",
+      label: "Phone",
+      required: true,
+      placeholder: "+1-555-0101",
+      autoComplete: "tel",
+    },
+    {
+      name: "license_number",
+      label: "License Number",
+      required: true,
+      placeholder: "DL-2026-1142",
+      autoComplete: "off",
+    },
+    {
+      name: "max_capacity",
+      label: "Max Capacity",
+      type: "number",
+      required: true,
+      min: 1,
+      step: 1,
+      inputMode: "numeric",
+      validate: (raw) => {
+        const parsed = Number(raw);
+        if (!Number.isInteger(parsed) || parsed <= 0) {
+          return "Max Capacity must be a positive integer.";
+        }
+        return "";
+      },
+    },
+  ];
+}
+
+function getEditFields(vehicleOptions, optionsLoading) {
+  return [
+    { name: "phone", label: "Phone", required: true, placeholder: "+1-555-0101", autoComplete: "tel" },
+    { name: "license_number", label: "License Number", required: true, placeholder: "DL-2026-1142" },
+    {
+      name: "vehicle_id",
+      label: "Assigned Vehicle",
+      type: "searchable-select",
+      options: vehicleOptions,
+      disabled: optionsLoading,
+      searchPlaceholder: "Search vehicles by registration or model...",
+    },
+    {
+      name: "status",
+      label: "Status",
+      type: "select",
+      options: [
+        { label: "Available", value: "available" },
+        { label: "Busy", value: "busy" },
+        { label: "Offline", value: "offline" },
+      ],
+    },
+    { name: "max_capacity", label: "Max Capacity", type: "number", required: true, min: 1, step: 1 },
+    { name: "is_available", label: "Available for Dispatch", type: "checkbox" },
+  ];
+}
 
 function normalizeListResponse(response) {
   if (Array.isArray(response)) {
@@ -56,7 +118,7 @@ function getErrorMessage(error, fallback) {
   return fallback;
 }
 
-function toPayload(values) {
+function toPayload(values, mode) {
   const payload = { ...values };
 
   Object.keys(payload).forEach((key) => {
@@ -68,14 +130,41 @@ function toPayload(values) {
     }
   });
 
+  if (payload.max_capacity !== undefined) {
+    payload.max_capacity = Number(payload.max_capacity);
+  }
   payload.is_available = Boolean(values.is_available);
-  return payload;
+
+  if (mode === "create") {
+    const vehicleId = payload.vehicle_id ?? null;
+
+    return {
+      user_id: payload.user_id,
+      license_number: payload.license_number,
+      phone: payload.phone,
+      vehicle_id: vehicleId,
+      max_capacity: payload.max_capacity,
+    };
+  }
+
+  return {
+    license_number: payload.license_number,
+    phone: payload.phone,
+    vehicle_id: payload.vehicle_id,
+    status: payload.status,
+    max_capacity: payload.max_capacity,
+    is_available: payload.is_available,
+  };
 }
 
 export default function Drivers() {
   const [drivers, setDrivers] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [optionsLoading, setOptionsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("create");
@@ -86,6 +175,35 @@ export default function Drivers() {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [driverToDelete, setDriverToDelete] = useState(null);
+
+  const userOptions = useMemo(
+    () =>
+      users
+        .filter((user) => user?.id)
+        .map((user) => ({
+          value: user.id,
+          label: `${user.full_name || "Unknown User"} (${user.email || "no-email"})`,
+        })),
+    [users]
+  );
+
+  const vehicleOptions = useMemo(
+    () =>
+      vehicles
+        .filter((vehicle) => vehicle?.id)
+        .map((vehicle) => ({
+          value: vehicle.id,
+          label: `${vehicle.registration_number || "Unknown"} - ${vehicle.model || "Vehicle"}`,
+        })),
+    [vehicles]
+  );
+
+  const driverFormFields = useMemo(() => {
+    if (modalMode === "create") {
+      return getCreateFields(userOptions, vehicleOptions, optionsLoading);
+    }
+    return getEditFields(vehicleOptions, optionsLoading);
+  }, [modalMode, optionsLoading, userOptions, vehicleOptions]);
 
   const fetchDrivers = useCallback(async () => {
     setLoading(true);
@@ -101,26 +219,43 @@ export default function Drivers() {
     }
   }, []);
 
+  const fetchFormOptions = useCallback(async () => {
+    setOptionsLoading(true);
+    try {
+      const [usersResponse, vehiclesResponse] = await Promise.all([
+        api.get("/users"),
+        getVehicles({ skip: 0, limit: 1000 }),
+      ]);
+
+      setUsers(normalizeListResponse(usersResponse?.data));
+      setVehicles(normalizeListResponse(vehiclesResponse));
+    } catch {
+      setUsers([]);
+      setVehicles([]);
+    } finally {
+      setOptionsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     fetchDrivers();
   }, [fetchDrivers]);
 
+  useEffect(() => {
+    fetchFormOptions();
+  }, [fetchFormOptions]);
+
   const columns = useMemo(
     () => [
       {
-        key: "full_name",
-        header: "Name",
-        accessor: (row) => row.full_name || row.name || "-",
+        key: "user_id",
+        header: "User ID",
+        accessor: (row) => row.user_id || "-",
       },
       {
-        key: "email",
-        header: "Email",
-        accessor: (row) => row.email || "-",
-      },
-      {
-        key: "phone_number",
+        key: "phone",
         header: "Phone",
-        accessor: (row) => row.phone_number || row.phone || "-",
+        accessor: (row) => row.phone || "-",
       },
       {
         key: "license_number",
@@ -151,12 +286,14 @@ export default function Drivers() {
     setModalMode("create");
     setActiveDriver(null);
     setFormError("");
+    setSuccessMessage("");
     setModalOpen(true);
   }
 
   async function handleEditClick(driver) {
     setModalMode("edit");
     setFormError("");
+    setSuccessMessage("");
     setSaving(true);
     setModalOpen(true);
 
@@ -181,11 +318,13 @@ export default function Drivers() {
     setFormError("");
 
     try {
-      const payload = toPayload(values);
+      const payload = toPayload(values, modalMode);
       if (modalMode === "create") {
         await createDriver(payload);
+        setSuccessMessage("Driver created successfully.");
       } else if (activeDriver?.id) {
         await updateDriver(activeDriver.id, payload);
+        setSuccessMessage("Driver updated successfully.");
       }
 
       setModalOpen(false);
@@ -207,6 +346,7 @@ export default function Drivers() {
     setError("");
     try {
       await deleteDriver(driverToDelete.id);
+      setSuccessMessage("Driver deleted successfully.");
       setDeleteOpen(false);
       setDriverToDelete(null);
       await fetchDrivers();
@@ -242,12 +382,18 @@ export default function Drivers() {
         </p>
       ) : null}
 
+      {successMessage ? (
+        <p className="rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">
+          {successMessage}
+        </p>
+      ) : null}
+
       <DataTable
         data={drivers}
         columns={columns}
         loading={loading}
         searchable
-        searchPlaceholder="Search drivers by name, email, phone, or license..."
+        searchPlaceholder="Search drivers by user ID, phone, or license..."
         emptyMessage="No drivers found. Create your first driver to start dispatching."
         rowKey="id"
         actions={(row) => (
@@ -274,7 +420,7 @@ export default function Drivers() {
         isOpen={modalOpen}
         mode={modalMode}
         title={modalMode === "create" ? "Add Driver" : "Edit Driver"}
-        fields={DRIVER_FIELDS}
+        fields={driverFormFields}
         initialValues={activeDriver || {}}
         loading={saving}
         errorMessage={formError}
@@ -290,7 +436,7 @@ export default function Drivers() {
       <DeleteDialog
         isOpen={deleteOpen}
         title="Delete Driver"
-        message={`Are you sure you want to delete ${driverToDelete?.full_name || driverToDelete?.name || "this driver"}? This action cannot be undone.`}
+        message={`Are you sure you want to delete driver ${driverToDelete?.id || "record"}? This action cannot be undone.`}
         loading={deleting}
         onCancel={() => {
           if (!deleting) {

@@ -16,7 +16,7 @@ import {
 
 function EmptyState({ message }) {
   return (
-    <div className="flex h-[280px] items-center justify-center rounded-lg border border-dashed border-slate-700 text-sm text-slate-400">
+    <div className="flex h-[260px] items-center justify-center rounded-lg border border-dashed border-slate-700 px-4 text-center text-sm text-slate-400 sm:h-[280px]">
       {message}
     </div>
   );
@@ -53,7 +53,7 @@ export default function AnalyticsChart({
       {!Array.isArray(data) || data.length === 0 ? (
         <EmptyState message={emptyMessage} />
       ) : (
-        <div style={{ width: "100%", height }}>
+        <div className="w-full" style={{ height }}>
           <ResponsiveContainer>
             {type === "pie" ? (
               <PieChart>

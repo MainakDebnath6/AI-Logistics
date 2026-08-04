@@ -6,7 +6,6 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
-import { useEffect, useState } from "react";
 import Layout from "./components/Layout";
 import LoadingSpinner from "./components/LoadingSpinner";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -55,18 +54,9 @@ function NotFoundPage() {
 }
 
 function AppRoutes() {
-  const { token } = useAuth();
-  const [authReady, setAuthReady] = useState(false);
+  const { isAuthLoading } = useAuth();
 
-  useEffect(() => {
-    const id = window.requestAnimationFrame(() => {
-      setAuthReady(true);
-    });
-
-    return () => window.cancelAnimationFrame(id);
-  }, [token]);
-
-  if (!authReady) {
+  if (isAuthLoading) {
     return <AuthBootScreen />;
   }
 

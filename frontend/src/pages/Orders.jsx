@@ -11,31 +11,20 @@ import {
 } from "../services/orderService";
 
 const ORDER_FIELDS = [
-  { name: "customer_name", label: "Customer Name", required: true, placeholder: "North Hub Outlet" },
-  { name: "pickup_address", label: "Pickup Address", required: true, fullWidth: true },
-  { name: "dropoff_address", label: "Dropoff Address", required: true, fullWidth: true },
-  { name: "pickup_latitude", label: "Pickup Latitude", type: "number", required: true, step: "any" },
-  { name: "pickup_longitude", label: "Pickup Longitude", type: "number", required: true, step: "any" },
-  { name: "dropoff_latitude", label: "Dropoff Latitude", type: "number", required: true, step: "any" },
-  { name: "dropoff_longitude", label: "Dropoff Longitude", type: "number", required: true, step: "any" },
-  { name: "quantity", label: "Quantity", type: "number", required: true, min: 1, step: 1 },
-  {
-    name: "priority",
-    label: "Priority",
-    type: "select",
-    required: true,
-    options: [
-      { label: "Low", value: "low" },
-      { label: "Medium", value: "medium" },
-      { label: "High", value: "high" },
-      { label: "Critical", value: "critical" },
-    ],
-  },
+  { name: "customer_name", label: "Customer Name", required: true, placeholder: "North Hub Outlet", fullWidth: true },
+  { name: "customer_phone", label: "Customer Phone", required: true, placeholder: "+1-555-0101", autoComplete: "tel" },
+  { name: "pickup_address", label: "Pickup Address", required: true, fullWidth: true, placeholder: "Warehouse / pickup location" },
+  { name: "delivery_address", label: "Delivery Address", required: true, fullWidth: true, placeholder: "Customer drop-off location" },
+  { name: "pickup_latitude", label: "Pickup Latitude", type: "number", required: true, step: "any", placeholder: "22.5726" },
+  { name: "pickup_longitude", label: "Pickup Longitude", type: "number", required: true, step: "any", placeholder: "88.3639" },
+  { name: "delivery_latitude", label: "Delivery Latitude", type: "number", required: true, step: "any", placeholder: "22.5900" },
+  { name: "delivery_longitude", label: "Delivery Longitude", type: "number", required: true, step: "any", placeholder: "88.4100" },
+  { name: "demand", label: "Demand", type: "number", required: true, min: 1, step: 1 },
+  { name: "priority", label: "Priority", type: "number", required: true, min: 1, step: 1 },
   {
     name: "status",
     label: "Status",
     type: "select",
-    required: true,
     options: [
       { label: "Pending", value: "pending" },
       { label: "Assigned", value: "assigned" },
@@ -72,7 +61,7 @@ function getErrorMessage(error, fallback) {
   return fallback;
 }
 
-function toPayload(values) {
+function toPayload(values, mode) {
   const payload = { ...values };
 
   Object.keys(payload).forEach((key) => {
@@ -87,22 +76,53 @@ function toPayload(values) {
   [
     "pickup_latitude",
     "pickup_longitude",
-    "dropoff_latitude",
-    "dropoff_longitude",
-    "quantity",
+    "delivery_latitude",
+    "delivery_longitude",
+    "demand",
+    "priority",
   ].forEach((key) => {
     if (payload[key] !== undefined) {
       payload[key] = Number(payload[key]);
     }
   });
 
-  return payload;
+  if (mode === "create") {
+    return {
+      customer_name: payload.customer_name,
+      customer_phone: payload.customer_phone,
+      pickup_address: payload.pickup_address,
+      delivery_address: payload.delivery_address,
+      pickup_latitude: payload.pickup_latitude,
+      pickup_longitude: payload.pickup_longitude,
+      delivery_latitude: payload.delivery_latitude,
+      delivery_longitude: payload.delivery_longitude,
+      demand: payload.demand,
+      priority: payload.priority,
+    };
+  }
+
+  return {
+    customer_name: payload.customer_name,
+    customer_phone: payload.customer_phone,
+    pickup_address: payload.pickup_address,
+    delivery_address: payload.delivery_address,
+    pickup_latitude: payload.pickup_latitude,
+    pickup_longitude: payload.pickup_longitude,
+    delivery_latitude: payload.delivery_latitude,
+    delivery_longitude: payload.delivery_longitude,
+    demand: payload.demand,
+    priority: payload.priority,
+    status: payload.status,
+    assigned_driver_id: payload.assigned_driver_id,
+    assigned_vehicle_id: payload.assigned_vehicle_id,
+  };
 }
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("create");
@@ -145,14 +165,14 @@ export default function Orders() {
         accessor: (row) => row.pickup_address || "-",
       },
       {
-        key: "dropoff_address",
+        key: "delivery_address",
         header: "Dropoff",
-        accessor: (row) => row.dropoff_address || "-",
+        accessor: (row) => row.delivery_address || "-",
       },
       {
-        key: "quantity",
+        key: "demand",
         header: "Qty",
-        accessor: (row) => row.quantity ?? "-",
+        accessor: (row) => row.demand ?? "-",
         align: "right",
       },
       {
@@ -183,12 +203,14 @@ export default function Orders() {
     setModalMode("create");
     setActiveOrder(null);
     setFormError("");
+    setSuccessMessage("");
     setModalOpen(true);
   }
 
   async function handleEditClick(order) {
     setModalMode("edit");
     setFormError("");
+    setSuccessMessage("");
     setSaving(true);
     setModalOpen(true);
 
@@ -213,11 +235,13 @@ export default function Orders() {
     setFormError("");
 
     try {
-      const payload = toPayload(values);
+      const payload = toPayload(values, modalMode);
       if (modalMode === "create") {
         await createOrder(payload);
+        setSuccessMessage("Order created successfully.");
       } else if (activeOrder?.id) {
         await updateOrder(activeOrder.id, payload);
+        setSuccessMessage("Order updated successfully.");
       }
 
       setModalOpen(false);
@@ -239,6 +263,7 @@ export default function Orders() {
     setError("");
     try {
       await deleteOrder(orderToDelete.id);
+      setSuccessMessage("Order deleted successfully.");
       setDeleteOpen(false);
       setOrderToDelete(null);
       await fetchOrders();
@@ -271,6 +296,12 @@ export default function Orders() {
       {error ? (
         <p className="rounded-lg border border-rose-500/40 bg-rose-500/10 px-3 py-2 text-sm text-rose-300">
           {error}
+        </p>
+      ) : null}
+
+      {successMessage ? (
+        <p className="rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">
+          {successMessage}
         </p>
       ) : null}
 

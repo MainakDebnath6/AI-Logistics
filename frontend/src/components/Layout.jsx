@@ -41,6 +41,7 @@ export default function Layout() {
         <Navbar
           onToggleSidebar={toggleSidebar}
           onToggleCollapse={toggleCollapse}
+          isSidebarOpen={isSidebarOpen}
           isSidebarCollapsed={isSidebarCollapsed}
         />
 
