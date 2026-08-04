@@ -3,38 +3,17 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel, Field
 
 from app.dependencies.auth import get_current_dispatcher
 from app.models.user import User
+from app.schemas.prediction import (
+    DemandForecastRequest,
+    DemandForecastResponse,
+    ETARequest,
+    ETAResponse,
+)
 from app.services.demand_forecast_service import DemandForecastService
 from app.services.eta_service import ETAService
-
-
-class ETAPredictionRequest(BaseModel):
-    """Request payload for ETA prediction."""
-
-    route_distance_km: float = Field(gt=0)
-    average_speed_kmph: float = Field(gt=0)
-    traffic_factor: float = Field(default=1.0, gt=0)
-
-
-class ETAPredictionResponse(BaseModel):
-    """Response payload for ETA prediction."""
-
-    predicted_eta_minutes: float
-
-
-class DemandForecastRequest(BaseModel):
-    """Request payload for demand forecasting."""
-
-    historical_demand: list[float] = Field(min_length=1)
-
-
-class DemandForecastResponse(BaseModel):
-    """Response payload for demand forecasting."""
-
-    predicted_demand: float
 
 
 router = APIRouter(
@@ -78,26 +57,26 @@ def _authorize_prediction_access(user: User) -> None:
     )
 
 
-@router.post("/eta", response_model=ETAPredictionResponse)
+@router.post("/eta", response_model=ETAResponse)
 def predict_eta(
-    payload: ETAPredictionRequest,
+    payload: ETARequest,
     current_dispatcher: User = Depends(get_current_dispatcher),
     eta_service: ETAService = Depends(get_eta_service),
-) -> ETAPredictionResponse:
+) -> ETAResponse:
     """Return ETA prediction for route parameters."""
 
     _authorize_prediction_access(current_dispatcher)
 
     try:
         predicted_eta = eta_service.predict_eta(
-            route_distance_km=payload.route_distance_km,
+            distance_km=payload.distance_km,
             average_speed_kmph=payload.average_speed_kmph,
-            traffic_factor=payload.traffic_factor,
+            traffic_multiplier=payload.traffic_multiplier,
         )
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)) from exc
 
-    return ETAPredictionResponse(predicted_eta_minutes=predicted_eta)
+    return ETAResponse(predicted_eta_minutes=predicted_eta)
 
 
 @router.post("/demand", response_model=DemandForecastResponse)
@@ -111,7 +90,9 @@ def forecast_demand(
     _authorize_prediction_access(current_dispatcher)
 
     try:
-        predicted_demand = demand_forecast_service.forecast_demand(payload.historical_demand)
+        predicted_demand = demand_forecast_service.forecast_demand(
+            payload.historical_demand_values
+        )
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)) from exc
 

@@ -14,8 +14,9 @@ class FleetAnalyticsResponse(BaseModel):
     driver_utilization_percentage: float
     average_route_distance_km: float
     average_eta_minutes: float
-    total_completed_orders: int
-    total_pending_orders: int
+    completed_orders: int
+    pending_orders: int
+    total_orders: int
     route_efficiency_percentage: float
     on_time_delivery_percentage: float
     generated_at: datetime

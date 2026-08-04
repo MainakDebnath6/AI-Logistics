@@ -33,6 +33,10 @@ class DemandForecastService:
             return self._forecast_with_model(normalized)
         return self._forecast_with_smoothing(normalized)
 
+    def forecast_demand_values(self, historical_demand_values: Sequence[float]) -> float:
+        """Backward-compatible facade using explicit values naming."""
+        return self.forecast_demand(historical_demand_values)
+
     @staticmethod
     def _normalize_history(historical_demand: Sequence[float]) -> list[float]:
         """Validate and normalize historical demand values."""

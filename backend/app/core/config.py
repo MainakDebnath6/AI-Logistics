@@ -22,6 +22,13 @@ class Settings(BaseSettings):
     algorithm: str = Field(default="HS256")
     access_token_expire_minutes: int = Field(default=30)
 
+    DEFAULT_OPTIMIZATION_TIMEOUT_SECONDS: int = Field(default=5)
+    DEFAULT_LOCAL_SEARCH: str = Field(default="GUIDED_LOCAL_SEARCH")
+    DEFAULT_LOCAL_SEARCH_METAHEURISTIC: str = Field(default="GUIDED_LOCAL_SEARCH")
+    DEFAULT_FIRST_SOLUTION_STRATEGY: str = Field(default="PATH_CHEAPEST_ARC")
+    DEFAULT_DEPOT_LATITUDE: float = Field(default=0.0)
+    DEFAULT_DEPOT_LONGITUDE: float = Field(default=0.0)
+
     optimization_timeout_seconds: int = Field(default=5)
     optimization_default_depot_latitude: float = Field(default=0.0)
     optimization_default_depot_longitude: float = Field(default=0.0)

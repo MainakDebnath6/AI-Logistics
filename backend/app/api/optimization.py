@@ -121,6 +121,12 @@ def optimize_routes(
 		found_orders=orders,
 	)
 
+	optimizer_service.configure(
+		time_windows_enabled=payload.time_windows_enabled,
+		priority_enabled=payload.priority_enabled,
+		optimization_timeout_seconds=payload.optimization_timeout_seconds,
+	)
+
 	return optimizer_service.optimize(
 		drivers=drivers,
 		vehicles=vehicles,

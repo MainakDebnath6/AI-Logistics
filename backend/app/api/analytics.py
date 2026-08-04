@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
@@ -15,6 +15,7 @@ from app.repositories.driver_repository import DriverRepository
 from app.repositories.order_repository import OrderRepository
 from app.repositories.vehicle_repository import VehicleRepository
 from app.schemas.analytics import FleetAnalyticsResponse
+from app.schemas.optimization import OptimizationResponse
 from app.services.analytics_service import AnalyticsService
 
 
@@ -44,6 +45,16 @@ def get_order_repository(db: Session = Depends(get_db)) -> OrderRepository:
     return OrderRepository(db)
 
 
+def get_optimization_result_from_state(
+    request: Request,
+) -> OptimizationResponse | None:
+    """Return optional optimization result from request state."""
+    candidate = getattr(request.state, "optimization_result", None)
+    if isinstance(candidate, OptimizationResponse):
+        return candidate
+    return None
+
+
 def _is_dispatcher_or_admin(user: User) -> bool:
     """Return whether the authenticated user can access analytics."""
     role = getattr(user, "role", None)
@@ -59,14 +70,17 @@ def _is_dispatcher_or_admin(user: User) -> bool:
 
 @router.get("/dashboard", response_model=FleetAnalyticsResponse)
 def get_dashboard(
-    current_dispatcher: User = Depends(get_current_dispatcher),
+    current_user: User = Depends(get_current_dispatcher),
     analytics_service: AnalyticsService = Depends(get_analytics_service),
     driver_repository: DriverRepository = Depends(get_driver_repository),
     vehicle_repository: VehicleRepository = Depends(get_vehicle_repository),
     order_repository: OrderRepository = Depends(get_order_repository),
+    optimization_result: OptimizationResponse | None = Depends(
+        get_optimization_result_from_state
+    ),
 ) -> FleetAnalyticsResponse:
     """Return fleet dashboard analytics metrics."""
-    if not _is_dispatcher_or_admin(current_dispatcher):
+    if not _is_dispatcher_or_admin(current_user):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Only dispatcher or admin users can access analytics.",
@@ -80,4 +94,5 @@ def get_dashboard(
         drivers=drivers,
         vehicles=vehicles,
         orders=orders,
+        optimization_result=optimization_result,
     )
