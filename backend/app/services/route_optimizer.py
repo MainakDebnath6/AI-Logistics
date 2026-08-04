@@ -11,9 +11,12 @@ from app.models.order import Order
 from app.models.vehicle import Vehicle
 
 from app.schemas.optimization import (
+	OptimizationDriver,
 	OptimizationResponse,
 	OptimizationStop,
 	OptimizedRoute,
+	OptimizationVehicle,
+	RouteCoordinate,
 )
 
 
@@ -277,11 +280,10 @@ class RouteOptimizerService:
 
 		for vehicle_idx in range(data["num_vehicles"]):
 			index = routing.Start(vehicle_idx)
-			previous_node = data["depot"]
 			sequence = 0
-			route_load = 0
-			route_distance_m = 0
+			route_demand = 0
 			stops: list[OptimizationStop] = []
+			route_coordinates: list[RouteCoordinate] = []
 
 			while not routing.IsEnd(index):
 				node = manager.IndexToNode(index)
@@ -289,39 +291,115 @@ class RouteOptimizerService:
 				if node != data["depot"] and 0 <= node - 1 < len(orders):
 					sequence += 1
 					order_index = node - 1
-					segment_m = data["distance_matrix"][previous_node][node]
-					route_load += data["demands"][node]
+					order = orders[order_index]
+					route_demand += int(order.demand)
 					stops.append(
 						OptimizationStop(
-							order_id=orders[order_index].id,
+							order_id=order.id,
+							customer_name=order.customer_name,
+							pickup_address=order.pickup_address,
+							delivery_address=order.delivery_address,
+							pickup_latitude=float(order.pickup_latitude),
+							pickup_longitude=float(order.pickup_longitude),
+							delivery_latitude=float(order.delivery_latitude),
+							delivery_longitude=float(order.delivery_longitude),
+							demand=int(order.demand),
+							priority=int(order.priority),
+							status=str(order.status.value if hasattr(order.status, "value") else order.status),
 							sequence=sequence,
 							arrival_time=None,
-							distance_km=round(segment_m / 1000.0, 3),
 						)
+					)
+					self._append_route_coordinate(
+						route_coordinates,
+						latitude=float(order.pickup_latitude),
+						longitude=float(order.pickup_longitude),
+					)
+					self._append_route_coordinate(
+						route_coordinates,
+						latitude=float(order.delivery_latitude),
+						longitude=float(order.delivery_longitude),
 					)
 
 				next_index = solution.Value(routing.NextVar(index))
-				route_distance_m += routing.GetArcCostForVehicle(
-					index,
-					next_index,
-					vehicle_idx,
-				)
-				previous_node = node
 				index = next_index
 
 			if stops:
+				route_distance_m = self._compute_path_distance_m(route_coordinates)
+				route_duration_minutes = self._estimate_duration_minutes(route_distance_m)
+				driver = drivers[vehicle_idx]
+				vehicle = vehicles[vehicle_idx]
+				driver_full_name = getattr(getattr(driver, "user", None), "full_name", None) or f"Driver {driver.id}"
+
 				routes.append(
 					OptimizedRoute(
-						driver_id=drivers[vehicle_idx].id,
-						vehicle_id=vehicles[vehicle_idx].id,
+						driver=OptimizationDriver(
+							id=driver.id,
+							full_name=driver_full_name,
+						),
+						vehicle=OptimizationVehicle(
+							id=vehicle.id,
+							registration_number=vehicle.registration_number,
+							capacity=int(vehicle.capacity),
+						),
 						total_distance_km=round(route_distance_m / 1000.0, 3),
-						total_load=route_load,
+						total_duration_minutes=route_duration_minutes,
+						total_demand=route_demand,
+						total_orders=len(stops),
 						stops=stops,
+						route_coordinates=route_coordinates,
 					)
 				)
 				total_distance_m += route_distance_m
 
 		return routes, total_distance_m
+
+	def _compute_path_distance_m(self, coordinates: Sequence[RouteCoordinate]) -> int:
+		"""Compute distance for a route polyline built from visiting coordinates."""
+		if len(coordinates) < 2:
+			return 0
+
+		distance_m = 0
+		for idx in range(1, len(coordinates)):
+			start = coordinates[idx - 1]
+			end = coordinates[idx]
+			distance_m += self._haversine_distance_meters(
+				float(start.latitude),
+				float(start.longitude),
+				float(end.latitude),
+				float(end.longitude),
+			)
+		return distance_m
+
+	@staticmethod
+	def _append_route_coordinate(
+		route_coordinates: list[RouteCoordinate],
+		*,
+		latitude: float,
+		longitude: float,
+	) -> None:
+		"""Append route coordinate while skipping duplicate consecutive points."""
+		if route_coordinates:
+			last = route_coordinates[-1]
+			if float(last.latitude) == float(latitude) and float(last.longitude) == float(longitude):
+				return
+
+		route_coordinates.append(
+			RouteCoordinate(latitude=float(latitude), longitude=float(longitude))
+		)
+
+	def _estimate_duration_minutes(self, distance_m: int) -> float:
+		"""Estimate route duration from distance and configured average speed."""
+		average_speed_kmph = float(
+			getattr(
+				self._settings,
+				"DEFAULT_OPTIMIZATION_AVERAGE_SPEED_KMPH",
+				35.0,
+			)
+		)
+		safe_speed_kmph = max(average_speed_kmph, 1.0)
+		distance_km = float(distance_m) / 1000.0
+		return round((distance_km / safe_speed_kmph) * 60.0, 2)
 
 	@staticmethod
 	def _time_windows_enabled(orders: Sequence[Order], enabled_by_request: bool = False) -> bool:

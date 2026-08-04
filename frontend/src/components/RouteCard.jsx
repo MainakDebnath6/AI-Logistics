@@ -1,28 +1,5 @@
 import { useMemo, useState } from "react";
 
-function getDriverName(route) {
-  return (
-    route?.driver?.full_name ||
-    route?.driver?.name ||
-    route?.driver_name ||
-    route?.assigned_driver_name ||
-    route?.driver_id ||
-    "Unassigned"
-  );
-}
-
-function getVehicleName(route) {
-  return (
-    route?.vehicle?.plate_number ||
-    route?.vehicle?.plate ||
-    route?.vehicle?.registration_number ||
-    route?.vehicle_name ||
-    route?.assigned_vehicle_name ||
-    route?.vehicle_id ||
-    "Unassigned"
-  );
-}
-
 function toNumber(value) {
   if (typeof value === "number" && Number.isFinite(value)) {
     return value;
@@ -35,46 +12,23 @@ function toNumber(value) {
 }
 
 function getStops(route) {
-  if (Array.isArray(route?.stops)) {
-    return route.stops;
-  }
-  if (Array.isArray(route?.orders)) {
-    return route.orders;
-  }
-  if (Array.isArray(route?.waypoints)) {
-    return route.waypoints;
-  }
-  return [];
+  return Array.isArray(route?.stops) ? route.stops : [];
 }
 
 function getStopLabel(stop, index) {
   return (
     stop?.customer_name ||
-    stop?.name ||
-    stop?.dropoff_address ||
-    stop?.address ||
-    stop?.location_name ||
+    stop?.delivery_address ||
     `Stop ${index + 1}`
   );
 }
 
 function getDistance(route) {
-  return (
-    toNumber(route?.total_distance_km) ??
-    toNumber(route?.total_distance) ??
-    toNumber(route?.distance) ??
-    toNumber(route?.route_distance) ??
-    toNumber(route?.metrics?.total_distance)
-  );
+  return toNumber(route?.total_distance_km);
 }
 
-function getLoad(route) {
-  return (
-    toNumber(route?.total_load) ??
-    toNumber(route?.load) ??
-    toNumber(route?.total_quantity) ??
-    toNumber(route?.metrics?.total_load)
-  );
+function getDemand(route) {
+  return toNumber(route?.total_demand);
 }
 
 function formatDistance(value) {
@@ -84,7 +38,7 @@ function formatDistance(value) {
   return `${value.toFixed(2)} km`;
 }
 
-function formatLoad(value) {
+function formatDemand(value) {
   if (typeof value !== "number") {
     return "--";
   }
@@ -93,8 +47,7 @@ function formatLoad(value) {
 
 function StopRow({ stop, index }) {
   const label = getStopLabel(stop, index);
-  const eta = stop?.eta || stop?.estimated_arrival || stop?.expected_arrival;
-  const quantity = toNumber(stop?.quantity ?? stop?.load);
+  const demand = toNumber(stop?.demand);
 
   return (
     <li className="rounded-lg border border-slate-800 bg-slate-950/50 p-3">
@@ -105,13 +58,13 @@ function StopRow({ stop, index }) {
         </span>
       </div>
 
-      {stop?.address || stop?.dropoff_address ? (
-        <p className="mt-1 text-xs text-slate-400">{stop.address || stop.dropoff_address}</p>
+      {stop?.delivery_address ? (
+        <p className="mt-1 text-xs text-slate-400">{stop.delivery_address}</p>
       ) : null}
 
       <div className="mt-2 flex flex-wrap gap-4 text-xs text-slate-300">
-        {typeof quantity === "number" ? <span>Load: {quantity}</span> : null}
-        {eta ? <span>ETA: {eta}</span> : null}
+        {typeof demand === "number" ? <span>Demand: {demand}</span> : null}
+        {stop?.status ? <span>Status: {stop.status}</span> : null}
       </div>
     </li>
   );
@@ -127,7 +80,8 @@ export default function RouteCard({
 
   const stops = useMemo(() => getStops(route), [route]);
   const distance = useMemo(() => getDistance(route), [route]);
-  const totalLoad = useMemo(() => getLoad(route), [route]);
+  const totalDemand = useMemo(() => getDemand(route), [route]);
+  const totalOrders = useMemo(() => toNumber(route?.total_orders), [route]);
 
   return (
     <article
@@ -141,10 +95,10 @@ export default function RouteCard({
         <div>
           <h4 className="text-base font-semibold text-white">Route {index + 1}</h4>
           <p className="mt-1 text-sm text-slate-300">
-            Driver: <span className="text-slate-100">{getDriverName(route)}</span>
+            Driver: <span className="text-slate-100">{route?.driver?.full_name || "Unassigned"}</span>
           </p>
           <p className="text-sm text-slate-300">
-            Vehicle: <span className="text-slate-100">{getVehicleName(route)}</span>
+            Vehicle: <span className="text-slate-100">{route?.vehicle?.registration_number || "Unassigned"}</span>
           </p>
         </div>
 
@@ -162,11 +116,11 @@ export default function RouteCard({
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
         <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
           <p className="text-xs uppercase tracking-wide text-slate-400">Stops</p>
-          <p className="mt-1 text-lg font-semibold text-white">{stops.length}</p>
+          <p className="mt-1 text-lg font-semibold text-white">{totalOrders ?? stops.length}</p>
         </div>
         <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
-          <p className="text-xs uppercase tracking-wide text-slate-400">Total Load</p>
-          <p className="mt-1 text-lg font-semibold text-white">{formatLoad(totalLoad)}</p>
+          <p className="text-xs uppercase tracking-wide text-slate-400">Total Demand</p>
+          <p className="mt-1 text-lg font-semibold text-white">{formatDemand(totalDemand)}</p>
         </div>
         <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
           <p className="text-xs uppercase tracking-wide text-slate-400">Distance</p>

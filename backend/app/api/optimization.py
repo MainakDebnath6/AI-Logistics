@@ -127,8 +127,19 @@ def optimize_routes(
 		optimization_timeout_seconds=payload.optimization_timeout_seconds,
 	)
 
-	return optimizer_service.optimize(
-		drivers=drivers,
-		vehicles=vehicles,
-		orders=orders,
-	)
+	try:
+		return optimizer_service.optimize(
+			drivers=drivers,
+			vehicles=vehicles,
+			orders=orders,
+		)
+	except ValueError as error:
+		raise HTTPException(
+			status_code=status.HTTP_400_BAD_REQUEST,
+			detail=str(error),
+		) from error
+	except RuntimeError as error:
+		raise HTTPException(
+			status_code=status.HTTP_400_BAD_REQUEST,
+			detail=str(error),
+		) from error

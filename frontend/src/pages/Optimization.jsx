@@ -4,96 +4,11 @@ import MapView from "../components/MapView";
 import OptimizationForm from "../components/OptimizationForm";
 import RouteCard from "../components/RouteCard";
 
-function toNumber(value) {
-  if (typeof value === "number" && Number.isFinite(value)) {
-    return value;
-  }
-  if (typeof value === "string" && value.trim()) {
-    const parsed = Number(value);
-    return Number.isFinite(parsed) ? parsed : null;
-  }
-  return null;
-}
-
-function getRoutesFromResponse(result) {
-  if (!result || typeof result !== "object") {
-    return [];
-  }
-
-  const candidates = [
-    result.routes,
-    result.optimized_routes,
-    result.route_plan,
-    result.solution?.routes,
-    result.data?.routes,
-    result.data?.optimized_routes,
-  ];
-
-  for (const candidate of candidates) {
-    if (Array.isArray(candidate)) {
-      return candidate;
-    }
-  }
-
-  return [];
-}
-
-function getStops(route) {
-  if (Array.isArray(route?.stops)) {
-    return route.stops;
-  }
-  if (Array.isArray(route?.orders)) {
-    return route.orders;
-  }
-  if (Array.isArray(route?.waypoints)) {
-    return route.waypoints;
-  }
-  return [];
-}
-
-function getDistance(route) {
-  return (
-    toNumber(route?.total_distance_km) ??
-    toNumber(route?.total_distance) ??
-    toNumber(route?.distance) ??
-    toNumber(route?.route_distance) ??
-    toNumber(route?.metrics?.total_distance) ??
-    0
-  );
-}
-
 function formatDistance(value) {
   if (typeof value !== "number" || Number.isNaN(value)) {
     return "--";
   }
   return `${value.toFixed(2)} km`;
-}
-
-function extractSummary(result, routes) {
-  const explicitTotalRoutes =
-    toNumber(result?.total_routes) ??
-    toNumber(result?.summary?.total_routes) ??
-    toNumber(result?.metrics?.total_routes);
-
-  const explicitTotalDistance =
-    toNumber(result?.total_distance_km) ??
-    toNumber(result?.total_distance) ??
-    toNumber(result?.summary?.total_distance) ??
-    toNumber(result?.metrics?.total_distance);
-
-  const explicitTotalOrders =
-    toNumber(result?.total_orders) ??
-    toNumber(result?.summary?.total_orders) ??
-    toNumber(result?.metrics?.total_orders);
-
-  const computedDistance = routes.reduce((total, route) => total + getDistance(route), 0);
-  const computedOrders = routes.reduce((total, route) => total + getStops(route).length, 0);
-
-  return {
-    totalRoutes: explicitTotalRoutes ?? routes.length,
-    totalDistance: explicitTotalDistance ?? computedDistance,
-    totalOrders: explicitTotalOrders ?? computedOrders,
-  };
 }
 
 export default function Optimization() {
@@ -103,13 +18,17 @@ export default function Optimization() {
   const [selectedRouteIndex, setSelectedRouteIndex] = useState(0);
 
   const routes = useMemo(
-    () => getRoutesFromResponse(optimizationResult),
+    () => (Array.isArray(optimizationResult?.routes) ? optimizationResult.routes : []),
     [optimizationResult]
   );
 
   const summary = useMemo(
-    () => extractSummary(optimizationResult, routes),
-    [optimizationResult, routes]
+    () => ({
+      totalRoutes: optimizationResult?.total_routes ?? routes.length,
+      totalDistance: optimizationResult?.total_distance_km ?? 0,
+      totalOrders: optimizationResult?.total_orders ?? 0,
+    }),
+    [optimizationResult, routes.length]
   );
 
   const selectedRoute = routes[selectedRouteIndex] || null;
@@ -188,7 +107,7 @@ export default function Optimization() {
                 <div className="space-y-3">
                   {routes.map((route, index) => (
                     <RouteCard
-                      key={`${route?.id || route?.route_id || index}`}
+                      key={`${route?.driver?.id || "driver"}-${route?.vehicle?.id || "vehicle"}-${index}`}
                       route={route}
                       index={index}
                       isSelected={index === selectedRouteIndex}

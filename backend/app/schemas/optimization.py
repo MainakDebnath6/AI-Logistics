@@ -15,23 +15,57 @@ class OptimizationRequest(BaseModel):
 	optimization_timeout_seconds: int = 5
 
 
+class OptimizationDriver(BaseModel):
+	"""Driver summary for an optimized route."""
+
+	id: UUID
+	full_name: str
+
+
+class OptimizationVehicle(BaseModel):
+	"""Vehicle summary for an optimized route."""
+
+	id: UUID
+	registration_number: str
+	capacity: int
+
+
+class RouteCoordinate(BaseModel):
+	"""Canonical coordinate point for route plotting."""
+
+	latitude: float
+	longitude: float
+
+
 class OptimizationStop(BaseModel):
 	"""Represents a single stop in an optimized route."""
 
 	order_id: UUID
+	customer_name: str
+	pickup_address: str
+	delivery_address: str
+	pickup_latitude: float
+	pickup_longitude: float
+	delivery_latitude: float
+	delivery_longitude: float
+	demand: int
+	priority: int
+	status: str
 	sequence: int
 	arrival_time: datetime | None = None
-	distance_km: float | None = None
 
 
 class OptimizedRoute(BaseModel):
 	"""Represents one optimized route assignment."""
 
-	driver_id: UUID
-	vehicle_id: UUID
+	driver: OptimizationDriver
+	vehicle: OptimizationVehicle
 	total_distance_km: float
-	total_load: int
+	total_duration_minutes: float
+	total_demand: int
+	total_orders: int
 	stops: list[OptimizationStop]
+	route_coordinates: list[RouteCoordinate]
 
 
 class OptimizationResponse(BaseModel):
