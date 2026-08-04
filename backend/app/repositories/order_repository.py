@@ -31,6 +31,17 @@ class OrderRepository:
         statement = select(Order).where(Order.id == order_id)
         return self.db.scalar(statement)
 
+    def get_by_ids(self, order_ids: list[UUID]) -> list[Order]:
+        """Return orders matching the provided identifiers in request order."""
+
+        if not order_ids:
+            return []
+
+        statement = select(Order).where(Order.id.in_(order_ids))
+        orders = list(self.db.scalars(statement).all())
+        orders_by_id = {order.id: order for order in orders}
+        return [orders_by_id[order_id] for order_id in order_ids if order_id in orders_by_id]
+
     def get_all(self, skip: int = 0, limit: int = 100) -> list[Order]:
         """Return orders ordered by newest first with pagination."""
 
