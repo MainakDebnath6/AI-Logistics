@@ -385,19 +385,7 @@ VITE_API_BASE_URL=
 
 ---
 
-# 📸 Screenshots
 
-> Add screenshots here
-
-- Login
-- Dashboard
-- Drivers
-- Vehicles
-- Orders
-- Route Optimization
-- Analytics
-
----
 
 # 🎯 Future Improvements
 
