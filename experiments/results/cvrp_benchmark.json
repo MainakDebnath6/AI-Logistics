@@ -1,0 +1,346 @@
+{
+  "configuration": {
+    "seed": 20261008,
+    "observations": 730,
+    "training_days": 670,
+    "holdout_days": 60,
+    "base_demand": 100.0,
+    "linear_growth_per_day": 0.04,
+    "weekly_amplitude": 18.0,
+    "annual_amplitude": 25.0,
+    "annual_period_days": 365.25,
+    "noise_standard_deviation": 5.0,
+    "horizons": [
+      7,
+      14,
+      30,
+      60
+    ],
+    "start_date": "2024-01-01"
+  },
+  "methodology": {
+    "solver": "Google OR-Tools CVRP",
+    "demand_source": "integer confirmed scenario orders only",
+    "distance": "deterministic Haversine matrix, depot and delivery nodes"
+  },
+  "results": [
+    {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
+      "scenario_id": 0,
+      "confirmed_demand": 93.6787814212,
+      "confirmed_demand_units": 94,
+      "confirmed_order_ids": [
+        "d5b37465-e0c1-539c-8754-d40e94eb1cc6",
+        "4613fa37-1faf-516c-b92d-4a25e59745db",
+        "6c37c110-220e-5011-9c37-ec07cd8ce87a",
+        "ff63a7e2-d99e-51ba-84cb-79ab26adf32a"
+      ],
+      "confirmed_order_demands": [
+        25,
+        25,
+        25,
+        19
+      ],
+      "delivery_coordinates": [
+        [
+          41.005,
+          -86.995
+        ],
+        [
+          41.015,
+          -87.00500000000001
+        ],
+        [
+          41.025000000000006,
+          -87.015
+        ],
+        [
+          41.035000000000004,
+          -87.025
+        ]
+      ],
+      "available_capacity": 100.0,
+      "feasible": true,
+      "service_level_percent": 100.0,
+      "fleet_utilization_percent": 94.0,
+      "route_distance_km": 868.014,
+      "capacity_shortfall": 0.0,
+      "route_count": 4,
+      "optimization_runtime_seconds": 0.010124000022187829
+    },
+    {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
+      "scenario_id": 1,
+      "confirmed_demand": 120.2341328764,
+      "confirmed_demand_units": 120,
+      "confirmed_order_ids": [
+        "7ffebfc3-708a-5753-aa10-0217b63b43a3",
+        "33b01fb8-40ab-5aa3-99f4-28467bdd8bea",
+        "5c70c146-bbc1-53f6-9b16-8ef14276c221",
+        "ebbb8424-758e-500e-bb45-cd8d81e6a35c",
+        "db4bc0f3-c5e8-5411-9998-9a2da06a1d81"
+      ],
+      "confirmed_order_demands": [
+        25,
+        25,
+        25,
+        25,
+        20
+      ],
+      "delivery_coordinates": [
+        [
+          41.006,
+          -86.995
+        ],
+        [
+          41.016,
+          -87.00500000000001
+        ],
+        [
+          41.026,
+          -87.015
+        ],
+        [
+          41.036,
+          -87.025
+        ],
+        [
+          41.046,
+          -87.03500000000001
+        ]
+      ],
+      "available_capacity": 100.0,
+      "feasible": false,
+      "service_level_percent": 0.0,
+      "fleet_utilization_percent": 0.0,
+      "route_distance_km": 0.0,
+      "capacity_shortfall": 20,
+      "route_count": 0,
+      "optimization_runtime_seconds": 2.0700041204690933e-05
+    },
+    {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
+      "scenario_id": 2,
+      "confirmed_demand": 104.8566719454,
+      "confirmed_demand_units": 105,
+      "confirmed_order_ids": [
+        "69f48041-9599-5ec4-96fc-be7afa97443e",
+        "a08073b1-1d90-5f50-beb9-032a0e5b9f8d",
+        "e534ed28-e6c2-5119-bb0c-d28ec8b1e67f",
+        "473b3497-ca21-5a53-8d5a-f1f3df432490",
+        "b131f4a3-a946-5b6d-b350-14d8b7114f9b"
+      ],
+      "confirmed_order_demands": [
+        25,
+        25,
+        25,
+        25,
+        5
+      ],
+      "delivery_coordinates": [
+        [
+          41.007000000000005,
+          -86.995
+        ],
+        [
+          41.017,
+          -87.00500000000001
+        ],
+        [
+          41.02700000000001,
+          -87.015
+        ],
+        [
+          41.037000000000006,
+          -87.025
+        ],
+        [
+          41.047000000000004,
+          -87.03500000000001
+        ]
+      ],
+      "available_capacity": 100.0,
+      "feasible": false,
+      "service_level_percent": 0.0,
+      "fleet_utilization_percent": 0.0,
+      "route_distance_km": 0.0,
+      "capacity_shortfall": 5,
+      "route_count": 0,
+      "optimization_runtime_seconds": 1.1699972674250603e-05
+    },
+    {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
+      "scenario_id": 3,
+      "confirmed_demand": 94.7981017475,
+      "confirmed_demand_units": 95,
+      "confirmed_order_ids": [
+        "e097a1fb-4262-5468-ab8e-2f57dc48c27a",
+        "4324e52e-a388-53b3-93d1-b8b8c5760bb5",
+        "80cb57a2-ea4e-5a75-bac4-99af6ea7a306",
+        "4a23796a-13e8-568c-b9a5-d46c9f512445"
+      ],
+      "confirmed_order_demands": [
+        25,
+        25,
+        25,
+        20
+      ],
+      "delivery_coordinates": [
+        [
+          41.008,
+          -86.995
+        ],
+        [
+          41.018,
+          -87.00500000000001
+        ],
+        [
+          41.028000000000006,
+          -87.015
+        ],
+        [
+          41.038000000000004,
+          -87.025
+        ]
+      ],
+      "available_capacity": 100.0,
+      "feasible": true,
+      "service_level_percent": 100.0,
+      "fleet_utilization_percent": 95.0,
+      "route_distance_km": 865.666,
+      "capacity_shortfall": 0.0,
+      "route_count": 4,
+      "optimization_runtime_seconds": 0.0018198000034317374
+    },
+    {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
+      "scenario_id": 4,
+      "confirmed_demand": 137.8994379973,
+      "confirmed_demand_units": 138,
+      "confirmed_order_ids": [
+        "df854c6a-680e-5c38-a798-320c6be9b674",
+        "bc597391-7559-5d2c-8c41-1f16bd8d7bcf",
+        "64e84d87-0925-5e35-8d4e-739ebf3701a8",
+        "810f870e-42ce-5032-8daa-890b39f3540c",
+        "b2c2fbd9-024c-5828-bdba-029f0aff780c",
+        "23f32588-389a-582a-aa0c-2448772f1055"
+      ],
+      "confirmed_order_demands": [
+        25,
+        25,
+        25,
+        25,
+        25,
+        13
+      ],
+      "delivery_coordinates": [
+        [
+          41.009,
+          -86.995
+        ],
+        [
+          41.019,
+          -87.00500000000001
+        ],
+        [
+          41.029,
+          -87.015
+        ],
+        [
+          41.039,
+          -87.025
+        ],
+        [
+          41.049,
+          -87.03500000000001
+        ],
+        [
+          41.059,
+          -87.045
+        ]
+      ],
+      "available_capacity": 100.0,
+      "feasible": false,
+      "service_level_percent": 0.0,
+      "fleet_utilization_percent": 0.0,
+      "route_distance_km": 0.0,
+      "capacity_shortfall": 38,
+      "route_count": 0,
+      "optimization_runtime_seconds": 1.6300007700920105e-05
+    },
+    {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
+      "scenario_id": 5,
+      "confirmed_demand": 135.9980120378,
+      "confirmed_demand_units": 136,
+      "confirmed_order_ids": [
+        "42a82b2a-b167-5ca0-a1d4-0a98075cced7",
+        "e0f4c887-2158-55a2-826e-459c3d0b4009",
+        "3228a070-2b6a-5adb-82bb-2ff1626a2656",
+        "414c79df-bd60-5de0-863e-16c859c559c1",
+        "9697a057-6e25-5b4b-a89f-f6b28fc5c01b",
+        "9df689d1-58a3-5852-9a4a-c0f229958c6a"
+      ],
+      "confirmed_order_demands": [
+        25,
+        25,
+        25,
+        25,
+        25,
+        11
+      ],
+      "delivery_coordinates": [
+        [
+          41.010000000000005,
+          -86.995
+        ],
+        [
+          41.02,
+          -87.00500000000001
+        ],
+        [
+          41.03000000000001,
+          -87.015
+        ],
+        [
+          41.040000000000006,
+          -87.025
+        ],
+        [
+          41.050000000000004,
+          -87.03500000000001
+        ],
+        [
+          41.06,
+          -87.045
+        ]
+      ],
+      "available_capacity": 100.0,
+      "feasible": false,
+      "service_level_percent": 0.0,
+      "fleet_utilization_percent": 0.0,
+      "route_distance_km": 0.0,
+      "capacity_shortfall": 36,
+      "route_count": 0,
+      "optimization_runtime_seconds": 1.0499963536858559e-05
+    }
+  ]
+}

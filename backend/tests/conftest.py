@@ -22,9 +22,10 @@ def optimizer() -> RouteOptimizerService:
 
 @pytest.fixture
 def make_driver():
-    def factory():
+    def factory(vehicle_id=None):
         return SimpleNamespace(
             id=uuid4(),
+            vehicle_id=vehicle_id,
             user=SimpleNamespace(full_name="Test Driver"),
         )
 

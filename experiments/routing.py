@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -20,7 +21,12 @@ from app.schemas.hgfc import HGFCRequest
 from app.services.hgfc_service import HGFCService
 from app.services.route_optimizer import RouteOptimizerService
 
-from experiments.common import ExperimentConfig, make_dataset, write_results
+from experiments.common import (
+    ExperimentConfig,
+    load_synthetic_dataset,
+    make_dataset,
+    write_results,
+)
 from experiments.forecasting import _seasonal_regression_forecast
 
 OUTPUT_DIR = Path(__file__).resolve().parent / "results"
@@ -32,7 +38,10 @@ class RoutingExperimentConfig:
     fleet_size: int = 4
     vehicle_capacity: int = 25
     solver_timeout_seconds: int = 1
+    solver_solution_limit: int = 1
     advisory_horizon_days: int = 14
+    depot_latitude: float = 41.8781
+    depot_longitude: float = -87.6298
 
 
 class OfflineRoutingService:
@@ -64,6 +73,7 @@ def _build_scenario(
     drivers = [
         SimpleNamespace(
             id=_scenario_uuid(scenario_index, index, "driver"),
+            vehicle_id=vehicles[index].id,
             user=SimpleNamespace(full_name=f"Scenario {scenario_index} driver {index}"),
         )
         for index in range(fleet_size)
@@ -72,7 +82,7 @@ def _build_scenario(
     orders = []
     order_index = 0
     while remaining_demand:
-        demand = min(remaining_demand, 25)
+        demand = min(remaining_demand, routing_config.vehicle_capacity)
         latitude = 41.0 + scenario_index * 0.001 + order_index * 0.01
         longitude = -87.0 - order_index * 0.01
         orders.append(
@@ -104,10 +114,19 @@ def _run_cvrp(
 ) -> dict[str, float | int | bool]:
     drivers, vehicles, orders = _build_scenario(scenario_index, demand, routing_config)
     optimizer = RouteOptimizerService(routing_service=OfflineRoutingService())
-    optimizer.configure(optimization_timeout_seconds=routing_config.solver_timeout_seconds)
+    optimizer.configure(
+        optimization_timeout_seconds=routing_config.solver_timeout_seconds,
+        optimization_solution_limit=routing_config.solver_solution_limit,
+    )
+    confirmed_demand_units = sum(int(order.demand) for order in orders)
     started_at = perf_counter()
     try:
-        result = optimizer.optimize(drivers, vehicles, orders)
+        result = optimizer.optimize(
+            drivers,
+            vehicles,
+            orders,
+            depot_coordinates=(routing_config.depot_latitude, routing_config.depot_longitude),
+        )
     except RuntimeError as error:
         if "Insufficient vehicle capacity" not in str(error) and "No feasible" not in str(error):
             raise
@@ -121,7 +140,8 @@ def _run_cvrp(
             "fleet_utilization_percent": 0.0,
             "route_distance_km": 0.0,
             "route_count": 0,
-            "capacity_shortfall": max(0.0, demand - sum(vehicle.capacity for vehicle in vehicles)),
+            "capacity_shortfall": max(0.0, confirmed_demand_units - sum(vehicle.capacity for vehicle in vehicles)),
+            "confirmed_demand_units": confirmed_demand_units,
         }
 
     runtime_seconds = perf_counter() - started_at
@@ -140,7 +160,8 @@ def _run_cvrp(
         else 0.0,
         "route_distance_km": result.total_distance_km,
         "route_count": result.total_routes,
-        "capacity_shortfall": max(0.0, demand - capacity_total),
+        "capacity_shortfall": max(0.0, confirmed_demand_units - capacity_total),
+        "confirmed_demand_units": confirmed_demand_units,
     }
 
 
@@ -151,13 +172,18 @@ def run_paired_routing_experiment(
     """Compare identical CVRP inputs with advisory computation enabled/absent."""
     config = config or ExperimentConfig()
     routing_config = routing_config or RoutingExperimentConfig()
-    series = make_dataset(config)
+    dataset_path = Path(__file__).resolve().parents[1] / "data" / "raw" / "synthetic_demand.csv"
+    if dataset_path.exists() and config.observations == 730:
+        _, series = load_synthetic_dataset(dataset_path)
+    else:
+        series = make_dataset(config)
     training = series[: config.training_days]
     holdout = series[config.training_days : config.training_days + config.holdout_days]
     forecasts = _seasonal_regression_forecast(
         training,
         len(holdout),
         frozenset({"weekly", "annual", "lags", "rolling"}),
+        config.annual_period_days,
     )
     sampled_indices = np.linspace(
         0,
@@ -180,14 +206,30 @@ def run_paired_routing_experiment(
             )
         )
 
-        # Both arms receive precisely the same confirmed demand and fleet.
+        # No candidate-fleet preparation policy exists; run unchanged CVRP once.
         reactive = _run_cvrp(scenario_index, confirmed_demand, routing_config)
-        forecast_aware = _run_cvrp(scenario_index, confirmed_demand, routing_config)
+        forecast_aware = reactive
+        scenario_drivers, scenario_vehicles, scenario_orders = _build_scenario(
+            scenario_index,
+            confirmed_demand,
+            routing_config,
+        )
         rows.append(
             {
                 "scenario_id": scenario_index,
-            "forecast_lead_days": int(day_index) + 1,
+                "forecast_lead_days": int(day_index) + 1,
                 "confirmed_demand": confirmed_demand,
+                "confirmed_demand_units": reactive["confirmed_demand_units"],
+                "depot_coordinates": [routing_config.depot_latitude, routing_config.depot_longitude],
+                "driver_ids": [str(driver.id) for driver in scenario_drivers],
+                "vehicle_ids": [str(vehicle.id) for vehicle in scenario_vehicles],
+                "vehicle_capacities": [int(vehicle.capacity) for vehicle in scenario_vehicles],
+                "confirmed_order_ids": [str(order.id) for order in scenario_orders],
+                "confirmed_order_demands": [int(order.demand) for order in scenario_orders],
+                "delivery_coordinates": [
+                    [float(order.delivery_latitude), float(order.delivery_longitude)]
+                    for order in scenario_orders
+                ],
                 "forecast_demand": forecast_demand,
                 "available_capacity": available_capacity,
                 "capacity_delta": advisory.capacity_delta,
@@ -224,6 +266,11 @@ def run_paired_routing_experiment(
     summary = {
         "configuration": asdict(routing_config),
         "scenario_count": len(rows),
+        "operational_benefit_evaluation_supported": False,
+        "operational_benefit_limitation": (
+            "No candidate-fleet/advance-preparation policy exists in the available operational data; "
+            "both arms therefore use the same actual fleet and confirmed orders."
+        ),
         "advisory_interventions": sum(bool(row["preparation_intervention"]) for row in rows),
         "mean_operational_metrics": {
             arm: {
@@ -251,8 +298,6 @@ def run_paired_routing_experiment(
         },
         "paired_inference": "not_applicable_all_operational_pair_differences_are_zero_by_design",
     }
-    import json
-
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     with (OUTPUT_DIR / "reactive_vs_hgfc_summary.json").open("w", encoding="utf-8") as handle:
         json.dump(summary, handle, indent=2)
@@ -265,9 +310,61 @@ def run_paired_routing_experiment(
         {
             "scenario_sampling": "six evenly spaced forecast lead times in 60-day chronological holdout",
             "routing_configuration": asdict(routing_config),
-            "routing": "real OR-Tools, internal Haversine matrix, OSRM disabled",
-            "routing_arms": "identical confirmed demand and fleet in both arms",
+            "routing": "real OR-Tools, PATH_CHEAPEST_ARC first solution limit, Haversine matrix, OSRM disabled",
+            "routing_arms": "identical confirmed demand and fleet in both arms; invariance check, not operational benefit test",
             "capacity_cost_model": "not defined by project; delivery cost omitted",
+        },
+    )
+    write_results(
+        OUTPUT_DIR,
+        "cvrp_benchmark",
+        [
+            {
+                "scenario_id": row["scenario_id"],
+                "confirmed_demand": row["confirmed_demand"],
+                "confirmed_demand_units": row["confirmed_demand_units"],
+                "confirmed_order_ids": row["confirmed_order_ids"],
+                "confirmed_order_demands": row["confirmed_order_demands"],
+                "delivery_coordinates": row["delivery_coordinates"],
+                "available_capacity": row["available_capacity"],
+                "feasible": row["reactive_feasible"],
+                "service_level_percent": row["reactive_service_level_percent"],
+                "fleet_utilization_percent": row["reactive_fleet_utilization_percent"],
+                "route_distance_km": row["reactive_route_distance_km"],
+                "capacity_shortfall": row["reactive_capacity_shortfall"],
+                "route_count": row["reactive_route_count"],
+                "optimization_runtime_seconds": row["reactive_optimization_runtime_seconds"],
+            }
+            for row in rows
+        ],
+        config,
+        {
+            "solver": "Google OR-Tools CVRP",
+            "demand_source": "integer confirmed scenario orders only",
+            "distance": "deterministic Haversine matrix, depot and delivery nodes",
+        },
+    )
+    write_results(
+        OUTPUT_DIR,
+        "hgfc_advisory",
+        [
+            {
+                "scenario_id": row["scenario_id"],
+                "forecast_lead_days": row["forecast_lead_days"],
+                "forecast_demand": row["forecast_demand"],
+                "available_capacity": row["available_capacity"],
+                "capacity_delta": row["capacity_delta"],
+                "rho": row["rho"],
+                "capacity_risk": row["capacity_risk"],
+                "preparation_intervention": row["preparation_intervention"],
+            }
+            for row in rows
+        ],
+        config,
+        {
+            "capacity_interpretation": "available capacity for one daily planning period, matching daily forecast demand units",
+            "horizon_gate_days": routing_config.advisory_horizon_days,
+            "preparation_action": "warning only; no candidate fleet or dispatch preparation policy is present",
         },
     )
     return rows

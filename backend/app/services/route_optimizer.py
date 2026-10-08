@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Sequence
 from datetime import datetime, timezone
-from typing import Sequence, TypedDict
+from typing import TypedDict
 
 from ortools.constraint_solver import pywrapcp, routing_enums_pb2
 
@@ -10,13 +11,12 @@ from app.core.config import get_settings
 from app.models.driver import Driver
 from app.models.order import Order
 from app.models.vehicle import Vehicle
-
 from app.schemas.optimization import (
 	OptimizationDriver,
 	OptimizationResponse,
 	OptimizationStop,
-	OptimizedRoute,
 	OptimizationVehicle,
+	OptimizedRoute,
 	RouteCoordinate,
 )
 from app.services.routing_service import RoutingService
@@ -30,6 +30,7 @@ class _OptimizationDataModel(TypedDict):
 	vehicle_capacities: list[int]
 	num_vehicles: int
 	depot: int
+	coordinates: list[tuple[float, float]]
 
 
 class _RuntimeOptimizationOptions(TypedDict):
@@ -38,6 +39,7 @@ class _RuntimeOptimizationOptions(TypedDict):
 	time_windows_enabled: bool
 	priority_enabled: bool
 	timeout_seconds: int | None
+	solution_limit: int | None
 
 
 class RouteOptimizerService:
@@ -51,6 +53,7 @@ class RouteOptimizerService:
 			"time_windows_enabled": False,
 			"priority_enabled": False,
 			"timeout_seconds": None,
+			"solution_limit": None,
 		}
 
 	def configure(
@@ -59,16 +62,23 @@ class RouteOptimizerService:
 		time_windows_enabled: bool = False,
 		priority_enabled: bool = False,
 		optimization_timeout_seconds: int | None = None,
+		optimization_solution_limit: int | None = None,
 	) -> None:
 		"""Configure optional runtime optimization behaviors for next run."""
 		timeout_value: int | None = None
 		if optimization_timeout_seconds is not None:
 			timeout_value = max(int(optimization_timeout_seconds), 1)
+		solution_limit = (
+			max(int(optimization_solution_limit), 1)
+			if optimization_solution_limit is not None
+			else None
+		)
 
 		self._runtime_options = {
 			"time_windows_enabled": bool(time_windows_enabled),
 			"priority_enabled": bool(priority_enabled),
 			"timeout_seconds": timeout_value,
+			"solution_limit": solution_limit,
 		}
 
 	def optimize(
@@ -76,6 +86,8 @@ class RouteOptimizerService:
 		drivers: Sequence[Driver],
 		vehicles: Sequence[Vehicle],
 		orders: Sequence[Order],
+		*,
+		depot_coordinates: tuple[float, float] | None = None,
 	) -> OptimizationResponse:
 		"""Optimize routes for the provided drivers, vehicles, and orders."""
 		if not drivers:
@@ -87,10 +99,22 @@ class RouteOptimizerService:
 				total_distance_km=0.0,
 				total_orders=0,
 				total_routes=0,
-				routes=[],
+				requested_orders=0,
+				served_order_ids=[],
+				unserved_order_ids=[],
 			)
 
-		data = self._create_data_model(drivers=drivers, vehicles=vehicles, orders=orders)
+		paired_drivers, paired_vehicles = self._pair_drivers_and_vehicles(drivers, vehicles)
+		optimization_orders = list(orders)
+		if self._runtime_priority_enabled(orders):
+			optimization_orders.sort(key=lambda order: -int(getattr(order, "priority", 0) or 0))
+
+		data = self._create_data_model(
+			drivers=paired_drivers,
+			vehicles=paired_vehicles,
+			orders=optimization_orders,
+			depot_coordinates=depot_coordinates,
+		)
 
 		manager = pywrapcp.RoutingIndexManager(
 			len(data["distance_matrix"]),
@@ -124,8 +148,11 @@ class RouteOptimizerService:
 		search_parameters.first_solution_strategy = self._resolve_first_solution_strategy()
 		search_parameters.local_search_metaheuristic = self._resolve_local_search_metaheuristic()
 		search_parameters.time_limit.FromSeconds(self._resolve_timeout_seconds())
+		solution_limit = self._runtime_options.get("solution_limit")
+		if solution_limit is not None:
+			search_parameters.solution_limit = solution_limit
 
-		if self._runtime_time_windows_enabled(orders):
+		if self._runtime_time_windows_enabled(optimization_orders):
 			def time_callback(from_index: int, to_index: int) -> int:
 				from_node = manager.IndexToNode(from_index)
 				to_node = manager.IndexToNode(to_index)
@@ -137,14 +164,7 @@ class RouteOptimizerService:
 				routing=routing,
 				manager=manager,
 				transit_callback_index=time_transit_callback_index,
-				orders=orders,
-			)
-
-		if self._runtime_priority_enabled(orders):
-			self._add_priority_constraints(
-				routing=routing,
-				manager=manager,
-				orders=orders,
+				orders=optimization_orders,
 			)
 
 		solution = routing.SolveWithParameters(search_parameters)
@@ -156,17 +176,50 @@ class RouteOptimizerService:
 			manager=manager,
 			solution=solution,
 			data=data,
-			drivers=drivers,
-			vehicles=vehicles,
-			orders=orders,
+			drivers=paired_drivers,
+			vehicles=paired_vehicles,
+			orders=optimization_orders,
 		)
+		served_order_ids = [stop.order_id for route in routes for stop in route.stops]
+		served_ids = set(served_order_ids)
+		unserved_order_ids = [order.id for order in orders if order.id not in served_ids]
 
 		return OptimizationResponse(
 			total_distance_km=round(total_distance_m / 1000.0, 3),
-			total_orders=len(orders),
+			total_orders=len(served_order_ids),
 			total_routes=len(routes),
 			routes=routes,
+			requested_orders=len(orders),
+			served_order_ids=served_order_ids,
+			unserved_order_ids=unserved_order_ids,
 		)
+
+	@staticmethod
+	def _pair_drivers_and_vehicles(
+		drivers: Sequence[Driver],
+		vehicles: Sequence[Vehicle],
+	) -> tuple[list[Driver], list[Vehicle]]:
+		"""Validate and order resources by each driver's actual vehicle assignment."""
+		if len(drivers) != len(vehicles):
+			raise ValueError("Each selected driver must have exactly one selected vehicle.")
+
+		vehicles_by_id = {vehicle.id: vehicle for vehicle in vehicles}
+		if len(vehicles_by_id) != len(vehicles):
+			raise ValueError("Duplicate vehicles are not allowed.")
+
+		paired_vehicles: list[Vehicle] = []
+		seen_vehicle_ids = set()
+		for driver in drivers:
+			vehicle_id = getattr(driver, "vehicle_id", None)
+			vehicle = vehicles_by_id.get(vehicle_id)
+			if vehicle is None:
+				raise ValueError(f"Driver {driver.id} is not assigned to a selected vehicle.")
+			if vehicle.id in seen_vehicle_ids:
+				raise ValueError("A selected vehicle cannot be assigned to multiple drivers.")
+			seen_vehicle_ids.add(vehicle.id)
+			paired_vehicles.append(vehicle)
+
+		return list(drivers), paired_vehicles
 
 	def _build_distance_matrix(
 		self,
@@ -194,26 +247,29 @@ class RouteOptimizerService:
 		drivers: Sequence[Driver],
 		vehicles: Sequence[Vehicle],
 		orders: Sequence[Order],
+		depot_coordinates: tuple[float, float] | None = None,
 	) -> _OptimizationDataModel:
 		"""Create the OR-Tools data model for a capacitated VRP."""
-		num_vehicles = min(len(drivers), len(vehicles))
+		num_vehicles = len(drivers)
 		if num_vehicles <= 0:
 			raise ValueError("At least one driver and vehicle pair is required.")
+		if len(vehicles) != num_vehicles:
+			raise ValueError("Each selected driver must have exactly one selected vehicle.")
 
-		selected_vehicles = list(vehicles[:num_vehicles])
-
-		depot_coord = (
-			float(orders[0].pickup_latitude),
-			float(orders[0].pickup_longitude),
-		)
+		if depot_coordinates is None:
+			depot_coordinates = (
+				float(self._settings.DEFAULT_DEPOT_LATITUDE),
+				float(self._settings.DEFAULT_DEPOT_LONGITUDE),
+			)
+		depot_coord = (float(depot_coordinates[0]), float(depot_coordinates[1]))
 		order_coords = [
-			(float(order.pickup_latitude), float(order.pickup_longitude))
+			(float(order.delivery_latitude), float(order.delivery_longitude))
 			for order in orders
 		]
 		coordinates = [depot_coord, *order_coords]
 
 		demands = [0, *[int(order.demand) for order in orders]]
-		vehicle_capacities = [int(vehicle.capacity) for vehicle in selected_vehicles]
+		vehicle_capacities = [int(vehicle.capacity) for vehicle in vehicles]
 
 		if sum(vehicle_capacities) < sum(demands):
 			raise RuntimeError("Insufficient vehicle capacity for all orders.")
@@ -224,6 +280,7 @@ class RouteOptimizerService:
 			"vehicle_capacities": vehicle_capacities,
 			"num_vehicles": num_vehicles,
 			"depot": 0,
+			"coordinates": coordinates,
 		}
 
 	def _resolve_timeout_seconds(self) -> int:
@@ -292,8 +349,12 @@ class RouteOptimizerService:
 			index = routing.Start(vehicle_idx)
 			sequence = 0
 			route_demand = 0
+			route_distance_m = 0
 			stops: list[OptimizationStop] = []
-			route_coordinates: list[RouteCoordinate] = []
+			depot_latitude, depot_longitude = data["coordinates"][data["depot"]]
+			route_coordinates: list[RouteCoordinate] = [
+				RouteCoordinate(latitude=depot_latitude, longitude=depot_longitude)
+			]
 
 			while not routing.IsEnd(index):
 				node = manager.IndexToNode(index)
@@ -322,33 +383,34 @@ class RouteOptimizerService:
 					)
 					self._append_route_coordinate(
 						route_coordinates,
-						latitude=float(order.pickup_latitude),
-						longitude=float(order.pickup_longitude),
-					)
-					self._append_route_coordinate(
-						route_coordinates,
-						latitude=float(order.delivery_latitude),
-						longitude=float(order.delivery_longitude),
+						latitude=data["coordinates"][node][0],
+						longitude=data["coordinates"][node][1],
 					)
 
 				next_index = solution.Value(routing.NextVar(index))
+				next_node = manager.IndexToNode(next_index)
+				route_distance_m += data["distance_matrix"][node][next_node]
 				index = next_index
 
 			if stops:
-				fallback_distance_m = self._compute_path_distance_m(route_coordinates)
-				fallback_duration_minutes = self._estimate_duration_minutes(fallback_distance_m)
+				self._append_route_coordinate(
+					route_coordinates,
+					latitude=depot_latitude,
+					longitude=depot_longitude,
+				)
+				fallback_duration_minutes = self._estimate_duration_minutes(route_distance_m)
 
 				road_geometry = list(route_coordinates)
-				distance_meters = float(fallback_distance_m)
+				road_distance_km: float | None = None
 				duration_seconds = float(fallback_duration_minutes * 60.0)
 
 				road_route = self._routing_service.build_road_route(route_coordinates)
 				if road_route is not None:
 					road_geometry = road_route.road_geometry
-					distance_meters = float(road_route.distance_meters)
+					road_distance_km = float(road_route.distance_meters) / 1000.0
 					duration_seconds = float(road_route.duration_seconds)
 
-				route_distance_km = round(distance_meters / 1000.0, 3)
+				route_distance_km = round(route_distance_m / 1000.0, 3)
 				route_duration_minutes = round(duration_seconds / 60.0, 2)
 				driver = drivers[vehicle_idx]
 				vehicle = vehicles[vehicle_idx]
@@ -372,11 +434,12 @@ class RouteOptimizerService:
 						stops=stops,
 						route_coordinates=route_coordinates,
 						road_geometry=road_geometry,
-						distance=distance_meters,
+						distance=float(route_distance_m),
 						duration=duration_seconds,
+						road_distance_km=road_distance_km,
 					)
 				)
-				total_distance_m += int(round(distance_meters))
+				total_distance_m += route_distance_m
 
 		return routes, total_distance_m
 
@@ -423,7 +486,7 @@ class RouteOptimizerService:
 	def _estimate_travel_time_minutes(self, distance_m: int) -> int:
 		"""Estimate integer travel minutes for the OR-Tools time dimension."""
 		distance_km = float(distance_m) / 1000.0
-		return int(math.ceil((distance_km / self._average_speed_kmph()) * 60.0))
+		return math.ceil((distance_km / self._average_speed_kmph()) * 60.0)
 
 	def _average_speed_kmph(self) -> float:
 		"""Return a positive configured average speed for duration estimates."""
@@ -444,7 +507,7 @@ class RouteOptimizerService:
 		for order in orders:
 			start = getattr(order, "time_window_start", None)
 			end = getattr(order, "time_window_end", None)
-			if start is not None and end is not None:
+			if start is not None or end is not None:
 				return True
 		return False
 
@@ -476,13 +539,25 @@ class RouteOptimizerService:
 		transit_callback_index: int,
 		orders: Sequence[Order],
 	) -> None:
-		"""Add optional time-window dimension and ranges for order stops."""
-		horizon = self._compute_time_window_horizon(orders)
+		"""Add optional time windows on a relative UTC-minute planning timeline."""
+		windows = [self._extract_time_window(order) for order in orders]
+		valid_windows = [window for window in windows if window is not None]
+		if not valid_windows:
+			return
+		window_types = {
+			isinstance(getattr(order, "time_window_start", None), datetime)
+			for order in orders
+			if getattr(order, "time_window_start", None) is not None
+		}
+		if len(window_types) > 1:
+			raise ValueError("All order windows in one optimization must use the same time representation.")
+		reference_minute = min(window[0] for window in valid_windows)
+		horizon = max(window[1] - reference_minute for window in valid_windows) + 60
 		routing.AddDimension(
 			transit_callback_index,
 			horizon,
 			horizon,
-			False,
+			True,
 			"Time",
 		)
 		time_dimension = routing.GetDimensionOrDie("Time")
@@ -492,72 +567,52 @@ class RouteOptimizerService:
 			if window is None:
 				continue
 			node_index = manager.NodeToIndex(order_index)
-			time_dimension.CumulVar(node_index).SetRange(window[0], window[1])
+			time_dimension.CumulVar(node_index).SetRange(
+				window[0] - reference_minute,
+				window[1] - reference_minute,
+			)
 
 	@staticmethod
 	def _extract_time_window(order: Order) -> tuple[int, int] | None:
-		"""Extract an order time window as integer minutes on a UTC timeline."""
+		"""Convert datetime bounds to absolute UTC minutes; naive datetimes mean UTC."""
 		start = getattr(order, "time_window_start", None)
 		end = getattr(order, "time_window_end", None)
-		if start is None or end is None:
+		if start is None and end is None:
 			return None
+		if start is None or end is None:
+			raise ValueError("Both time-window bounds must be provided.")
 
 		if isinstance(start, datetime) or isinstance(end, datetime):
 			if not isinstance(start, datetime) or not isinstance(end, datetime):
 				raise ValueError("Time-window bounds must use the same value type.")
-			if start.utcoffset() is None or end.utcoffset() is None:
-				raise ValueError("Datetime time-window bounds must include timezone information.")
-
-			start_min = int(start.astimezone(timezone.utc).timestamp() // 60)
-			end_min = int(end.astimezone(timezone.utc).timestamp() // 60)
+			start_utc = start.replace(tzinfo=timezone.utc) if start.utcoffset() is None else start.astimezone(timezone.utc)
+			end_utc = end.replace(tzinfo=timezone.utc) if end.utcoffset() is None else end.astimezone(timezone.utc)
+			if end_utc <= start_utc:
+				raise ValueError("time_window_end must be after time_window_start.")
+			start_min = int(start_utc.timestamp() // 60)
+			end_min = int(end_utc.timestamp() // 60)
 		else:
 			start_min = int(start)
 			end_min = int(end)
-
-		if end_min < start_min:
-			start_min, end_min = end_min, start_min
+			if end_min <= start_min:
+				raise ValueError("time_window_end must be after time_window_start.")
 		return (start_min, end_min)
 
 	def _compute_time_window_horizon(self, orders: Sequence[Order]) -> int:
 		"""Compute a stable horizon for the optional time dimension."""
+		windows = [self._extract_time_window(order) for order in orders]
+		valid_windows = [window for window in windows if window is not None]
+		if not valid_windows:
+			return 60
+		reference_minute = min(window[0] for window in valid_windows)
 		max_end = 0
 		for order in orders:
 			window = self._extract_time_window(order)
 			if window is None:
 				continue
-			max_end = max(max_end, window[1])
+			max_end = max(max_end, window[1] - reference_minute)
 		return max(max_end + 60, 60)
 
-
-	def _add_priority_constraints(
-		self,
-		routing: pywrapcp.RoutingModel,
-		manager: pywrapcp.RoutingIndexManager,
-		orders: Sequence[Order],
-	) -> None:
-		"""Add optional priority-aware disjunction penalties for orders."""
-		for order_index, order in enumerate(orders, start=1):
-			priority = self._extract_priority(order)
-			if priority is None:
-				continue
-			node_index = manager.NodeToIndex(order_index)
-			penalty = self._priority_to_penalty(priority)
-			routing.AddDisjunction([node_index], penalty)
-
-	@staticmethod
-	def _extract_priority(order: Order) -> int | None:
-		"""Extract order priority as integer when available."""
-		value = getattr(order, "priority", None)
-		if value is None:
-			return None
-		priority = int(value)
-		return max(priority, 0)
-
-	@staticmethod
-	def _priority_to_penalty(priority: int) -> int:
-		"""Convert priority score to OR-Tools disjunction penalty."""
-		base_penalty = 10_000
-		return base_penalty * (priority + 1)
 
 	@staticmethod
 	def _haversine_distance_meters(
@@ -578,5 +633,5 @@ class RouteOptimizerService:
 			+ math.cos(phi1) * math.cos(phi2) * math.sin(d_lambda / 2.0) ** 2
 		)
 		c = 2.0 * math.atan2(math.sqrt(a), math.sqrt(1.0 - a))
-		return int(round(radius_m * c))
+		return round(radius_m * c)
 

@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 from dataclasses import asdict, dataclass
+from datetime import date, timedelta
+from itertools import pairwise
 from pathlib import Path
 from typing import Any
 
@@ -20,8 +22,10 @@ class ExperimentConfig:
     linear_growth_per_day: float = 0.04
     weekly_amplitude: float = 18.0
     annual_amplitude: float = 25.0
-    noise_standard_deviation: float = 7.0
+    annual_period_days: float = 365.25
+    noise_standard_deviation: float = 5.0
     horizons: tuple[int, ...] = (7, 14, 30, 60)
+    start_date: str = "2024-01-01"
 
 
 def make_dataset(config: ExperimentConfig) -> np.ndarray:
@@ -29,7 +33,7 @@ def make_dataset(config: ExperimentConfig) -> np.ndarray:
     rng = np.random.default_rng(config.seed)
     day = np.arange(config.observations, dtype=float)
     weekly = config.weekly_amplitude * np.sin(2.0 * np.pi * day / 7.0)
-    annual = config.annual_amplitude * np.sin(2.0 * np.pi * day / 365.0)
+    annual = config.annual_amplitude * np.sin(2.0 * np.pi * day / config.annual_period_days)
     trend = config.linear_growth_per_day * day
     noise = rng.normal(0.0, config.noise_standard_deviation, config.observations)
     return np.maximum(config.base_demand + trend + weekly + annual + noise, 0.0)
@@ -53,7 +57,53 @@ def calculate_metrics(actual: np.ndarray, predicted: np.ndarray) -> dict[str, fl
         "mae": float(np.mean(np.abs(errors))),
         "rmse": float(np.sqrt(np.mean(np.square(errors)))),
         "mape_percent": mape,
+        "n_observations": int(actual.size),
+        "mape_n_observations": int(np.count_nonzero(nonzero)),
     }
+
+
+def write_synthetic_dataset(output_path: Path, config: ExperimentConfig) -> None:
+    """Write the reproducible generated series with an explicit synthetic label."""
+    import csv
+
+    values = make_dataset(config)
+    first_date = date.fromisoformat(config.start_date)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(("date", "demand", "data_type"))
+        for offset, demand in enumerate(values):
+            writer.writerow(
+                (
+                    (first_date + timedelta(days=offset)).isoformat(),
+                    f"{float(demand):.10f}",
+                    "synthetic",
+                )
+            )
+
+
+def load_synthetic_dataset(path: Path) -> tuple[list[str], np.ndarray]:
+    """Load and validate the checked-in synthetic date/demand dataset."""
+    import csv
+
+    with path.open(newline="", encoding="utf-8") as handle:
+        reader = csv.DictReader(handle)
+        if reader.fieldnames is None or not {"date", "demand", "data_type"}.issubset(reader.fieldnames):
+            raise ValueError("Synthetic dataset must include date, demand, and data_type columns.")
+        records = list(reader)
+
+    dates = [record["date"] for record in records]
+    parsed_dates = [date.fromisoformat(value) for value in dates]
+    demands = np.asarray([float(record["demand"]) for record in records], dtype=float)
+    if any(record["data_type"] != "synthetic" for record in records):
+        raise ValueError("Dataset contains rows not marked synthetic.")
+    if len(dates) != len(set(dates)):
+        raise ValueError("Synthetic dataset contains duplicate dates.")
+    if any((later - earlier).days != 1 for earlier, later in pairwise(parsed_dates)):
+        raise ValueError("Synthetic dataset dates must be consecutive daily observations.")
+    if len(demands) and np.any(demands < 0):
+        raise ValueError("Synthetic demand cannot be negative.")
+    return dates, demands
 
 
 def write_results(
@@ -67,16 +117,23 @@ def write_results(
     import csv
 
     output_dir.mkdir(parents=True, exist_ok=True)
-    fields = list(dict.fromkeys(key for row in rows for key in row))
+    metadata = {
+        "seed": config.seed,
+        "dataset_size": config.observations,
+        "train_size": config.training_days,
+        "test_size": config.holdout_days,
+    }
+    result_rows = [{**metadata, **row} for row in rows]
+    fields = list(dict.fromkeys(key for row in result_rows for key in row))
     with (output_dir / f"{stem}.csv").open("w", newline="", encoding="utf-8") as handle:
         if fields:
             writer = csv.DictWriter(handle, fieldnames=fields)
             writer.writeheader()
-            writer.writerows(rows)
+            writer.writerows(result_rows)
     payload = {
         "configuration": asdict(config),
         "methodology": methodology or {},
-        "results": rows,
+        "results": result_rows,
     }
     with (output_dir / f"{stem}.json").open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, indent=2)

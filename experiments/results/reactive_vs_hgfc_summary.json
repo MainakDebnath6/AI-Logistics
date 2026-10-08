@@ -4,29 +4,34 @@
     "fleet_size": 4,
     "vehicle_capacity": 25,
     "solver_timeout_seconds": 1,
-    "advisory_horizon_days": 14
+    "solver_solution_limit": 1,
+    "advisory_horizon_days": 14,
+    "depot_latitude": 41.8781,
+    "depot_longitude": -87.6298
   },
   "scenario_count": 6,
+  "operational_benefit_evaluation_supported": false,
+  "operational_benefit_limitation": "No candidate-fleet/advance-preparation policy exists in the available operational data; both arms therefore use the same actual fleet and confirmed orders.",
   "advisory_interventions": 1,
   "mean_operational_metrics": {
     "reactive": {
       "service_level_percent": 33.333333333333336,
       "fleet_utilization_percent": 31.5,
-      "route_distance_km": 0.9283333333333333,
-      "capacity_shortfall": 15.750462470967577,
+      "route_distance_km": 288.94666666666666,
+      "capacity_shortfall": 16.5,
       "route_count": 1.3333333333333333
     },
     "hgfc": {
       "service_level_percent": 33.333333333333336,
       "fleet_utilization_percent": 31.5,
-      "route_distance_km": 0.9283333333333333,
-      "capacity_shortfall": 15.750462470967577,
+      "route_distance_km": 288.94666666666666,
+      "capacity_shortfall": 16.5,
       "route_count": 1.3333333333333333
     }
   },
   "mean_optimization_runtime_seconds": {
-    "reactive": 0.002116533306737741,
-    "hgfc": 0.0007629166357219219
+    "reactive": 0.0020005000017893813,
+    "hgfc": 0.0020005000017893813
   },
   "paired_operational_differences": {
     "feasible": [

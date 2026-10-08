@@ -450,6 +450,8 @@ The command uses stable IDs, skips previously seeded entities, refuses key colli
 
 The zero-capacity ratio is undefined and returned as `null`; absolute capacity risk and recommended additional capacity remain defined. The preparation signal is a direct recommendation for positive forecast shortfall, not a validated staffing policy.
 
+Order time-window datetimes are normalized to UTC; timezone-naive values are interpreted as UTC. The optimizer uses minutes relative to the earliest window start and estimates travel time from its deterministic Haversine matrix. Configure the depot with `DEFAULT_DEPOT_LATITUDE` and `DEFAULT_DEPOT_LONGITUDE`, or provide both coordinates in an optimization request. Route objective distance is the Haversine solver distance; optional OSRM road distance is returned separately.
+
 ## Reproducing research outputs
 
 Run all research experiments from the repository root:
@@ -458,8 +460,8 @@ Run all research experiments from the repository root:
 python -m experiments.run_all
 ```
 
-Forecast comparison, feature ablation, horizon sensitivity, and paired routing CSV/JSON files are written under `experiments/results/`. The synthetic daily series uses seed `20261008`, 730 days, the first 670 days for training, and the last 60 days for holdout. Its declared generator combines linear growth, weekly and annual sinusoidal components, and Gaussian noise. Horizon sensitivity uses a single fixed forecast origin; it is not a rolling-origin statistical study.
+The runner first regenerates `data/raw/synthetic_demand.csv` with seed `20261008`, 730 consecutive days, 670 training days, 60 holdout days, weekly period 7, annual period 365.25, linear growth, and additive Gaussian noise sigma 5. It evaluates previous-week naive, additive weekly Holt-Winters, and Seasonal LR using expanding-window rolling origins for 7/14/30/60-day horizons. Ablations use the same dataset and chronological split. Exact features, forecast origins, configuration, raw predictions, and metrics are saved under `experiments/results/`.
 
-The model families and feature definitions, metric policies, fleet geometry, and capacity assumptions are recorded in each JSON output. The controlled routing experiment uses identical confirmed orders, vehicles, and OR-Tools settings in both arms. Forecast-aware output is advisory only, so route outcomes should match; only preparation recommendations can differ. No paired significance test is reported when all operational paired differences are zero. Delivery cost is omitted because no cost model is defined in the application.
+The routing outputs include `cvrp_benchmark`, `hgfc_advisory`, and `reactive_vs_hgfc` artifacts. The latter is an advisory-invariance check only: no candidate fleet or advance-preparation policy is present in project data, so operational benefit cannot be evaluated honestly. Both arms retain identical confirmed orders and base fleet. Distances use deterministic Haversine solver costs; OSRM is disabled for experiments. Delivery cost is unavailable because no cost model exists.
 
-These synthetic experiments are executable baselines, not reproduction of paper-specific results or evidence of a causal operational benefit. They do not add seasonal regression or Holt-Winters models to the production forecast API.
+All results are synthetic and do not reproduce paper numbers or constitute evidence of real-world forecast accuracy or causal operational benefit. See `experiments/README.md` and `RESEARCH_IMPLEMENTATION_STATUS.md` for details and limitations.

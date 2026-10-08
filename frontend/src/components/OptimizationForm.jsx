@@ -203,6 +203,21 @@ export default function OptimizationForm({
       errors.orders = "Select at least one order.";
     }
 
+    const selectedDrivers = drivers.filter((driver) =>
+      selectedDriverIds.includes(String(getItemId(driver)))
+    );
+    const assignedVehicleIds = selectedDrivers.map((driver) =>
+      driver?.vehicle_id ? String(driver.vehicle_id) : null
+    );
+    if (
+      selectedDrivers.length > 0 &&
+      (assignedVehicleIds.some((id) => id === null) ||
+        assignedVehicleIds.length !== selectedVehicleIds.length ||
+        assignedVehicleIds.some((id) => !selectedVehicleIds.includes(id)))
+    ) {
+      errors.pairing = "Select each driver's assigned vehicle, with one vehicle per driver.";
+    }
+
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   }
@@ -294,6 +309,9 @@ export default function OptimizationForm({
           />
           {validationErrors.vehicles ? (
             <p className="-mt-2 text-sm text-rose-300">{validationErrors.vehicles}</p>
+          ) : null}
+          {validationErrors.pairing ? (
+            <p className="-mt-2 text-sm text-rose-300">{validationErrors.pairing}</p>
           ) : null}
 
           <SelectionGroup

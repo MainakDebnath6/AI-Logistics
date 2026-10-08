@@ -2,7 +2,7 @@
 
 from functools import lru_cache
 
-from pydantic import Field
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -20,6 +20,9 @@ class Settings(BaseSettings):
     )
     environment: str = Field(default="development")
     secret_key: str = Field(default="change-me")
+    backend_cors_origins: str = Field(
+        default="http://localhost:4173,http://localhost:5173,http://127.0.0.1:4173,http://127.0.0.1:5173"
+    )
     algorithm: str = Field(default="HS256")
     access_token_expire_minutes: int = Field(default=30)
     hgfc_max_horizon_days: int = Field(default=14, ge=1)
@@ -40,6 +43,25 @@ class Settings(BaseSettings):
     analytics_default_total_distance: float = Field(default=0.0)
     analytics_default_route_efficiency: float = Field(default=0.0)
     analytics_default_on_time_delivery_percentage: float = Field(default=0.0)
+
+    @property
+    def cors_origins(self) -> list[str]:
+        """Return configured CORS origins as a normalized list."""
+        return [origin.strip() for origin in self.backend_cors_origins.split(",") if origin.strip()]
+
+    @model_validator(mode="after")
+    def validate_production_security(self) -> "Settings":
+        """Fail closed for insecure production secrets and credentialed wildcard CORS."""
+        if self.environment.strip().lower() == "production":
+            if self.secret_key.strip().lower() in {
+                "",
+                "change-me",
+                "change-me-with-a-long-random-secret",
+            }:
+                raise ValueError("SECRET_KEY must be explicitly configured in production.")
+            if "*" in self.cors_origins:
+                raise ValueError("Credentialed CORS cannot use a wildcard origin in production.")
+        return self
 
 
 @lru_cache(maxsize=1)

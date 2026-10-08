@@ -43,7 +43,7 @@ def get_order_repository(db: Session = Depends(get_db)) -> OrderRepository:
 	return OrderRepository(db)
 
 
-def get_route_repository(db: Session = Depends(get_db)) -> RouteRepository:  # noqa: B008
+def get_route_repository(db: Session = Depends(get_db)) -> RouteRepository:
 	"""Create a route repository instance."""
 	return RouteRepository(db)
 
@@ -113,7 +113,7 @@ def optimize_routes(
 	driver_repository: DriverRepository = Depends(get_driver_repository),
 	vehicle_repository: VehicleRepository = Depends(get_vehicle_repository),
 	order_repository: OrderRepository = Depends(get_order_repository),
-	route_repository: RouteRepository = Depends(get_route_repository),  # noqa: B008
+	route_repository: RouteRepository = Depends(get_route_repository),
 	optimizer_service: RouteOptimizerService = Depends(get_route_optimizer_service_with_routing),
 ) -> OptimizationResponse:
 	"""Optimize routes for the requested drivers, vehicles, and orders."""
@@ -148,6 +148,9 @@ def optimize_routes(
 			drivers=drivers,
 			vehicles=vehicles,
 			orders=orders,
+			depot_coordinates=(payload.depot_latitude, payload.depot_longitude)
+			if payload.depot_latitude is not None
+			else None,
 		)
 	except ValueError as error:
 		raise HTTPException(
@@ -161,6 +164,14 @@ def optimize_routes(
 		) from error
 
 	optimization_completed_at = datetime.now(timezone.utc)
+	requested_order_ids = set(payload.order_ids)
+	served_order_ids = [stop.order_id for route in result.routes for stop in route.stops]
+	if len(served_order_ids) != len(set(served_order_ids)) or set(served_order_ids) != requested_order_ids:
+		raise HTTPException(
+			status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+			detail="Optimizer result did not serve each requested confirmed order exactly once.",
+		)
+
 	route_repository.create_many(
 		[
 			Route(

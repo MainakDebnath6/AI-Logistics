@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
 
 import numpy as np
@@ -9,23 +10,28 @@ import numpy as np
 from experiments.common import (
     ExperimentConfig,
     calculate_metrics,
-    chronological_split,
+    load_synthetic_dataset,
     make_dataset,
     write_results,
 )
 
 OUTPUT_DIR = Path(__file__).resolve().parent / "results"
+DATASET_PATH = Path(__file__).resolve().parents[1] / "data" / "raw" / "synthetic_demand.csv"
+ANNUAL_PERIOD_DAYS = 365.25
 
 
-def _naive_forecast(history: np.ndarray, horizon: int) -> np.ndarray:
-    return np.full(horizon, float(history[-1]))
+def _naive_previous_week(history: np.ndarray, horizon: int) -> np.ndarray:
+    """Repeat the most recent observed week for each future weekday."""
+    if len(history) < 7:
+        raise ValueError("Previous-week naive forecasting needs at least seven observations.")
+    return np.asarray([history[-7 + (offset % 7)] for offset in range(horizon)], dtype=float)
 
 
 def _holt_winters_forecast(history: np.ndarray, horizon: int) -> np.ndarray:
     """Fit additive weekly Holt-Winters with deterministic grid-selected gains."""
     period = 7
     if len(history) <= period * 2:
-        return _naive_forecast(history, horizon)
+        return _naive_previous_week(history, horizon)
 
     gains = (0.2, 0.5, 0.8)
     best_error = float("inf")
@@ -57,7 +63,12 @@ def _holt_winters_forecast(history: np.ndarray, horizon: int) -> np.ndarray:
     )
 
 
-def _feature_row(history: list[float], time_index: int, features: frozenset[str]) -> list[float]:
+def _feature_row(
+    history: list[float],
+    time_index: int,
+    features: frozenset[str],
+    annual_period_days: float = ANNUAL_PERIOD_DAYS,
+) -> list[float]:
     row = [1.0, time_index / 365.0]
     if "weekly" in features:
         for harmonic in (1, 2, 3):
@@ -65,7 +76,7 @@ def _feature_row(history: list[float], time_index: int, features: frozenset[str]
             row.extend((float(np.sin(angle)), float(np.cos(angle))))
     if "annual" in features:
         for harmonic in (1, 2):
-            angle = 2.0 * np.pi * time_index * harmonic / 365.0
+            angle = 2.0 * np.pi * time_index * harmonic / annual_period_days
             row.extend((float(np.sin(angle)), float(np.cos(angle))))
     if "lags" in features:
         for lag in (1, 7, 14, 28, 365):
@@ -80,51 +91,118 @@ def _seasonal_regression_forecast(
     training: np.ndarray,
     horizon: int,
     features: frozenset[str],
+    annual_period_days: float = ANNUAL_PERIOD_DAYS,
 ) -> np.ndarray:
     """Fit a deterministic feature regression and recursively forecast."""
     history = [float(value) for value in training]
-    first_index = 365 if len(training) > 365 else 28
-    rows = [_feature_row(history[:index], index, features) for index in range(first_index, len(training))]
+    first_index = 365 if len(training) > 365 else max(7, len(training) // 2)
+    rows = [
+        _feature_row(history[:index], index, features, annual_period_days)
+        for index in range(first_index, len(training))
+    ]
     targets = training[first_index:]
     coefficients, *_ = np.linalg.lstsq(np.asarray(rows), targets, rcond=None)
     predictions: list[float] = []
     for time_index in range(len(training), len(training) + horizon):
-        row = np.asarray(_feature_row(history, time_index, features))
+        row = np.asarray(_feature_row(history, time_index, features, annual_period_days))
         prediction = max(0.0, float(row @ coefficients))
         predictions.append(prediction)
         history.append(prediction)
     return np.asarray(predictions)
 
 
+def _rolling_origin_predictions(
+    series: np.ndarray,
+    *,
+    training_days: int,
+    horizon: int,
+    predictor: Callable[[np.ndarray, int], np.ndarray],
+) -> tuple[list[dict], np.ndarray, np.ndarray]:
+    """Evaluate all valid expanding-window origins without using future targets."""
+    records: list[dict] = []
+    actual_values: list[float] = []
+    predicted_values: list[float] = []
+    last_origin = len(series) - horizon
+    if training_days > last_origin:
+        raise ValueError("Insufficient holdout data for the requested forecast horizon.")
+
+    for origin in range(training_days, last_origin + 1):
+        history = series[:origin]
+        predictions = predictor(history, horizon)
+        targets = series[origin : origin + horizon]
+        for lead, (actual, predicted) in enumerate(zip(targets, predictions, strict=True), start=1):
+            records.append(
+                {
+                    "forecast_origin_index": origin,
+                    "target_index": origin + lead - 1,
+                    "lead_days": lead,
+                    "actual": float(actual),
+                    "predicted": float(predicted),
+                }
+            )
+            actual_values.append(float(actual))
+            predicted_values.append(float(predicted))
+    return records, np.asarray(actual_values), np.asarray(predicted_values)
+
+
 def run_forecasting_experiments(
     config: ExperimentConfig | None = None,
+    series: np.ndarray | None = None,
+    dates: list[str] | None = None,
 ) -> dict[str, list[dict]]:
-    """Run model comparison, feature ablation, and horizon sensitivity."""
+    """Run rolling-origin model comparison, ablation, and horizon sensitivity."""
     config = config or ExperimentConfig()
-    series = make_dataset(config)
-    training, holdout = chronological_split(series, config.training_days)
-    holdout = holdout[: config.holdout_days]
+    if series is None:
+        if DATASET_PATH.exists() and config.observations == 730:
+            dates, series = load_synthetic_dataset(DATASET_PATH)
+        else:
+            series = make_dataset(config)
+    if len(series) != config.observations:
+        raise ValueError("Dataset length does not match experiment configuration.")
+    if config.training_days + config.holdout_days != len(series):
+        raise ValueError("Training and holdout sizes must cover the dataset exactly.")
     full_features = frozenset({"weekly", "annual", "lags", "rolling"})
 
+    predictors: dict[str, Callable[[np.ndarray, int], np.ndarray]] = {
+        "naive_previous_week": _naive_previous_week,
+        "holt_winters_weekly": _holt_winters_forecast,
+        "seasonal_linear_regression": lambda history, horizon: _seasonal_regression_forecast(
+            history, horizon, full_features, config.annual_period_days
+        ),
+    }
     model_rows: list[dict] = []
     raw_rows: list[dict] = []
-    for model_name, predictor in (
-        ("naive_last_value", lambda size: _naive_forecast(training, size)),
-        ("holt_winters_weekly", lambda size: _holt_winters_forecast(training, size)),
-        ("seasonal_linear_regression", lambda size: _seasonal_regression_forecast(training, size, full_features)),
-    ):
-        predictions = predictor(len(holdout))
-        model_rows.append({"model": model_name, "horizon_days": len(holdout), **calculate_metrics(holdout, predictions)})
-        raw_rows.extend(
-            {
-                "experiment": "forecast_model_comparison",
-                "variant": model_name,
-                "holdout_day": day_index + 1,
-                "actual": float(actual),
-                "predicted": float(predicted),
+    horizon_rows: list[dict] = []
+    for horizon in config.horizons:
+        if horizon > config.holdout_days:
+            continue
+        for model_name, predictor in predictors.items():
+            predictions, actual, predicted = _rolling_origin_predictions(
+                series,
+                training_days=config.training_days,
+                horizon=horizon,
+                predictor=predictor,
+            )
+            metrics = calculate_metrics(actual, predicted)
+            summary = {
+                "model": model_name,
+                "horizon_days": horizon,
+                "forecast_origins": config.holdout_days - horizon + 1,
+                **metrics,
             }
-            for day_index, (actual, predicted) in enumerate(zip(holdout, predictions, strict=True))
-        )
+            horizon_rows.append(summary)
+            if horizon == config.holdout_days:
+                model_rows.append(summary)
+            raw_rows.extend(
+                {
+                    "experiment": "rolling_horizon",
+                    "model": model_name,
+                    "horizon_days": horizon,
+                    **record,
+                    "target_date": dates[record["target_index"]] if dates else record["target_index"],
+                }
+                for record in predictions
+            )
 
     ablations = {
         "full": full_features,
@@ -135,44 +213,38 @@ def run_forecasting_experiments(
         "remove_weekly_and_annual": frozenset({"lags", "rolling"}),
     }
     ablation_rows: list[dict] = []
+    training = series[: config.training_days]
+    holdout = series[config.training_days :]
     for name, features in ablations.items():
-        predictions = _seasonal_regression_forecast(training, len(holdout), features)
-        ablation_rows.append({"ablation": name, "horizon_days": len(holdout), **calculate_metrics(holdout, predictions)})
+        predictions = _seasonal_regression_forecast(
+            training,
+            len(holdout),
+            features,
+            config.annual_period_days,
+        )
+        metrics = calculate_metrics(holdout, predictions)
+        ablation_rows.append(
+            {
+                "ablation": name,
+                "horizon_days": len(holdout),
+                "forecast_origins": 1,
+                "training_target_start_index": 365 if len(training) > 365 else max(7, len(training) // 2),
+                **metrics,
+            }
+        )
         raw_rows.extend(
             {
                 "experiment": "feature_ablation",
                 "variant": name,
-                "holdout_day": day_index + 1,
+                "forecast_origin_index": config.training_days,
+                "target_index": config.training_days + day_index,
+                "lead_days": day_index + 1,
+                "target_date": dates[config.training_days + day_index] if dates else config.training_days + day_index,
                 "actual": float(actual),
                 "predicted": float(predicted),
             }
             for day_index, (actual, predicted) in enumerate(zip(holdout, predictions, strict=True))
         )
-
-    horizon_rows: list[dict] = []
-    for horizon in config.horizons:
-        if horizon > len(holdout):
-            continue
-        actual = holdout[:horizon]
-        for model_name, predictions in (
-            ("naive_last_value", _naive_forecast(training, horizon)),
-            ("holt_winters_weekly", _holt_winters_forecast(training, horizon)),
-            ("seasonal_linear_regression", _seasonal_regression_forecast(training, horizon, full_features)),
-        ):
-            horizon_rows.append({"model": model_name, "horizon_days": horizon, **calculate_metrics(actual, predictions)})
-            raw_rows.extend(
-                {
-                    "experiment": "horizon_sensitivity",
-                    "variant": model_name,
-                    "horizon_days": horizon,
-                    "holdout_day": day_index + 1,
-                    "actual": float(actual_value),
-                    "predicted": float(predicted_value),
-                }
-                for day_index, (actual_value, predicted_value) in enumerate(
-                    zip(actual, predictions, strict=True)
-                )
-            )
 
     write_results(
         OUTPUT_DIR,
@@ -183,9 +255,10 @@ def run_forecasting_experiments(
             "split": "chronological",
             "training_days": config.training_days,
             "holdout_days": len(holdout),
-            "models": ["last observation naive", "additive weekly Holt-Winters" , "seasonal linear regression"],
+            "models": ["previous-week seasonal naive", "additive weekly Holt-Winters", "seasonal linear regression"],
             "holt_winters_gain_grid": [0.2, 0.5, 0.8],
-            "mape_zero_actual_policy": "zero observations excluded",
+            "forecast_origin_method": "expanding-window rolling origins; past holdout observations become history only after their date",
+            "mape_zero_actual_policy": "zero actual values excluded from MAPE denominator; all observations remain in MAE/RMSE",
         },
     )
     feature_names = {
@@ -199,14 +272,27 @@ def run_forecasting_experiments(
         "feature_ablation",
         ablation_rows,
         config,
-        {"full_model_features": feature_names, "baseline_features": ["intercept", "linear time trend"]},
+        {
+            "full_model_features": feature_names,
+            "baseline_features": ["intercept", "linear time trend"],
+            "same_training_rows_for_all_ablations": True,
+            "training_target_start_index": 365 if len(training) > 365 else max(7, len(training) // 2),
+        },
     )
     write_results(
         OUTPUT_DIR,
         "horizon_sensitivity",
         horizon_rows,
         config,
-        {"horizons_days": list(config.horizons), "forecast_origins": "single fixed origin at end of training window"},
+        {
+            "horizons_days": list(config.horizons),
+            "forecast_origins_by_horizon": {
+                str(horizon): config.holdout_days - horizon + 1
+                for horizon in config.horizons
+                if horizon <= config.holdout_days
+            },
+            "forecast_origin_method": "expanding window; each forecast only uses observations strictly before its origin",
+        },
     )
     write_results(
         OUTPUT_DIR,

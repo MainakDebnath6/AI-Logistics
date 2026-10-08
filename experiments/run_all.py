@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import json
 
+from experiments.data_generation import generate_dataset
 from experiments.forecasting import run_forecasting_experiments
 from experiments.routing import run_paired_routing_experiment
 
 
 def main() -> None:
     """Run each experiment family and print concise output locations."""
+    dataset_path = generate_dataset()
     forecast_results = run_forecasting_experiments()
     routing_results = run_paired_routing_experiment()
     summary = {
@@ -17,7 +19,18 @@ def main() -> None:
         "ablation_rows": len(forecast_results["feature_ablation"]),
         "horizon_rows": len(forecast_results["horizon_sensitivity"]),
         "paired_routing_scenarios": len(routing_results),
+        "generated_artifacts": [
+            "forecast_models",
+            "forecast_raw_predictions",
+            "feature_ablation",
+            "horizon_sensitivity",
+            "cvrp_benchmark",
+            "hgfc_advisory",
+            "reactive_vs_hgfc",
+        ],
+        "operational_benefit_evaluation_supported": False,
         "result_directory": "experiments/results",
+        "dataset": str(dataset_path),
         "interpretation": (
             "Routing arms use identical confirmed inputs; any measured route-metric "
             "difference is an implementation error, while advisory interventions are reported separately."

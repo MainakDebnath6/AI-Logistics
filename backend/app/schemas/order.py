@@ -1,10 +1,18 @@
 """Pydantic schemas for delivery orders."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from uuid import UUID
 
-from app.models.order import OrderStatus
 from pydantic import BaseModel, ConfigDict, Field, model_validator
+
+from app.models.order import OrderStatus
+
+
+def _utc_datetime(value: datetime) -> datetime:
+    """Interpret naive API datetime values as UTC and normalize aware values."""
+    if value.utcoffset() is None:
+        return value.replace(tzinfo=timezone.utc)
+    return value.astimezone(timezone.utc)
 
 
 class OrderCreate(BaseModel):
@@ -27,9 +35,16 @@ class OrderCreate(BaseModel):
     def validate_time_window(self) -> "OrderCreate":
         """Ensure the delivery time window is chronologically valid."""
 
-        if self.time_window_start is not None and self.time_window_end is not None:
-            if self.time_window_start >= self.time_window_end:
-                raise ValueError("time_window_start must be before time_window_end")
+        if (
+            self.time_window_start is not None
+            and self.time_window_end is not None
+            and _utc_datetime(self.time_window_start) >= _utc_datetime(self.time_window_end)
+        ):
+            raise ValueError("time_window_start must be before time_window_end")
+        if self.time_window_start is not None:
+            self.time_window_start = _utc_datetime(self.time_window_start)
+        if self.time_window_end is not None:
+            self.time_window_end = _utc_datetime(self.time_window_end)
 
         return self
 
@@ -93,9 +108,16 @@ class OrderUpdate(BaseModel):
     def validate_time_window(self) -> "OrderUpdate":
         """Ensure the delivery time window is chronologically valid."""
 
-        if self.time_window_start is not None and self.time_window_end is not None:
-            if self.time_window_start >= self.time_window_end:
-                raise ValueError("time_window_start must be before time_window_end")
+        if (
+            self.time_window_start is not None
+            and self.time_window_end is not None
+            and _utc_datetime(self.time_window_start) >= _utc_datetime(self.time_window_end)
+        ):
+            raise ValueError("time_window_start must be before time_window_end")
+        if self.time_window_start is not None:
+            self.time_window_start = _utc_datetime(self.time_window_start)
+        if self.time_window_end is not None:
+            self.time_window_end = _utc_datetime(self.time_window_end)
 
         return self
 

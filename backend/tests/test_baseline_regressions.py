@@ -2,10 +2,12 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from types import SimpleNamespace
+from uuid import uuid4
 
 import pytest
 from app.api.optimization import optimize_routes
 from app.api.predictions import forecast_and_assess_capacity
+from app.core.config import Settings
 from app.db.base import Base
 from app.dependencies.auth import get_current_admin, get_current_dispatcher
 from app.models.driver import Driver
@@ -50,8 +52,8 @@ def test_cvrp_routes_respect_vehicle_capacity(
     make_vehicle,
     make_order,
 ):
-    drivers = [make_driver(), make_driver()]
     vehicles = [make_vehicle(5), make_vehicle(5)]
+    drivers = [make_driver(vehicle.id) for vehicle in vehicles]
     orders = [
         make_order(4, latitude=40.0),
         make_order(3, latitude=40.1),
@@ -71,6 +73,96 @@ def test_cvrp_routes_respect_vehicle_capacity(
     assert len(served_order_ids) == len(set(served_order_ids))
 
 
+def test_cvrp_uses_explicit_depot_and_returns_same_optimized_path(
+    optimizer,
+    make_driver,
+    make_vehicle,
+    make_order,
+):
+    vehicle = make_vehicle(10)
+    order = make_order(4, latitude=45.0, longitude=-70.0)
+    result = optimizer.optimize(
+        [make_driver(vehicle.id)],
+        [vehicle],
+        [order],
+        depot_coordinates=(40.0, -75.0),
+    )
+    route = result.routes[0]
+
+    assert (route.route_coordinates[0].latitude, route.route_coordinates[0].longitude) == (40.0, -75.0)
+    assert (route.route_coordinates[-1].latitude, route.route_coordinates[-1].longitude) == (40.0, -75.0)
+    assert len(route.route_coordinates) == 3
+    assert route.route_coordinates[1].latitude == order.delivery_latitude
+    assert route.route_coordinates[1].longitude == order.delivery_longitude
+    assert route.distance == optimizer._compute_path_distance_m(route.route_coordinates)
+    assert route.total_distance_km == pytest.approx(route.distance / 1000.0, abs=0.001)
+
+
+def test_optimizer_rejects_driver_vehicle_mismatch(
+    optimizer,
+    make_driver,
+    make_vehicle,
+    make_order,
+):
+    vehicle = make_vehicle()
+
+    with pytest.raises(ValueError, match="not assigned to a selected vehicle"):
+        optimizer.optimize(
+            [make_driver()],
+            [vehicle],
+            [make_order()],
+        )
+
+
+def test_indivisible_order_capacity_infeasibility_is_rejected(
+    optimizer,
+    make_driver,
+    make_vehicle,
+    make_order,
+):
+    vehicles = [make_vehicle(10), make_vehicle(2)]
+    drivers = [make_driver(vehicle.id) for vehicle in vehicles]
+
+    with pytest.raises(RuntimeError, match="No feasible optimization solution"):
+        optimizer.optimize(
+            drivers,
+            vehicles,
+            [make_order(6), make_order(6, latitude=40.1)],
+        )
+
+
+def test_osrm_distance_is_separate_from_solver_objective(
+    make_driver,
+    make_vehicle,
+    make_order,
+):
+    from app.services.route_optimizer import RouteOptimizerService
+
+    class DifferentRoadDistance:
+        def build_road_route(self, route_coordinates):
+            return SimpleNamespace(
+                road_geometry=route_coordinates,
+                distance_meters=999_999.0,
+                duration_seconds=900.0,
+            )
+
+    vehicle = make_vehicle(10)
+    optimizer_with_road_distance = RouteOptimizerService(
+        routing_service=DifferentRoadDistance()
+    )
+    result = optimizer_with_road_distance.optimize(
+        [make_driver(vehicle.id)],
+        [vehicle],
+        [make_order(2)],
+        depot_coordinates=(40.0, -73.0),
+    )
+
+    route = result.routes[0]
+    assert route.total_distance_km == pytest.approx(route.distance / 1000.0, abs=0.001)
+    assert route.road_distance_km == pytest.approx(999.999)
+    assert route.total_distance_km != route.road_distance_km
+
+
 def test_insufficient_fleet_capacity_raises_existing_error(
     optimizer,
     make_driver,
@@ -79,8 +171,8 @@ def test_insufficient_fleet_capacity_raises_existing_error(
 ):
     with pytest.raises(RuntimeError, match="Insufficient vehicle capacity"):
         optimizer.optimize(
-            [make_driver()],
-            [make_vehicle(4)],
+            [make_driver((vehicle := make_vehicle(4)).id)],
+            [vehicle],
             [make_order(3), make_order(2, latitude=40.1)],
         )
 
@@ -98,6 +190,17 @@ def test_zero_orders_returns_empty_optimization_result(
     assert result.routes == []
 
 
+def test_optimization_request_rejects_duplicate_confirmed_order_ids():
+    repeated_id = uuid4()
+
+    with pytest.raises(ValidationError, match="order_ids must not contain duplicate"):
+        OptimizationRequest(
+            driver_ids=[uuid4()],
+            vehicle_ids=[uuid4()],
+            order_ids=[repeated_id, repeated_id],
+        )
+
+
 def test_priority_option_runs_and_accounts_for_served_and_unserved_orders(
     optimizer,
     make_driver,
@@ -110,13 +213,14 @@ def test_priority_option_runs_and_accounts_for_served_and_unserved_orders(
     ]
     optimizer.configure(priority_enabled=True)
 
-    result = optimizer.optimize([make_driver()], [make_vehicle(4)], orders)
+    vehicle = make_vehicle(4)
+    result = optimizer.optimize([make_driver(vehicle.id)], [vehicle], orders)
 
     requested_ids = {order.id for order in orders}
     served_ids = {stop.order_id for route in result.routes for stop in route.stops}
     unserved_ids = requested_ids - served_ids
 
-    assert served_ids <= requested_ids
+    assert served_ids == requested_ids
     assert served_ids.isdisjoint(unserved_ids)
     assert served_ids | unserved_ids == requested_ids
     assert sum(route.total_orders for route in result.routes) == len(served_ids)
@@ -135,7 +239,13 @@ def test_time_window_option_accepts_order_datetime_fields(
     )
     optimizer.configure(time_windows_enabled=True)
 
-    result = optimizer.optimize([make_driver()], [make_vehicle()], [order])
+    vehicle = make_vehicle()
+    result = optimizer.optimize(
+        [make_driver(vehicle.id)],
+        [vehicle],
+        [order],
+        depot_coordinates=(40.0, -73.0),
+    )
 
     assert result.total_orders == 1
     assert result.routes[0].stops[0].order_id == order.id
@@ -162,14 +272,67 @@ def test_time_window_conversion_preserves_legacy_minute_values(optimizer, make_o
     assert optimizer._extract_time_window(order) == (60, 120)
 
 
-def test_time_window_conversion_rejects_naive_datetimes(optimizer, make_order):
+def test_time_window_conversion_interprets_naive_datetimes_as_utc(optimizer, make_order):
     order = make_order(
         time_window_start=datetime.fromisoformat("2026-10-08T09:00:00"),
         time_window_end=datetime.fromisoformat("2026-10-08T17:00:00"),
     )
 
-    with pytest.raises(ValueError, match="must include timezone information"):
-        optimizer._extract_time_window(order)
+    start_minute, end_minute = optimizer._extract_time_window(order)
+
+    assert start_minute == int(datetime(2026, 10, 8, 9, tzinfo=timezone.utc).timestamp() // 60)
+    assert end_minute == int(datetime(2026, 10, 8, 17, tzinfo=timezone.utc).timestamp() // 60)
+
+
+def test_time_window_conversion_supports_midnight_rollover(optimizer, make_order):
+    order = make_order(
+        time_window_start=datetime.fromisoformat("2026-10-08T23:00:00+00:00"),
+        time_window_end=datetime.fromisoformat("2026-10-09T01:00:00+00:00"),
+    )
+
+    start_minute, end_minute = optimizer._extract_time_window(order)
+
+    assert end_minute - start_minute == 120
+
+
+def test_time_window_conversion_rejects_partial_and_reversed_bounds(optimizer, make_order):
+    partial = make_order(time_window_start=datetime(2026, 10, 8, 9, tzinfo=timezone.utc))
+    reversed_window = make_order(
+        time_window_start=datetime(2026, 10, 8, 17, tzinfo=timezone.utc),
+        time_window_end=datetime(2026, 10, 8, 9, tzinfo=timezone.utc),
+    )
+
+    with pytest.raises(ValueError, match="Both time-window bounds"):
+        optimizer._extract_time_window(partial)
+    with pytest.raises(ValueError, match="must be after"):
+        optimizer._extract_time_window(reversed_window)
+
+
+def test_time_window_optimizer_rejects_mixed_datetime_and_minute_inputs(
+    optimizer,
+    make_driver,
+    make_vehicle,
+    make_order,
+):
+    datetime_order = make_order(
+        time_window_start=datetime(2026, 10, 8, 9, tzinfo=timezone.utc),
+        time_window_end=datetime(2026, 10, 8, 10, tzinfo=timezone.utc),
+    )
+    minute_order = make_order(
+        time_window_start=60,
+        time_window_end=120,
+        latitude=40.1,
+    )
+    vehicle = make_vehicle(10)
+    optimizer.configure(time_windows_enabled=True)
+
+    with pytest.raises(ValueError, match="same time representation"):
+        optimizer.optimize(
+            [make_driver(vehicle.id)],
+            [vehicle],
+            [datetime_order, minute_order],
+            depot_coordinates=(40.0, -73.0),
+        )
 
 
 def test_time_transit_uses_integer_travel_minutes(optimizer):
@@ -191,6 +354,25 @@ def test_order_schema_rejects_reversed_time_window():
             time_window_start=datetime(2026, 10, 8, 17, tzinfo=timezone.utc),
             time_window_end=datetime(2026, 10, 8, 9, tzinfo=timezone.utc),
         )
+
+
+def test_order_schema_normalizes_naive_window_datetime_to_utc():
+    order = OrderCreate(
+        customer_name="Test Customer",
+        customer_phone="000-000-0000",
+        pickup_address="Pickup address",
+        delivery_address="Delivery address",
+        pickup_latitude=40.0,
+        pickup_longitude=-73.0,
+        delivery_latitude=40.1,
+        delivery_longitude=-73.1,
+        demand=1,
+        time_window_start=datetime.fromisoformat("2026-10-08T09:00:00"),
+        time_window_end=datetime.fromisoformat("2026-10-08T17:00:00"),
+    )
+
+    assert order.time_window_start.tzinfo is timezone.utc
+    assert order.time_window_end.tzinfo is timezone.utc
 
 
 @pytest.mark.parametrize(
@@ -248,6 +430,16 @@ def test_hgfc_horizon_gate_suppresses_out_of_window_risk():
     assert result.preparation_recommended is False
 
 
+@pytest.mark.parametrize("horizon", [14, 15])
+def test_hgfc_gate_boundary_is_inclusive_through_day_14(horizon):
+    result = HGFCService(advisory_horizon_days=14).assess(
+        HGFCRequest(forecast_demand=20.0, available_capacity=10.0, horizon_days=horizon)
+    )
+
+    assert result.gate_open is (horizon == 14)
+    assert result.preparation_recommended is (horizon == 14)
+
+
 def test_from_history_prediction_endpoint_uses_cumulative_horizon_forecast():
     response = forecast_and_assess_capacity(
         payload=HGFCForecastRequest(
@@ -272,15 +464,37 @@ def test_hgfc_assessment_does_not_mutate_confirmed_orders(
     make_order,
 ):
     orders = [make_order(3), make_order(2, latitude=40.1)]
+    vehicle = make_vehicle(5)
     demands_before = [order.demand for order in orders]
+    capacity_before = vehicle.capacity
     HGFCService().assess(
         HGFCRequest(forecast_demand=12.0, available_capacity=5.0, horizon_days=7)
     )
+    HGFCService().assess(
+        HGFCRequest(forecast_demand=0.0, available_capacity=500.0, horizon_days=14)
+    )
 
-    result = optimizer.optimize([make_driver()], [make_vehicle(5)], orders)
+    result = optimizer.optimize([make_driver(vehicle.id)], [vehicle], orders)
 
     assert [order.demand for order in orders] == demands_before
+    assert vehicle.capacity == capacity_before
     assert sum(route.total_demand for route in result.routes) == sum(demands_before)
+
+
+def test_forecast_cannot_make_infeasible_confirmed_orders_feasible(
+    optimizer,
+    make_driver,
+    make_vehicle,
+    make_order,
+):
+    vehicle = make_vehicle(5)
+    orders = [make_order(4), make_order(4, latitude=40.1)]
+    for forecast in (0.0, 10000.0):
+        HGFCService().assess(
+            HGFCRequest(forecast_demand=forecast, available_capacity=5.0, horizon_days=7)
+        )
+        with pytest.raises(RuntimeError, match="Insufficient vehicle capacity"):
+            optimizer.optimize([make_driver(vehicle.id)], [vehicle], orders)
 
 
 def test_optimizer_output_validates_against_response_schema(
@@ -289,9 +503,10 @@ def test_optimizer_output_validates_against_response_schema(
     make_vehicle,
     make_order,
 ):
+    vehicle = make_vehicle()
     result = optimizer.optimize(
-        [make_driver()],
-        [make_vehicle()],
+        [make_driver(vehicle.id)],
+        [vehicle],
         [make_order(latitude=40.0)],
     )
 
@@ -410,7 +625,40 @@ def test_optimization_endpoint_persists_actual_optimizer_routes(
     session.add_all([driver, order])
     session.flush()
 
+    oversized_order = Order(
+        customer_name="Infeasible Customer",
+        customer_phone="000-000-0000",
+        pickup_address="Pickup",
+        delivery_address="Delivery",
+        pickup_latitude=40.0,
+        pickup_longitude=-73.0,
+        delivery_latitude=40.02,
+        delivery_longitude=-73.02,
+        demand=3,
+        priority=1,
+        status=OrderStatus.PENDING,
+    )
+    session.add(oversized_order)
+    session.flush()
+
     route_repository = RouteRepository(session)
+    with pytest.raises(HTTPException) as error:
+        optimize_routes(
+            payload=OptimizationRequest(
+                driver_ids=[driver.id],
+                vehicle_ids=[vehicle.id],
+                order_ids=[order.id, oversized_order.id],
+            ),
+            current_dispatcher=dispatcher,
+            driver_repository=DriverRepository(session),
+            vehicle_repository=VehicleRepository(session),
+            order_repository=OrderRepository(session),
+            route_repository=route_repository,
+            optimizer_service=optimizer,
+        )
+    assert error.value.status_code == 400
+    assert route_repository.get_all() == []
+
     result = optimize_routes(
         payload=OptimizationRequest(
             driver_ids=[driver.id],
@@ -537,3 +785,17 @@ def test_authorization_dependencies_reject_forbidden_roles(dependency, role):
         dependency(user)
 
     assert error.value.status_code == 403
+
+
+def test_production_settings_reject_default_jwt_secret():
+    with pytest.raises(ValidationError, match="SECRET_KEY must be explicitly configured"):
+        Settings(environment="production", secret_key="change-me")
+
+
+def test_production_settings_reject_wildcard_credentialed_cors():
+    with pytest.raises(ValidationError, match="wildcard origin"):
+        Settings(
+            environment="production",
+            secret_key="a-long-production-secret-value",
+            backend_cors_origins="*",
+        )

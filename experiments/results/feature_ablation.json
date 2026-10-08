@@ -8,13 +8,15 @@
     "linear_growth_per_day": 0.04,
     "weekly_amplitude": 18.0,
     "annual_amplitude": 25.0,
-    "noise_standard_deviation": 7.0,
+    "annual_period_days": 365.25,
+    "noise_standard_deviation": 5.0,
     "horizons": [
       7,
       14,
       30,
       60
-    ]
+    ],
+    "start_date": "2024-01-01"
   },
   "methodology": {
     "full_model_features": {
@@ -26,50 +28,100 @@
     "baseline_features": [
       "intercept",
       "linear time trend"
-    ]
+    ],
+    "same_training_rows_for_all_ablations": true,
+    "training_target_start_index": 365
   },
   "results": [
     {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
       "ablation": "full",
       "horizon_days": 60,
-      "mae": 6.3645546374600945,
-      "rmse": 8.03832599976096,
-      "mape_percent": 5.786667371385101
+      "forecast_origins": 1,
+      "training_target_start_index": 365,
+      "mae": 4.545576083993149,
+      "rmse": 5.741068344387386,
+      "mape_percent": 4.107552816432556,
+      "n_observations": 60,
+      "mape_n_observations": 60
     },
     {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
       "ablation": "remove_weekly",
       "horizon_days": 60,
-      "mae": 6.283474765579984,
-      "rmse": 8.14904898294609,
-      "mape_percent": 5.820918320472357
+      "forecast_origins": 1,
+      "training_target_start_index": 365,
+      "mae": 4.40396767407604,
+      "rmse": 5.613504517924491,
+      "mape_percent": 4.040596286886653,
+      "n_observations": 60,
+      "mape_n_observations": 60
     },
     {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
       "ablation": "remove_annual",
       "horizon_days": 60,
-      "mae": 8.450941621141155,
-      "rmse": 10.634393791141973,
-      "mape_percent": 7.238466964815491
+      "forecast_origins": 1,
+      "training_target_start_index": 365,
+      "mae": 6.056906062416815,
+      "rmse": 7.680310404417312,
+      "mape_percent": 5.2570680342993175,
+      "n_observations": 60,
+      "mape_n_observations": 60
     },
     {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
       "ablation": "remove_lags",
       "horizon_days": 60,
-      "mae": 6.3186161474021265,
-      "rmse": 7.963262768313034,
-      "mape_percent": 5.754465100575875
+      "forecast_origins": 1,
+      "training_target_start_index": 365,
+      "mae": 4.512645478758651,
+      "rmse": 5.687407748232659,
+      "mape_percent": 4.082702397116544,
+      "n_observations": 60,
+      "mape_n_observations": 60
     },
     {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
       "ablation": "remove_rolling",
       "horizon_days": 60,
-      "mae": 7.158396007042757,
-      "rmse": 8.77252975206413,
-      "mape_percent": 6.494090543065963
+      "forecast_origins": 1,
+      "training_target_start_index": 365,
+      "mae": 5.115704146372344,
+      "rmse": 6.268861777843594,
+      "mape_percent": 4.595941536208678,
+      "n_observations": 60,
+      "mape_n_observations": 60
     },
     {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
       "ablation": "remove_weekly_and_annual",
       "horizon_days": 60,
-      "mae": 11.131752674027613,
-      "rmse": 12.947779103584828,
-      "mape_percent": 9.375348315470559
+      "forecast_origins": 1,
+      "training_target_start_index": 365,
+      "mae": 9.403946263739783,
+      "rmse": 10.830935099362954,
+      "mape_percent": 7.9961780336414545,
+      "n_observations": 60,
+      "mape_n_observations": 60
     }
   ]
 }

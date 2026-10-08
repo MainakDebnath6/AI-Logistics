@@ -1,0 +1,112 @@
+{
+  "configuration": {
+    "seed": 20261008,
+    "observations": 730,
+    "training_days": 670,
+    "holdout_days": 60,
+    "base_demand": 100.0,
+    "linear_growth_per_day": 0.04,
+    "weekly_amplitude": 18.0,
+    "annual_amplitude": 25.0,
+    "annual_period_days": 365.25,
+    "noise_standard_deviation": 5.0,
+    "horizons": [
+      7,
+      14,
+      30,
+      60
+    ],
+    "start_date": "2024-01-01"
+  },
+  "methodology": {
+    "capacity_interpretation": "available capacity for one daily planning period, matching daily forecast demand units",
+    "horizon_gate_days": 14,
+    "preparation_action": "warning only; no candidate fleet or dispatch preparation policy is present"
+  },
+  "results": [
+    {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
+      "scenario_id": 0,
+      "forecast_lead_days": 1,
+      "forecast_demand": 86.84672073580487,
+      "available_capacity": 100.0,
+      "capacity_delta": -13.153279264195135,
+      "rho": 0.8684672073580486,
+      "capacity_risk": 0.0,
+      "preparation_intervention": false
+    },
+    {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
+      "scenario_id": 1,
+      "forecast_lead_days": 12,
+      "forecast_demand": 125.11628152932917,
+      "available_capacity": 100.0,
+      "capacity_delta": 25.11628152932917,
+      "rho": 1.2511628152932917,
+      "capacity_risk": 25.11628152932917,
+      "preparation_intervention": true
+    },
+    {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
+      "scenario_id": 2,
+      "forecast_lead_days": 24,
+      "forecast_demand": 112.19129178667845,
+      "available_capacity": 100.0,
+      "capacity_delta": null,
+      "rho": null,
+      "capacity_risk": null,
+      "preparation_intervention": false
+    },
+    {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
+      "scenario_id": 3,
+      "forecast_lead_days": 36,
+      "forecast_demand": 99.22190416467492,
+      "available_capacity": 100.0,
+      "capacity_delta": null,
+      "rho": null,
+      "capacity_risk": null,
+      "preparation_intervention": false
+    },
+    {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
+      "scenario_id": 4,
+      "forecast_lead_days": 48,
+      "forecast_demand": 133.54494231904118,
+      "available_capacity": 100.0,
+      "capacity_delta": null,
+      "rho": null,
+      "capacity_risk": null,
+      "preparation_intervention": false
+    },
+    {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
+      "scenario_id": 5,
+      "forecast_lead_days": 60,
+      "forecast_demand": 141.39525001584843,
+      "available_capacity": 100.0,
+      "capacity_delta": null,
+      "rho": null,
+      "capacity_risk": null,
+      "preparation_intervention": false
+    }
+  ]
+}

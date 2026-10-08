@@ -8,20 +8,22 @@
     "linear_growth_per_day": 0.04,
     "weekly_amplitude": 18.0,
     "annual_amplitude": 25.0,
-    "noise_standard_deviation": 7.0,
+    "annual_period_days": 365.25,
+    "noise_standard_deviation": 5.0,
     "horizons": [
       7,
       14,
       30,
       60
-    ]
+    ],
+    "start_date": "2024-01-01"
   },
   "methodology": {
     "split": "chronological",
     "training_days": 670,
     "holdout_days": 60,
     "models": [
-      "last observation naive",
+      "previous-week seasonal naive",
       "additive weekly Holt-Winters",
       "seasonal linear regression"
     ],
@@ -30,29 +32,51 @@
       0.5,
       0.8
     ],
-    "mape_zero_actual_policy": "zero observations excluded"
+    "forecast_origin_method": "expanding-window rolling origins; past holdout observations become history only after their date",
+    "mape_zero_actual_policy": "zero actual values excluded from MAPE denominator; all observations remain in MAE/RMSE"
   },
   "results": [
     {
-      "model": "naive_last_value",
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
+      "model": "naive_previous_week",
       "horizon_days": 60,
-      "mae": 23.55491466246219,
-      "rmse": 27.47941160531561,
-      "mape_percent": 19.259595738440282
+      "forecast_origins": 1,
+      "mae": 12.753030507563334,
+      "rmse": 15.023389433824354,
+      "mape_percent": 10.927764673411957,
+      "n_observations": 60,
+      "mape_n_observations": 60
     },
     {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
       "model": "holt_winters_weekly",
       "horizon_days": 60,
-      "mae": 21.44090129835623,
-      "rmse": 25.46935242590355,
-      "mape_percent": 18.03160366125272
+      "forecast_origins": 1,
+      "mae": 16.5457729399259,
+      "rmse": 19.675936869595137,
+      "mape_percent": 13.963287460059881,
+      "n_observations": 60,
+      "mape_n_observations": 60
     },
     {
+      "seed": 20261008,
+      "dataset_size": 730,
+      "train_size": 670,
+      "test_size": 60,
       "model": "seasonal_linear_regression",
       "horizon_days": 60,
-      "mae": 6.3645546374600945,
-      "rmse": 8.03832599976096,
-      "mape_percent": 5.786667371385101
+      "forecast_origins": 1,
+      "mae": 4.545576083993149,
+      "rmse": 5.741068344387386,
+      "mape_percent": 4.107552816432556,
+      "n_observations": 60,
+      "mape_n_observations": 60
     }
   ]
 }

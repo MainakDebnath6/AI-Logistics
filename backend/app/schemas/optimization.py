@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class OptimizationRequest(BaseModel):
@@ -13,6 +13,18 @@ class OptimizationRequest(BaseModel):
 	time_windows_enabled: bool = False
 	priority_enabled: bool = False
 	optimization_timeout_seconds: int = 5
+	depot_latitude: float | None = Field(default=None, ge=-90.0, le=90.0)
+	depot_longitude: float | None = Field(default=None, ge=-180.0, le=180.0)
+
+	@model_validator(mode="after")
+	def validate_depot_coordinates(self) -> "OptimizationRequest":
+		if (self.depot_latitude is None) != (self.depot_longitude is None):
+			raise ValueError("depot_latitude and depot_longitude must be provided together.")
+		for field_name in ("driver_ids", "vehicle_ids", "order_ids"):
+			values = getattr(self, field_name)
+			if len(values) != len(set(values)):
+				raise ValueError(f"{field_name} must not contain duplicate identifiers.")
+		return self
 
 
 class OptimizationDriver(BaseModel):
@@ -69,6 +81,7 @@ class OptimizedRoute(BaseModel):
 	road_geometry: list[RouteCoordinate] = []
 	distance: float | None = None
 	duration: float | None = None
+	road_distance_km: float | None = None
 
 
 class OptimizationResponse(BaseModel):
@@ -79,4 +92,7 @@ class OptimizationResponse(BaseModel):
 	total_distance_km: float
 	total_orders: int
 	total_routes: int
-	routes: list[OptimizedRoute]
+	routes: list[OptimizedRoute] = Field(default_factory=list)
+	requested_orders: int | None = None
+	served_order_ids: list[UUID] = Field(default_factory=list)
+	unserved_order_ids: list[UUID] = Field(default_factory=list)
