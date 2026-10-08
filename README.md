@@ -413,3 +413,53 @@ VITE_API_BASE_URL=
 # ⭐ Support
 
 If you found this project useful, consider giving it a ⭐ on GitHub!
+
+---
+
+# Research and Demo Commands
+
+Run these commands from the repository root after installing `requirements.txt`.
+
+## Database and tests
+
+Start PostgreSQL using the local Docker Compose configuration, then apply migrations:
+
+```bash
+alembic upgrade head
+```
+
+Run the test suite:
+
+```bash
+python -m pytest
+```
+
+## Development demo data
+
+Demo data is never inserted automatically. After migrations, set `ENVIRONMENT=development` (or `demo`) and provide `DEMO_ADMIN_PASSWORD` and `DEMO_DRIVER_PASSWORD` in the environment. From the `backend` directory, run:
+
+```bash
+python -m scripts.seed_demo
+```
+
+The command uses stable IDs, skips previously seeded entities, refuses key collisions, and does not update existing records. It refuses to run when `ENVIRONMENT=production`.
+
+## HGFCI advisory
+
+`POST /predictions/hgfc/from-history` accepts daily historical demand, available capacity in the same workload units over the requested horizon, and `horizon_days`. It forecasts cumulative workload using the existing smoothing fallback or injected one-step model, then returns the horizon-gated advisory. The default maximum advisory horizon is 14 days and is configurable with `HGFC_MAX_HORIZON_DAYS`. Forecast values do not enter route optimization; `/optimization/optimize` continues to use confirmed order demand and vehicle capacity only.
+
+The zero-capacity ratio is undefined and returned as `null`; absolute capacity risk and recommended additional capacity remain defined. The preparation signal is a direct recommendation for positive forecast shortfall, not a validated staffing policy.
+
+## Reproducing research outputs
+
+Run all research experiments from the repository root:
+
+```bash
+python -m experiments.run_all
+```
+
+Forecast comparison, feature ablation, horizon sensitivity, and paired routing CSV/JSON files are written under `experiments/results/`. The synthetic daily series uses seed `20261008`, 730 days, the first 670 days for training, and the last 60 days for holdout. Its declared generator combines linear growth, weekly and annual sinusoidal components, and Gaussian noise. Horizon sensitivity uses a single fixed forecast origin; it is not a rolling-origin statistical study.
+
+The model families and feature definitions, metric policies, fleet geometry, and capacity assumptions are recorded in each JSON output. The controlled routing experiment uses identical confirmed orders, vehicles, and OR-Tools settings in both arms. Forecast-aware output is advisory only, so route outcomes should match; only preparation recommendations can differ. No paired significance test is reported when all operational paired differences are zero. Delivery cost is omitted because no cost model is defined in the application.
+
+These synthetic experiments are executable baselines, not reproduction of paper-specific results or evidence of a causal operational benefit. They do not add seasonal regression or Holt-Winters models to the production forecast API.

@@ -18,9 +18,11 @@ class Settings(BaseSettings):
     database_url: str = Field(
         default="postgresql+psycopg://postgres:postgres@localhost:5432/ai_logistics"
     )
+    environment: str = Field(default="development")
     secret_key: str = Field(default="change-me")
     algorithm: str = Field(default="HS256")
     access_token_expire_minutes: int = Field(default=30)
+    hgfc_max_horizon_days: int = Field(default=14, ge=1)
 
     DEFAULT_OPTIMIZATION_TIMEOUT_SECONDS: int = Field(default=5)
     DEFAULT_LOCAL_SEARCH: str = Field(default="GUIDED_LOCAL_SEARCH")

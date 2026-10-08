@@ -1,0 +1,82 @@
+{
+  "configuration": {
+    "scenario_count": 6,
+    "fleet_size": 4,
+    "vehicle_capacity": 25,
+    "solver_timeout_seconds": 1,
+    "advisory_horizon_days": 14
+  },
+  "scenario_count": 6,
+  "advisory_interventions": 1,
+  "mean_operational_metrics": {
+    "reactive": {
+      "service_level_percent": 33.333333333333336,
+      "fleet_utilization_percent": 31.5,
+      "route_distance_km": 0.9283333333333333,
+      "capacity_shortfall": 15.750462470967577,
+      "route_count": 1.3333333333333333
+    },
+    "hgfc": {
+      "service_level_percent": 33.333333333333336,
+      "fleet_utilization_percent": 31.5,
+      "route_distance_km": 0.9283333333333333,
+      "capacity_shortfall": 15.750462470967577,
+      "route_count": 1.3333333333333333
+    }
+  },
+  "mean_optimization_runtime_seconds": {
+    "reactive": 0.002116533306737741,
+    "hgfc": 0.0007629166357219219
+  },
+  "paired_operational_differences": {
+    "feasible": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "service_level_percent": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fleet_utilization_percent": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "route_distance_km": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "capacity_shortfall": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "route_count": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "paired_inference": "not_applicable_all_operational_pair_differences_are_zero_by_design"
+}

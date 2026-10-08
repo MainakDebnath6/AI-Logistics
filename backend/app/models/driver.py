@@ -5,17 +5,28 @@ from enum import Enum
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
-from app.db.base import Base
-from sqlalchemy import Boolean, DateTime
+from sqlalchemy import (
+    Boolean,
+    DateTime,
+    Float,
+    ForeignKey,
+    Index,
+    Integer,
+    String,
+    func,
+    text,
+)
 from sqlalchemy import Enum as SAEnum
-from sqlalchemy import Float, ForeignKey, Index, Integer, String, func, text
 from sqlalchemy.dialects.postgresql import UUID as PostgreSQLUUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.db.base import Base
 from app.models.order import Order
 
 DRIVER_ORDER_FK = getattr(Order, "assigned_driver_id")
 
 if TYPE_CHECKING:
+    from app.models.route import Route
     from app.models.user import User
     from app.models.vehicle import Vehicle
 
@@ -129,5 +140,11 @@ class Driver(Base):
         "Order",
         back_populates="assigned_driver",
         foreign_keys=[DRIVER_ORDER_FK],
+        lazy="selectin",
+    )
+
+    routes: Mapped[list["Route"]] = relationship(
+        "Route",
+        back_populates="driver",
         lazy="selectin",
     )

@@ -1,0 +1,6469 @@
+{
+  "configuration": {
+    "seed": 20261008,
+    "observations": 730,
+    "training_days": 670,
+    "holdout_days": 60,
+    "base_demand": 100.0,
+    "linear_growth_per_day": 0.04,
+    "weekly_amplitude": 18.0,
+    "annual_amplitude": 25.0,
+    "noise_standard_deviation": 7.0,
+    "horizons": [
+      7,
+      14,
+      30,
+      60
+    ]
+  },
+  "methodology": {
+    "observation_unit": "daily demand",
+    "train_test_order": "chronological; no shuffling"
+  },
+  "results": [
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 15,
+      "actual": 100.87250906770576,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 16,
+      "actual": 103.13355277228213,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 17,
+      "actual": 104.57384615985805,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 18,
+      "actual": 112.91835402942343,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 19,
+      "actual": 132.80170115859426,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 20,
+      "actual": 116.68636998892774,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 21,
+      "actual": 104.8991730751733,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 22,
+      "actual": 103.87805224332593,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 23,
+      "actual": 110.25902033158948,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 24,
+      "actual": 101.88766097760954,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 25,
+      "actual": 147.72833601207202,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 26,
+      "actual": 130.80859112098878,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 27,
+      "actual": 131.31293118327494,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 28,
+      "actual": 106.07213876396371,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 29,
+      "actual": 83.24064030097124,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 30,
+      "actual": 104.17645605891335,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 31,
+      "actual": 113.36053793426487,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 32,
+      "actual": 128.36976981722705,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 33,
+      "actual": 121.57619138903198,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 34,
+      "actual": 122.62383005225414,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 35,
+      "actual": 113.30146104202817,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 36,
+      "actual": 92.8924756870262,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 37,
+      "actual": 94.63004656611074,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 38,
+      "actual": 115.29052245620282,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 39,
+      "actual": 121.99260855867092,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 40,
+      "actual": 133.0255101141307,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 41,
+      "actual": 129.99403380540164,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 42,
+      "actual": 98.65770783980302,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 43,
+      "actual": 95.09474433887098,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 44,
+      "actual": 117.30559649202367,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 45,
+      "actual": 126.13362033514865,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 46,
+      "actual": 137.83891663575216,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 47,
+      "actual": 135.970652397336,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 48,
+      "actual": 140.9704932389893,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 49,
+      "actual": 121.55928301358107,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 50,
+      "actual": 109.35513038862916,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 51,
+      "actual": 108.52200156026218,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 52,
+      "actual": 119.03623605774726,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 53,
+      "actual": 139.51322003640877,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 54,
+      "actual": 144.34258294738277,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 55,
+      "actual": 123.36455770601205,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 56,
+      "actual": 102.92439078369651,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 57,
+      "actual": 122.26421209702438,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 58,
+      "actual": 116.81487760857743,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 59,
+      "actual": 127.51602275388787,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "naive_last_value",
+      "holdout_day": 60,
+      "actual": 133.57672330897668,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 86.32128139153201
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 90.05416232698755
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 101.69135680813807
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 116.34405963905687
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 117.15801451117582
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 111.05603637806591
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 92.19059906721061
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 84.10523205492615
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 87.83811299038167
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 99.47530747153219
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 114.128010302451
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 114.94196517456994
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 108.83998704146003
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 89.97454973060474
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 15,
+      "actual": 100.87250906770576,
+      "predicted": 81.88918271832028
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 16,
+      "actual": 103.13355277228213,
+      "predicted": 85.62206365377581
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 17,
+      "actual": 104.57384615985805,
+      "predicted": 97.25925813492633
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 18,
+      "actual": 112.91835402942343,
+      "predicted": 111.91196096584514
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 19,
+      "actual": 132.80170115859426,
+      "predicted": 112.72591583796408
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 20,
+      "actual": 116.68636998892774,
+      "predicted": 106.62393770485417
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 21,
+      "actual": 104.8991730751733,
+      "predicted": 87.75850039399887
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 22,
+      "actual": 103.87805224332593,
+      "predicted": 79.67313338171442
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 23,
+      "actual": 110.25902033158948,
+      "predicted": 83.40601431716993
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 24,
+      "actual": 101.88766097760954,
+      "predicted": 95.04320879832045
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 25,
+      "actual": 147.72833601207202,
+      "predicted": 109.69591162923925
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 26,
+      "actual": 130.80859112098878,
+      "predicted": 110.5098665013582
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 27,
+      "actual": 131.31293118327494,
+      "predicted": 104.4078883682483
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 28,
+      "actual": 106.07213876396371,
+      "predicted": 85.542451057393
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 29,
+      "actual": 83.24064030097124,
+      "predicted": 77.45708404510853
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 30,
+      "actual": 104.17645605891335,
+      "predicted": 81.18996498056407
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 31,
+      "actual": 113.36053793426487,
+      "predicted": 92.82715946171459
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 32,
+      "actual": 128.36976981722705,
+      "predicted": 107.47986229263338
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 33,
+      "actual": 121.57619138903198,
+      "predicted": 108.29381716475234
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 34,
+      "actual": 122.62383005225414,
+      "predicted": 102.19183903164243
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 35,
+      "actual": 113.30146104202817,
+      "predicted": 83.32640172078713
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 36,
+      "actual": 92.8924756870262,
+      "predicted": 75.24103470850267
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 37,
+      "actual": 94.63004656611074,
+      "predicted": 78.97391564395821
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 38,
+      "actual": 115.29052245620282,
+      "predicted": 90.61111012510872
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 39,
+      "actual": 121.99260855867092,
+      "predicted": 105.26381295602752
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 40,
+      "actual": 133.0255101141307,
+      "predicted": 106.07776782814646
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 41,
+      "actual": 129.99403380540164,
+      "predicted": 99.97578969503655
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 42,
+      "actual": 98.65770783980302,
+      "predicted": 81.11035238418125
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 43,
+      "actual": 95.09474433887098,
+      "predicted": 73.0249853718968
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 44,
+      "actual": 117.30559649202367,
+      "predicted": 76.75786630735233
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 45,
+      "actual": 126.13362033514865,
+      "predicted": 88.39506078850285
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 46,
+      "actual": 137.83891663575216,
+      "predicted": 103.04776361942166
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 47,
+      "actual": 135.970652397336,
+      "predicted": 103.8617184915406
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 48,
+      "actual": 140.9704932389893,
+      "predicted": 97.75974035843069
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 49,
+      "actual": 121.55928301358107,
+      "predicted": 78.89430304757539
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 50,
+      "actual": 109.35513038862916,
+      "predicted": 70.80893603529094
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 51,
+      "actual": 108.52200156026218,
+      "predicted": 74.54181697074645
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 52,
+      "actual": 119.03623605774726,
+      "predicted": 86.17901145189697
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 53,
+      "actual": 139.51322003640877,
+      "predicted": 100.83171428281577
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 54,
+      "actual": 144.34258294738277,
+      "predicted": 101.64566915493472
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 55,
+      "actual": 123.36455770601205,
+      "predicted": 95.54369102182481
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 56,
+      "actual": 102.92439078369651,
+      "predicted": 76.67825371096951
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 57,
+      "actual": 122.26421209702438,
+      "predicted": 68.59288669868505
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 58,
+      "actual": 116.81487760857743,
+      "predicted": 72.32576763414059
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 59,
+      "actual": 127.51602275388787,
+      "predicted": 83.9629621152911
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "holt_winters_weekly",
+      "holdout_day": 60,
+      "actual": 133.57672330897668,
+      "predicted": 98.6156649462099
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 86.61648292476093
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 91.96953574076451
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 101.79465102741005
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 121.27423297094128
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 122.27165197906015
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 114.1340624583463
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 100.49692945287143
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 88.39760411615998
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 94.5391650193651
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 105.44266737696444
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 120.72118255235182
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 124.90752012375924
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 116.20324269442108
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 102.15254788701077
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 15,
+      "actual": 100.87250906770576,
+      "predicted": 91.75896748941113
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 16,
+      "actual": 103.13355277228213,
+      "predicted": 95.35952554039932
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 17,
+      "actual": 104.57384615985805,
+      "predicted": 109.19404377323963
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 18,
+      "actual": 112.91835402942343,
+      "predicted": 125.4302876138463
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 19,
+      "actual": 132.80170115859426,
+      "predicted": 126.86762207777338
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 20,
+      "actual": 116.68636998892774,
+      "predicted": 118.0690662878228
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 21,
+      "actual": 104.8991730751733,
+      "predicted": 103.49523826997938
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 22,
+      "actual": 103.87805224332593,
+      "predicted": 92.2084991771817
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 23,
+      "actual": 110.25902033158948,
+      "predicted": 97.37263676141993
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 24,
+      "actual": 101.88766097760954,
+      "predicted": 112.16206235721666
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 25,
+      "actual": 147.72833601207202,
+      "predicted": 126.3942847643957
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 26,
+      "actual": 130.80859112098878,
+      "predicted": 130.5437588615714
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 27,
+      "actual": 131.31293118327494,
+      "predicted": 121.84019010841985
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 28,
+      "actual": 106.07213876396371,
+      "predicted": 107.16709970438524
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 29,
+      "actual": 83.24064030097124,
+      "predicted": 96.61691228441487
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 30,
+      "actual": 104.17645605891335,
+      "predicted": 101.73402440676591
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 31,
+      "actual": 113.36053793426487,
+      "predicted": 114.88792601865816
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 32,
+      "actual": 128.36976981722705,
+      "predicted": 130.2899021006342
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 33,
+      "actual": 121.57619138903198,
+      "predicted": 134.0122365826178
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 34,
+      "actual": 122.62383005225414,
+      "predicted": 127.50300144457105
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 35,
+      "actual": 113.30146104202817,
+      "predicted": 110.78288329022962
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 36,
+      "actual": 92.8924756870262,
+      "predicted": 99.0920447222702
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 37,
+      "actual": 94.63004656611074,
+      "predicted": 106.64472407175663
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 38,
+      "actual": 115.29052245620282,
+      "predicted": 119.25772074385941
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 39,
+      "actual": 121.99260855867092,
+      "predicted": 133.4707461914909
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 40,
+      "actual": 133.0255101141307,
+      "predicted": 137.14060928185336
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 41,
+      "actual": 129.99403380540164,
+      "predicted": 128.66438136358556
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 42,
+      "actual": 98.65770783980302,
+      "predicted": 113.5975164660199
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 43,
+      "actual": 95.09474433887098,
+      "predicted": 104.32384413121463
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 44,
+      "actual": 117.30559649202367,
+      "predicted": 110.7145779954235
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 45,
+      "actual": 126.13362033514865,
+      "predicted": 122.3455112300162
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 46,
+      "actual": 137.83891663575216,
+      "predicted": 139.48185396076906
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 47,
+      "actual": 135.970652397336,
+      "predicted": 143.04427482808705
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 48,
+      "actual": 140.9704932389893,
+      "predicted": 134.8799818186435
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 49,
+      "actual": 121.55928301358107,
+      "predicted": 117.61524342608027
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 50,
+      "actual": 109.35513038862916,
+      "predicted": 107.70678024679637
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 51,
+      "actual": 108.52200156026218,
+      "predicted": 111.56665412017037
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 52,
+      "actual": 119.03623605774726,
+      "predicted": 124.16060842489878
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 53,
+      "actual": 139.51322003640877,
+      "predicted": 140.20002327204247
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 54,
+      "actual": 144.34258294738277,
+      "predicted": 143.51305781326664
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 55,
+      "actual": 123.36455770601205,
+      "predicted": 135.66182834460005
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 56,
+      "actual": 102.92439078369651,
+      "predicted": 119.6718820796882
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 57,
+      "actual": 122.26421209702438,
+      "predicted": 109.12343525735287
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 58,
+      "actual": 116.81487760857743,
+      "predicted": 114.26353210996876
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 59,
+      "actual": 127.51602275388787,
+      "predicted": 126.516067273516
+    },
+    {
+      "experiment": "forecast_model_comparison",
+      "variant": "seasonal_linear_regression",
+      "holdout_day": 60,
+      "actual": 133.57672330897668,
+      "predicted": 141.13689885750182
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 86.61648292476093
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 91.96953574076451
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 101.79465102741005
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 121.27423297094128
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 122.27165197906015
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 114.1340624583463
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 100.49692945287143
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 88.39760411615998
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 94.5391650193651
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 105.44266737696444
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 120.72118255235182
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 124.90752012375924
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 116.20324269442108
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 102.15254788701077
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 15,
+      "actual": 100.87250906770576,
+      "predicted": 91.75896748941113
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 16,
+      "actual": 103.13355277228213,
+      "predicted": 95.35952554039932
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 17,
+      "actual": 104.57384615985805,
+      "predicted": 109.19404377323963
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 18,
+      "actual": 112.91835402942343,
+      "predicted": 125.4302876138463
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 19,
+      "actual": 132.80170115859426,
+      "predicted": 126.86762207777338
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 20,
+      "actual": 116.68636998892774,
+      "predicted": 118.0690662878228
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 21,
+      "actual": 104.8991730751733,
+      "predicted": 103.49523826997938
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 22,
+      "actual": 103.87805224332593,
+      "predicted": 92.2084991771817
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 23,
+      "actual": 110.25902033158948,
+      "predicted": 97.37263676141993
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 24,
+      "actual": 101.88766097760954,
+      "predicted": 112.16206235721666
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 25,
+      "actual": 147.72833601207202,
+      "predicted": 126.3942847643957
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 26,
+      "actual": 130.80859112098878,
+      "predicted": 130.5437588615714
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 27,
+      "actual": 131.31293118327494,
+      "predicted": 121.84019010841985
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 28,
+      "actual": 106.07213876396371,
+      "predicted": 107.16709970438524
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 29,
+      "actual": 83.24064030097124,
+      "predicted": 96.61691228441487
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 30,
+      "actual": 104.17645605891335,
+      "predicted": 101.73402440676591
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 31,
+      "actual": 113.36053793426487,
+      "predicted": 114.88792601865816
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 32,
+      "actual": 128.36976981722705,
+      "predicted": 130.2899021006342
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 33,
+      "actual": 121.57619138903198,
+      "predicted": 134.0122365826178
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 34,
+      "actual": 122.62383005225414,
+      "predicted": 127.50300144457105
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 35,
+      "actual": 113.30146104202817,
+      "predicted": 110.78288329022962
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 36,
+      "actual": 92.8924756870262,
+      "predicted": 99.0920447222702
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 37,
+      "actual": 94.63004656611074,
+      "predicted": 106.64472407175663
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 38,
+      "actual": 115.29052245620282,
+      "predicted": 119.25772074385941
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 39,
+      "actual": 121.99260855867092,
+      "predicted": 133.4707461914909
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 40,
+      "actual": 133.0255101141307,
+      "predicted": 137.14060928185336
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 41,
+      "actual": 129.99403380540164,
+      "predicted": 128.66438136358556
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 42,
+      "actual": 98.65770783980302,
+      "predicted": 113.5975164660199
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 43,
+      "actual": 95.09474433887098,
+      "predicted": 104.32384413121463
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 44,
+      "actual": 117.30559649202367,
+      "predicted": 110.7145779954235
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 45,
+      "actual": 126.13362033514865,
+      "predicted": 122.3455112300162
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 46,
+      "actual": 137.83891663575216,
+      "predicted": 139.48185396076906
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 47,
+      "actual": 135.970652397336,
+      "predicted": 143.04427482808705
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 48,
+      "actual": 140.9704932389893,
+      "predicted": 134.8799818186435
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 49,
+      "actual": 121.55928301358107,
+      "predicted": 117.61524342608027
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 50,
+      "actual": 109.35513038862916,
+      "predicted": 107.70678024679637
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 51,
+      "actual": 108.52200156026218,
+      "predicted": 111.56665412017037
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 52,
+      "actual": 119.03623605774726,
+      "predicted": 124.16060842489878
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 53,
+      "actual": 139.51322003640877,
+      "predicted": 140.20002327204247
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 54,
+      "actual": 144.34258294738277,
+      "predicted": 143.51305781326664
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 55,
+      "actual": 123.36455770601205,
+      "predicted": 135.66182834460005
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 56,
+      "actual": 102.92439078369651,
+      "predicted": 119.6718820796882
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 57,
+      "actual": 122.26421209702438,
+      "predicted": 109.12343525735287
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 58,
+      "actual": 116.81487760857743,
+      "predicted": 114.26353210996876
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 59,
+      "actual": 127.51602275388787,
+      "predicted": 126.516067273516
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "full",
+      "holdout_day": 60,
+      "actual": 133.57672330897668,
+      "predicted": 141.13689885750182
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 88.03349546348409
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 95.01816680513184
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 102.31848959458011
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 118.42939670057422
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 119.53311393612876
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 114.92545512528841
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 96.92041550209387
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 91.55038144529044
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 96.27472437048755
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 103.19478470584409
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 125.10967522537703
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 120.26092348806287
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 114.54815876893645
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 100.78975052217902
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 15,
+      "actual": 100.87250906770576,
+      "predicted": 96.01709300755601
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 16,
+      "actual": 103.13355277228213,
+      "predicted": 100.79341794529273
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 17,
+      "actual": 104.57384615985805,
+      "predicted": 107.38809352472845
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 18,
+      "actual": 112.91835402942343,
+      "predicted": 121.61863114840935
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 19,
+      "actual": 132.80170115859426,
+      "predicted": 124.13341775673598
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 20,
+      "actual": 116.68636998892774,
+      "predicted": 118.89906248778516
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 21,
+      "actual": 104.8991730751733,
+      "predicted": 104.71171359149639
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 22,
+      "actual": 103.87805224332593,
+      "predicted": 97.57346490361715
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 23,
+      "actual": 110.25902033158948,
+      "predicted": 103.7487977621995
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 24,
+      "actual": 101.88766097760954,
+      "predicted": 108.22527184571163
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 25,
+      "actual": 147.72833601207202,
+      "predicted": 128.317723183829
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 26,
+      "actual": 130.80859112098878,
+      "predicted": 124.73178750937677
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 27,
+      "actual": 131.31293118327494,
+      "predicted": 119.9156633427151
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 28,
+      "actual": 106.07213876396371,
+      "predicted": 107.51036196613131
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 29,
+      "actual": 83.24064030097124,
+      "predicted": 102.3471715217488
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 30,
+      "actual": 104.17645605891335,
+      "predicted": 107.2179396822421
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 31,
+      "actual": 113.36053793426487,
+      "predicted": 112.42765735887224
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 32,
+      "actual": 128.36976981722705,
+      "predicted": 127.43139736980902
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 33,
+      "actual": 121.57619138903198,
+      "predicted": 128.74340590747624
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 34,
+      "actual": 122.62383005225414,
+      "predicted": 125.0367942321991
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 35,
+      "actual": 113.30146104202817,
+      "predicted": 112.083177686015
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 36,
+      "actual": 92.8924756870262,
+      "predicted": 106.30497264345831
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 37,
+      "actual": 94.63004656611074,
+      "predicted": 111.35672972527436
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 38,
+      "actual": 115.29052245620282,
+      "predicted": 115.37423357284342
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 39,
+      "actual": 121.99260855867092,
+      "predicted": 131.00877273222568
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 40,
+      "actual": 133.0255101141307,
+      "predicted": 130.50772475573012
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 41,
+      "actual": 129.99403380540164,
+      "predicted": 126.7365352505285
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 42,
+      "actual": 98.65770783980302,
+      "predicted": 116.36861660991144
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 43,
+      "actual": 95.09474433887098,
+      "predicted": 112.09699856667157
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 44,
+      "actual": 117.30559649202367,
+      "predicted": 116.30712439643685
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 45,
+      "actual": 126.13362033514865,
+      "predicted": 120.33718032582647
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 46,
+      "actual": 137.83891663575216,
+      "predicted": 133.8781464709159
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 47,
+      "actual": 135.970652397336,
+      "predicted": 135.4034838935222
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 48,
+      "actual": 140.9704932389893,
+      "predicted": 131.59593686301105
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 49,
+      "actual": 121.55928301358107,
+      "predicted": 120.40449896308019
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 50,
+      "actual": 109.35513038862916,
+      "predicted": 114.90461779037378
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 51,
+      "actual": 108.52200156026218,
+      "predicted": 118.1901662644741
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 52,
+      "actual": 119.03623605774726,
+      "predicted": 121.47128327946893
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 53,
+      "actual": 139.51322003640877,
+      "predicted": 135.34792393544012
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 54,
+      "actual": 144.34258294738277,
+      "predicted": 136.04135133604268
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 55,
+      "actual": 123.36455770601205,
+      "predicted": 132.80542737267206
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 56,
+      "actual": 102.92439078369651,
+      "predicted": 123.1891721604411
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 57,
+      "actual": 122.26421209702438,
+      "predicted": 118.36346821178859
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 58,
+      "actual": 116.81487760857743,
+      "predicted": 121.13101159697362
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 59,
+      "actual": 127.51602275388787,
+      "predicted": 123.77295666312375
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly",
+      "holdout_day": 60,
+      "actual": 133.57672330897668,
+      "predicted": 135.6171848403278
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 83.25429528911286
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 87.33063635781332
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 99.47693383146031
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 114.9980589716829
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 117.37483877537181
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 109.48501500005295
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 94.87761778788786
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 81.91859740891891
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 87.09513338489307
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 98.55114807769735
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 114.5435598664717
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 117.17331398125145
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 110.81141756082718
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 94.82655753787947
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 15,
+      "actual": 100.87250906770576,
+      "predicted": 82.5063106903317
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 16,
+      "actual": 103.13355277228213,
+      "predicted": 87.08865835578467
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 17,
+      "actual": 104.57384615985805,
+      "predicted": 100.07839193305176
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 18,
+      "actual": 112.91835402942343,
+      "predicted": 115.68869943017307
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 19,
+      "actual": 132.80170115859426,
+      "predicted": 117.76182041146899
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 20,
+      "actual": 116.68636998892774,
+      "predicted": 110.68986222581509
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 21,
+      "actual": 104.8991730751733,
+      "predicted": 95.09416741233167
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 22,
+      "actual": 103.87805224332593,
+      "predicted": 84.7094919958148
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 23,
+      "actual": 110.25902033158948,
+      "predicted": 88.36467532269921
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 24,
+      "actual": 101.88766097760954,
+      "predicted": 102.49261437586688
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 25,
+      "actual": 147.72833601207202,
+      "predicted": 115.4890516750479
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 26,
+      "actual": 130.80859112098878,
+      "predicted": 120.52710420953554
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 27,
+      "actual": 131.31293118327494,
+      "predicted": 113.35037649040282
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 28,
+      "actual": 106.07213876396371,
+      "predicted": 98.26435111259161
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 29,
+      "actual": 83.24064030097124,
+      "predicted": 86.97306962263417
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 30,
+      "actual": 104.17645605891335,
+      "predicted": 91.47015195497636
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 31,
+      "actual": 113.36053793426487,
+      "predicted": 104.88108491531943
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 32,
+      "actual": 128.36976981722705,
+      "predicted": 120.59073004798904
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 33,
+      "actual": 121.57619138903198,
+      "predicted": 124.44349056516421
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 34,
+      "actual": 122.62383005225414,
+      "predicted": 116.32662731492246
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 35,
+      "actual": 113.30146104202817,
+      "predicted": 101.26086004796423
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 36,
+      "actual": 92.8924756870262,
+      "predicted": 91.60124569544439
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 37,
+      "actual": 94.63004656611074,
+      "predicted": 95.10878989445234
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 38,
+      "actual": 115.29052245620282,
+      "predicted": 108.25326336404567
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 39,
+      "actual": 121.99260855867092,
+      "predicted": 124.29738824523065
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 40,
+      "actual": 133.0255101141307,
+      "predicted": 127.69389917058504
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 41,
+      "actual": 129.99403380540164,
+      "predicted": 120.84528724554639
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 42,
+      "actual": 98.65770783980302,
+      "predicted": 106.28819399555198
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 43,
+      "actual": 95.09474433887098,
+      "predicted": 95.52275248154638
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 44,
+      "actual": 117.30559649202367,
+      "predicted": 99.57635598220111
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 45,
+      "actual": 126.13362033514865,
+      "predicted": 113.86228349005273
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 46,
+      "actual": 137.83891663575216,
+      "predicted": 129.10423392875725
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 47,
+      "actual": 135.970652397336,
+      "predicted": 132.44519720316805
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 48,
+      "actual": 140.9704932389893,
+      "predicted": 124.72688317133782
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 49,
+      "actual": 121.55928301358107,
+      "predicted": 110.25903394138936
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 50,
+      "actual": 109.35513038862916,
+      "predicted": 98.73477032973005
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 51,
+      "actual": 108.52200156026218,
+      "predicted": 103.73837179852706
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 52,
+      "actual": 119.03623605774726,
+      "predicted": 117.18287845382702
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 53,
+      "actual": 139.51322003640877,
+      "predicted": 132.9496208940369
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 54,
+      "actual": 144.34258294738277,
+      "predicted": 136.24376066109653
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 55,
+      "actual": 123.36455770601205,
+      "predicted": 128.76906142577684
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 56,
+      "actual": 102.92439078369651,
+      "predicted": 113.78251946880414
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 57,
+      "actual": 122.26421209702438,
+      "predicted": 102.78909255639098
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 58,
+      "actual": 116.81487760857743,
+      "predicted": 107.08844152552854
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 59,
+      "actual": 127.51602275388787,
+      "predicted": 120.31468414005406
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_annual",
+      "holdout_day": 60,
+      "actual": 133.57672330897668,
+      "predicted": 136.54799194381792
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 86.59201363550164
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 91.2428916713452
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 103.28535822156255
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 120.20750815714018
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 122.02499461805519
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 114.68227352968006
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 99.74219572919674
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 89.31223014070974
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 93.79299212170326
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 106.23660518158158
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 121.46557411081176
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 125.01411021898775
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 116.83849164964795
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 102.54381982366021
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 15,
+      "actual": 100.87250906770576,
+      "predicted": 92.09582313583451
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 16,
+      "actual": 103.13355277228213,
+      "predicted": 96.12835130416124
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 17,
+      "actual": 104.57384615985805,
+      "predicted": 109.29834590143446
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 18,
+      "actual": 112.91835402942343,
+      "predicted": 124.57473574833284
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 19,
+      "actual": 132.80170115859426,
+      "predicted": 127.13204892975136
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 20,
+      "actual": 116.68636998892774,
+      "predicted": 118.70723959099132
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 21,
+      "actual": 104.8991730751733,
+      "predicted": 103.55867945843283
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 22,
+      "actual": 103.87805224332593,
+      "predicted": 92.62372653372904
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 23,
+      "actual": 110.25902033158948,
+      "predicted": 98.1628146098501
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 24,
+      "actual": 101.88766097760954,
+      "predicted": 111.53389991865333
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 25,
+      "actual": 147.72833601207202,
+      "predicted": 127.27703176607929
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 26,
+      "actual": 130.80859112098878,
+      "predicted": 129.76056154749722
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 27,
+      "actual": 131.31293118327494,
+      "predicted": 121.845805247096
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 28,
+      "actual": 106.07213876396371,
+      "predicted": 107.00301612478961
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 29,
+      "actual": 83.24064030097124,
+      "predicted": 96.84249226199245
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 30,
+      "actual": 104.17645605891335,
+      "predicted": 101.80083747007347
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 31,
+      "actual": 113.36053793426487,
+      "predicted": 114.81686323411577
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 32,
+      "actual": 128.36976981722705,
+      "predicted": 130.61548292088264
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 33,
+      "actual": 121.57619138903198,
+      "predicted": 134.26823603558842
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 34,
+      "actual": 122.62383005225414,
+      "predicted": 127.11335711160518
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 35,
+      "actual": 113.30146104202817,
+      "predicted": 110.92324374337386
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 36,
+      "actual": 92.8924756870262,
+      "predicted": 100.1486674389489
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 37,
+      "actual": 94.63004656611074,
+      "predicted": 106.45691249647871
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 38,
+      "actual": 115.29052245620282,
+      "predicted": 118.7881331033459
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 39,
+      "actual": 121.99260855867092,
+      "predicted": 133.53949571177873
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 40,
+      "actual": 133.0255101141307,
+      "predicted": 137.01499788564843
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 41,
+      "actual": 129.99403380540164,
+      "predicted": 129.0686172024998
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 42,
+      "actual": 98.65770783980302,
+      "predicted": 114.40384883139632
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 43,
+      "actual": 95.09474433887098,
+      "predicted": 104.96823305159887
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 44,
+      "actual": 117.30559649202367,
+      "predicted": 110.45126424400132
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 45,
+      "actual": 126.13362033514865,
+      "predicted": 122.94390139341749
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 46,
+      "actual": 137.83891663575216,
+      "predicted": 139.51107853129452
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 47,
+      "actual": 135.970652397336,
+      "predicted": 142.62424045892067
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 48,
+      "actual": 140.9704932389893,
+      "predicted": 134.21068125696502
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 49,
+      "actual": 121.55928301358107,
+      "predicted": 117.76792636435312
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 50,
+      "actual": 109.35513038862916,
+      "predicted": 107.37153754033943
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 51,
+      "actual": 108.52200156026218,
+      "predicted": 111.39811901171697
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 52,
+      "actual": 119.03623605774726,
+      "predicted": 124.30415593531825
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 53,
+      "actual": 139.51322003640877,
+      "predicted": 140.1191961011773
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 54,
+      "actual": 144.34258294738277,
+      "predicted": 143.35751789735286
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 55,
+      "actual": 123.36455770601205,
+      "predicted": 135.4426848577782
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 56,
+      "actual": 102.92439078369651,
+      "predicted": 119.73890005154317
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 57,
+      "actual": 122.26421209702438,
+      "predicted": 109.16824921566104
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 58,
+      "actual": 116.81487760857743,
+      "predicted": 113.84908735882436
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 59,
+      "actual": 127.51602275388787,
+      "predicted": 126.23347148014727
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_lags",
+      "holdout_day": 60,
+      "actual": 133.57672330897668,
+      "predicted": 141.3880446508033
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 87.20341522383278
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 92.87447354544886
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 102.87251734439336
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 122.51248252171519
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 123.8275316885314
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 115.28167819938136
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 101.47157554507051
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 88.87627957892917
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 95.26504727720085
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 107.07361786621513
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 121.67696904236541
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 126.8187993443172
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 118.11366824226289
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 103.11746775206142
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 15,
+      "actual": 100.87250906770576,
+      "predicted": 92.29201302184171
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 16,
+      "actual": 103.13355277228213,
+      "predicted": 96.25697749237355
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 17,
+      "actual": 104.57384615985805,
+      "predicted": 110.43412696273838
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 18,
+      "actual": 112.91835402942343,
+      "predicted": 127.14083617644862
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 19,
+      "actual": 132.80170115859426,
+      "predicted": 129.32062604319574
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 20,
+      "actual": 116.68636998892774,
+      "predicted": 121.07326805192123
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 21,
+      "actual": 104.8991730751733,
+      "predicted": 106.29481636593206
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 22,
+      "actual": 103.87805224332593,
+      "predicted": 94.92813017241505
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 23,
+      "actual": 110.25902033158948,
+      "predicted": 99.19860800934653
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 24,
+      "actual": 101.88766097760954,
+      "predicted": 114.2419859117927
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 25,
+      "actual": 147.72833601207202,
+      "predicted": 128.28263890244943
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 26,
+      "actual": 130.80859112098878,
+      "predicted": 133.6290771669152
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 27,
+      "actual": 131.31293118327494,
+      "predicted": 125.02981098172269
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 28,
+      "actual": 106.07213876396371,
+      "predicted": 109.7755702977893
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 29,
+      "actual": 83.24064030097124,
+      "predicted": 98.54656493481602
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 30,
+      "actual": 104.17645605891335,
+      "predicted": 103.55846222895164
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 31,
+      "actual": 113.36053793426487,
+      "predicted": 116.91375354829049
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 32,
+      "actual": 128.36976981722705,
+      "predicted": 132.03548947922508
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 33,
+      "actual": 121.57619138903198,
+      "predicted": 135.64667964635643
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 34,
+      "actual": 122.62383005225414,
+      "predicted": 129.24171517953368
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 35,
+      "actual": 113.30146104202817,
+      "predicted": 113.06401227255533
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 36,
+      "actual": 92.8924756870262,
+      "predicted": 100.98505772027085
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 37,
+      "actual": 94.63004656611074,
+      "predicted": 107.66197067797486
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 38,
+      "actual": 115.29052245620282,
+      "predicted": 121.1925401589357
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 39,
+      "actual": 121.99260855867092,
+      "predicted": 136.1898506130222
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 40,
+      "actual": 133.0255101141307,
+      "predicted": 139.88306378474556
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 41,
+      "actual": 129.99403380540164,
+      "predicted": 131.59252589508984
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 42,
+      "actual": 98.65770783980302,
+      "predicted": 115.66478810991521
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 43,
+      "actual": 95.09474433887098,
+      "predicted": 105.24528659175563
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 44,
+      "actual": 117.30559649202367,
+      "predicted": 111.34780598239324
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 45,
+      "actual": 126.13362033514865,
+      "predicted": 123.29046724641864
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 46,
+      "actual": 137.83891663575216,
+      "predicted": 139.89751379309067
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 47,
+      "actual": 135.970652397336,
+      "predicted": 144.04333467159645
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 48,
+      "actual": 140.9704932389893,
+      "predicted": 136.83122015434773
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 49,
+      "actual": 121.55928301358107,
+      "predicted": 120.26764093415386
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 50,
+      "actual": 109.35513038862916,
+      "predicted": 110.37691580305568
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 51,
+      "actual": 108.52200156026218,
+      "predicted": 114.88815810096528
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 52,
+      "actual": 119.03623605774726,
+      "predicted": 127.70872856909132
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 53,
+      "actual": 139.51322003640877,
+      "predicted": 143.82995096327272
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 54,
+      "actual": 144.34258294738277,
+      "predicted": 147.37193276620144
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 55,
+      "actual": 123.36455770601205,
+      "predicted": 140.01760234898484
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 56,
+      "actual": 102.92439078369651,
+      "predicted": 124.27912767366426
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 57,
+      "actual": 122.26421209702438,
+      "predicted": 113.66926991043752
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 58,
+      "actual": 116.81487760857743,
+      "predicted": 119.12258802538219
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 59,
+      "actual": 127.51602275388787,
+      "predicted": 132.2746911217651
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_rolling",
+      "holdout_day": 60,
+      "actual": 133.57672330897668,
+      "predicted": 147.14919304231404
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 84.49697009691306
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 90.01806136468872
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 97.94426730915745
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 112.53384664056705
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 114.31409295146022
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 109.91601056772072
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 91.26124471846538
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 83.75032086588362
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 87.26689493678771
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 94.1840088538321
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 116.67847085905862
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 111.91390596129725
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 107.91119978760162
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 92.28879740059426
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 15,
+      "actual": 100.87250906770576,
+      "predicted": 84.42848594024645
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 16,
+      "actual": 103.13355277228213,
+      "predicted": 88.56543770518647
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 17,
+      "actual": 104.57384615985805,
+      "predicted": 95.1030886307592
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 18,
+      "actual": 112.91835402942343,
+      "predicted": 109.75910283101666
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 19,
+      "actual": 132.80170115859426,
+      "predicted": 113.11603578793097
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 20,
+      "actual": 116.68636998892774,
+      "predicted": 109.94645155688431
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 21,
+      "actual": 104.8991730751733,
+      "predicted": 94.42642223422922
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 22,
+      "actual": 103.87805224332593,
+      "predicted": 86.09711103585516
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 23,
+      "actual": 110.25902033158948,
+      "predicted": 90.47588105629711
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 24,
+      "actual": 101.88766097760954,
+      "predicted": 94.76443662180009
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 25,
+      "actual": 147.72833601207202,
+      "predicted": 115.27498202251059
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 26,
+      "actual": 130.80859112098878,
+      "predicted": 113.70717062428605
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 27,
+      "actual": 131.31293118327494,
+      "predicted": 111.42302735942837
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 28,
+      "actual": 106.07213876396371,
+      "predicted": 97.4352794306161
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 29,
+      "actual": 83.24064030097124,
+      "predicted": 89.37000483486497
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 30,
+      "actual": 104.17645605891335,
+      "predicted": 92.50056636776503
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 31,
+      "actual": 113.36053793426487,
+      "predicted": 98.11999142485286
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 32,
+      "actual": 128.36976981722705,
+      "predicted": 114.01037193800767
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 33,
+      "actual": 121.57619138903198,
+      "predicted": 116.74741908981184
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 34,
+      "actual": 122.62383005225414,
+      "predicted": 114.00770088476384
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 35,
+      "actual": 113.30146104202817,
+      "predicted": 100.62958933529296
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 36,
+      "actual": 92.8924756870262,
+      "predicted": 93.72789602741875
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 37,
+      "actual": 94.63004656611074,
+      "predicted": 94.95756099359164
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 38,
+      "actual": 115.29052245620282,
+      "predicted": 99.49079236442276
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 39,
+      "actual": 121.99260855867092,
+      "predicted": 117.57141808973677
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 40,
+      "actual": 133.0255101141307,
+      "predicted": 118.72778065742546
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 41,
+      "actual": 129.99403380540164,
+      "predicted": 117.48981527440776
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 42,
+      "actual": 98.65770783980302,
+      "predicted": 105.56579163129516
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 43,
+      "actual": 95.09474433887098,
+      "predicted": 97.84236847475779
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 44,
+      "actual": 117.30559649202367,
+      "predicted": 98.59948650167087
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 45,
+      "actual": 126.13362033514865,
+      "predicted": 104.3692389415113
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 46,
+      "actual": 137.83891663575216,
+      "predicted": 119.02538923824602
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 47,
+      "actual": 135.970652397336,
+      "predicted": 122.11325883969346
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 48,
+      "actual": 140.9704932389893,
+      "predicted": 120.47463856875504
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 49,
+      "actual": 121.55928301358107,
+      "predicted": 109.42689814502046
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 50,
+      "actual": 109.35513038862916,
+      "predicted": 101.14737093961071
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 51,
+      "actual": 108.52200156026218,
+      "predicted": 102.08824321439863
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 52,
+      "actual": 119.03623605774726,
+      "predicted": 106.64201992824178
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 53,
+      "actual": 139.51322003640877,
+      "predicted": 122.32726337295821
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 54,
+      "actual": 144.34258294738277,
+      "predicted": 125.02027522406104
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 55,
+      "actual": 123.36455770601205,
+      "predicted": 124.08899082458663
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 56,
+      "actual": 102.92439078369651,
+      "predicted": 113.59041717411344
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 57,
+      "actual": 122.26421209702438,
+      "predicted": 105.45786132567355
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 58,
+      "actual": 116.81487760857743,
+      "predicted": 105.3344829614997
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 59,
+      "actual": 127.51602275388787,
+      "predicted": 109.87444564562963
+    },
+    {
+      "experiment": "feature_ablation",
+      "variant": "remove_weekly_and_annual",
+      "holdout_day": 60,
+      "actual": 133.57672330897668,
+      "predicted": 124.69499563524607
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 7,
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 7,
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 7,
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 7,
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 7,
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 7,
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 7,
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 7,
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 86.32128139153201
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 7,
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 90.05416232698755
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 7,
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 101.69135680813807
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 7,
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 116.34405963905687
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 7,
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 117.15801451117582
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 7,
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 111.05603637806591
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 7,
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 92.19059906721061
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 7,
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 86.61648292476093
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 7,
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 91.96953574076451
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 7,
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 101.79465102741005
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 7,
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 121.27423297094128
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 7,
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 122.27165197906015
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 7,
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 114.1340624583463
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 7,
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 100.49692945287143
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 14,
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 14,
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 14,
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 14,
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 14,
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 14,
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 14,
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 14,
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 14,
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 14,
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 14,
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 14,
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 14,
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 14,
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 14,
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 86.32128139153201
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 14,
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 90.05416232698755
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 14,
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 101.69135680813807
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 14,
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 116.34405963905687
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 14,
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 117.15801451117582
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 14,
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 111.05603637806591
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 14,
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 92.19059906721061
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 14,
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 84.10523205492615
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 14,
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 87.83811299038167
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 14,
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 99.47530747153219
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 14,
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 114.128010302451
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 14,
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 114.94196517456994
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 14,
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 108.83998704146003
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 14,
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 89.97454973060474
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 14,
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 86.61648292476093
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 14,
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 91.96953574076451
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 14,
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 101.79465102741005
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 14,
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 121.27423297094128
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 14,
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 122.27165197906015
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 14,
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 114.1340624583463
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 14,
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 100.49692945287143
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 14,
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 88.39760411615998
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 14,
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 94.5391650193651
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 14,
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 105.44266737696444
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 14,
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 120.72118255235182
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 14,
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 124.90752012375924
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 14,
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 116.20324269442108
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 14,
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 102.15254788701077
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 15,
+      "actual": 100.87250906770576,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 16,
+      "actual": 103.13355277228213,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 17,
+      "actual": 104.57384615985805,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 18,
+      "actual": 112.91835402942343,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 19,
+      "actual": 132.80170115859426,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 20,
+      "actual": 116.68636998892774,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 21,
+      "actual": 104.8991730751733,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 22,
+      "actual": 103.87805224332593,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 23,
+      "actual": 110.25902033158948,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 24,
+      "actual": 101.88766097760954,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 25,
+      "actual": 147.72833601207202,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 26,
+      "actual": 130.80859112098878,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 27,
+      "actual": 131.31293118327494,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 28,
+      "actual": 106.07213876396371,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 29,
+      "actual": 83.24064030097124,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 30,
+      "holdout_day": 30,
+      "actual": 104.17645605891335,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 86.32128139153201
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 90.05416232698755
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 101.69135680813807
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 116.34405963905687
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 117.15801451117582
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 111.05603637806591
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 92.19059906721061
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 84.10523205492615
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 87.83811299038167
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 99.47530747153219
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 114.128010302451
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 114.94196517456994
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 108.83998704146003
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 89.97454973060474
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 15,
+      "actual": 100.87250906770576,
+      "predicted": 81.88918271832028
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 16,
+      "actual": 103.13355277228213,
+      "predicted": 85.62206365377581
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 17,
+      "actual": 104.57384615985805,
+      "predicted": 97.25925813492633
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 18,
+      "actual": 112.91835402942343,
+      "predicted": 111.91196096584514
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 19,
+      "actual": 132.80170115859426,
+      "predicted": 112.72591583796408
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 20,
+      "actual": 116.68636998892774,
+      "predicted": 106.62393770485417
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 21,
+      "actual": 104.8991730751733,
+      "predicted": 87.75850039399887
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 22,
+      "actual": 103.87805224332593,
+      "predicted": 79.67313338171442
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 23,
+      "actual": 110.25902033158948,
+      "predicted": 83.40601431716993
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 24,
+      "actual": 101.88766097760954,
+      "predicted": 95.04320879832045
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 25,
+      "actual": 147.72833601207202,
+      "predicted": 109.69591162923925
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 26,
+      "actual": 130.80859112098878,
+      "predicted": 110.5098665013582
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 27,
+      "actual": 131.31293118327494,
+      "predicted": 104.4078883682483
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 28,
+      "actual": 106.07213876396371,
+      "predicted": 85.542451057393
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 29,
+      "actual": 83.24064030097124,
+      "predicted": 77.45708404510853
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 30,
+      "holdout_day": 30,
+      "actual": 104.17645605891335,
+      "predicted": 81.18996498056407
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 86.61648292476093
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 91.96953574076451
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 101.79465102741005
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 121.27423297094128
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 122.27165197906015
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 114.1340624583463
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 100.49692945287143
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 88.39760411615998
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 94.5391650193651
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 105.44266737696444
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 120.72118255235182
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 124.90752012375924
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 116.20324269442108
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 102.15254788701077
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 15,
+      "actual": 100.87250906770576,
+      "predicted": 91.75896748941113
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 16,
+      "actual": 103.13355277228213,
+      "predicted": 95.35952554039932
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 17,
+      "actual": 104.57384615985805,
+      "predicted": 109.19404377323963
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 18,
+      "actual": 112.91835402942343,
+      "predicted": 125.4302876138463
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 19,
+      "actual": 132.80170115859426,
+      "predicted": 126.86762207777338
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 20,
+      "actual": 116.68636998892774,
+      "predicted": 118.0690662878228
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 21,
+      "actual": 104.8991730751733,
+      "predicted": 103.49523826997938
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 22,
+      "actual": 103.87805224332593,
+      "predicted": 92.2084991771817
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 23,
+      "actual": 110.25902033158948,
+      "predicted": 97.37263676141993
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 24,
+      "actual": 101.88766097760954,
+      "predicted": 112.16206235721666
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 25,
+      "actual": 147.72833601207202,
+      "predicted": 126.3942847643957
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 26,
+      "actual": 130.80859112098878,
+      "predicted": 130.5437588615714
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 27,
+      "actual": 131.31293118327494,
+      "predicted": 121.84019010841985
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 28,
+      "actual": 106.07213876396371,
+      "predicted": 107.16709970438524
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 29,
+      "actual": 83.24064030097124,
+      "predicted": 96.61691228441487
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "holdout_day": 30,
+      "actual": 104.17645605891335,
+      "predicted": 101.73402440676591
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 15,
+      "actual": 100.87250906770576,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 16,
+      "actual": 103.13355277228213,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 17,
+      "actual": 104.57384615985805,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 18,
+      "actual": 112.91835402942343,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 19,
+      "actual": 132.80170115859426,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 20,
+      "actual": 116.68636998892774,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 21,
+      "actual": 104.8991730751733,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 22,
+      "actual": 103.87805224332593,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 23,
+      "actual": 110.25902033158948,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 24,
+      "actual": 101.88766097760954,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 25,
+      "actual": 147.72833601207202,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 26,
+      "actual": 130.80859112098878,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 27,
+      "actual": 131.31293118327494,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 28,
+      "actual": 106.07213876396371,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 29,
+      "actual": 83.24064030097124,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 30,
+      "actual": 104.17645605891335,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 31,
+      "actual": 113.36053793426487,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 32,
+      "actual": 128.36976981722705,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 33,
+      "actual": 121.57619138903198,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 34,
+      "actual": 122.62383005225414,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 35,
+      "actual": 113.30146104202817,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 36,
+      "actual": 92.8924756870262,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 37,
+      "actual": 94.63004656611074,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 38,
+      "actual": 115.29052245620282,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 39,
+      "actual": 121.99260855867092,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 40,
+      "actual": 133.0255101141307,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 41,
+      "actual": 129.99403380540164,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 42,
+      "actual": 98.65770783980302,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 43,
+      "actual": 95.09474433887098,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 44,
+      "actual": 117.30559649202367,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 45,
+      "actual": 126.13362033514865,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 46,
+      "actual": 137.83891663575216,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 47,
+      "actual": 135.970652397336,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 48,
+      "actual": 140.9704932389893,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 49,
+      "actual": 121.55928301358107,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 50,
+      "actual": 109.35513038862916,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 51,
+      "actual": 108.52200156026218,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 52,
+      "actual": 119.03623605774726,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 53,
+      "actual": 139.51322003640877,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 54,
+      "actual": 144.34258294738277,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 55,
+      "actual": 123.36455770601205,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 56,
+      "actual": 102.92439078369651,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 57,
+      "actual": 122.26421209702438,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 58,
+      "actual": 116.81487760857743,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 59,
+      "actual": 127.51602275388787,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "naive_last_value",
+      "horizon_days": 60,
+      "holdout_day": 60,
+      "actual": 133.57672330897668,
+      "predicted": 92.1577522282034
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 86.32128139153201
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 90.05416232698755
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 101.69135680813807
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 116.34405963905687
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 117.15801451117582
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 111.05603637806591
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 92.19059906721061
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 84.10523205492615
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 87.83811299038167
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 99.47530747153219
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 114.128010302451
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 114.94196517456994
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 108.83998704146003
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 89.97454973060474
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 15,
+      "actual": 100.87250906770576,
+      "predicted": 81.88918271832028
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 16,
+      "actual": 103.13355277228213,
+      "predicted": 85.62206365377581
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 17,
+      "actual": 104.57384615985805,
+      "predicted": 97.25925813492633
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 18,
+      "actual": 112.91835402942343,
+      "predicted": 111.91196096584514
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 19,
+      "actual": 132.80170115859426,
+      "predicted": 112.72591583796408
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 20,
+      "actual": 116.68636998892774,
+      "predicted": 106.62393770485417
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 21,
+      "actual": 104.8991730751733,
+      "predicted": 87.75850039399887
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 22,
+      "actual": 103.87805224332593,
+      "predicted": 79.67313338171442
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 23,
+      "actual": 110.25902033158948,
+      "predicted": 83.40601431716993
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 24,
+      "actual": 101.88766097760954,
+      "predicted": 95.04320879832045
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 25,
+      "actual": 147.72833601207202,
+      "predicted": 109.69591162923925
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 26,
+      "actual": 130.80859112098878,
+      "predicted": 110.5098665013582
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 27,
+      "actual": 131.31293118327494,
+      "predicted": 104.4078883682483
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 28,
+      "actual": 106.07213876396371,
+      "predicted": 85.542451057393
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 29,
+      "actual": 83.24064030097124,
+      "predicted": 77.45708404510853
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 30,
+      "actual": 104.17645605891335,
+      "predicted": 81.18996498056407
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 31,
+      "actual": 113.36053793426487,
+      "predicted": 92.82715946171459
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 32,
+      "actual": 128.36976981722705,
+      "predicted": 107.47986229263338
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 33,
+      "actual": 121.57619138903198,
+      "predicted": 108.29381716475234
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 34,
+      "actual": 122.62383005225414,
+      "predicted": 102.19183903164243
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 35,
+      "actual": 113.30146104202817,
+      "predicted": 83.32640172078713
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 36,
+      "actual": 92.8924756870262,
+      "predicted": 75.24103470850267
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 37,
+      "actual": 94.63004656611074,
+      "predicted": 78.97391564395821
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 38,
+      "actual": 115.29052245620282,
+      "predicted": 90.61111012510872
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 39,
+      "actual": 121.99260855867092,
+      "predicted": 105.26381295602752
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 40,
+      "actual": 133.0255101141307,
+      "predicted": 106.07776782814646
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 41,
+      "actual": 129.99403380540164,
+      "predicted": 99.97578969503655
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 42,
+      "actual": 98.65770783980302,
+      "predicted": 81.11035238418125
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 43,
+      "actual": 95.09474433887098,
+      "predicted": 73.0249853718968
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 44,
+      "actual": 117.30559649202367,
+      "predicted": 76.75786630735233
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 45,
+      "actual": 126.13362033514865,
+      "predicted": 88.39506078850285
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 46,
+      "actual": 137.83891663575216,
+      "predicted": 103.04776361942166
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 47,
+      "actual": 135.970652397336,
+      "predicted": 103.8617184915406
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 48,
+      "actual": 140.9704932389893,
+      "predicted": 97.75974035843069
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 49,
+      "actual": 121.55928301358107,
+      "predicted": 78.89430304757539
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 50,
+      "actual": 109.35513038862916,
+      "predicted": 70.80893603529094
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 51,
+      "actual": 108.52200156026218,
+      "predicted": 74.54181697074645
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 52,
+      "actual": 119.03623605774726,
+      "predicted": 86.17901145189697
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 53,
+      "actual": 139.51322003640877,
+      "predicted": 100.83171428281577
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 54,
+      "actual": 144.34258294738277,
+      "predicted": 101.64566915493472
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 55,
+      "actual": 123.36455770601205,
+      "predicted": 95.54369102182481
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 56,
+      "actual": 102.92439078369651,
+      "predicted": 76.67825371096951
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 57,
+      "actual": 122.26421209702438,
+      "predicted": 68.59288669868505
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 58,
+      "actual": 116.81487760857743,
+      "predicted": 72.32576763414059
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 59,
+      "actual": 127.51602275388787,
+      "predicted": 83.9629621152911
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "holt_winters_weekly",
+      "horizon_days": 60,
+      "holdout_day": 60,
+      "actual": 133.57672330897668,
+      "predicted": 98.6156649462099
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 1,
+      "actual": 96.17804432962056,
+      "predicted": 86.61648292476093
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 2,
+      "actual": 87.0667331206747,
+      "predicted": 91.96953574076451
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 3,
+      "actual": 106.13969411632246,
+      "predicted": 101.79465102741005
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 4,
+      "actual": 119.69361839246484,
+      "predicted": 121.27423297094128
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 5,
+      "actual": 121.71521756481621,
+      "predicted": 122.27165197906015
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 6,
+      "actual": 109.83030945475775,
+      "predicted": 114.1340624583463
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 7,
+      "actual": 104.55301668736803,
+      "predicted": 100.49692945287143
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 8,
+      "actual": 84.14044729793817,
+      "predicted": 88.39760411615998
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 9,
+      "actual": 87.0557439942152,
+      "predicted": 94.5391650193651
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 10,
+      "actual": 104.61858428430628,
+      "predicted": 105.44266737696444
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 11,
+      "actual": 133.43247771103927,
+      "predicted": 120.72118255235182
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 12,
+      "actual": 118.06789730022994,
+      "predicted": 124.90752012375924
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 13,
+      "actual": 116.55810834181058,
+      "predicted": 116.20324269442108
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 14,
+      "actual": 87.9275622171964,
+      "predicted": 102.15254788701077
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 15,
+      "actual": 100.87250906770576,
+      "predicted": 91.75896748941113
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 16,
+      "actual": 103.13355277228213,
+      "predicted": 95.35952554039932
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 17,
+      "actual": 104.57384615985805,
+      "predicted": 109.19404377323963
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 18,
+      "actual": 112.91835402942343,
+      "predicted": 125.4302876138463
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 19,
+      "actual": 132.80170115859426,
+      "predicted": 126.86762207777338
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 20,
+      "actual": 116.68636998892774,
+      "predicted": 118.0690662878228
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 21,
+      "actual": 104.8991730751733,
+      "predicted": 103.49523826997938
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 22,
+      "actual": 103.87805224332593,
+      "predicted": 92.2084991771817
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 23,
+      "actual": 110.25902033158948,
+      "predicted": 97.37263676141993
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 24,
+      "actual": 101.88766097760954,
+      "predicted": 112.16206235721666
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 25,
+      "actual": 147.72833601207202,
+      "predicted": 126.3942847643957
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 26,
+      "actual": 130.80859112098878,
+      "predicted": 130.5437588615714
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 27,
+      "actual": 131.31293118327494,
+      "predicted": 121.84019010841985
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 28,
+      "actual": 106.07213876396371,
+      "predicted": 107.16709970438524
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 29,
+      "actual": 83.24064030097124,
+      "predicted": 96.61691228441487
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 30,
+      "actual": 104.17645605891335,
+      "predicted": 101.73402440676591
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 31,
+      "actual": 113.36053793426487,
+      "predicted": 114.88792601865816
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 32,
+      "actual": 128.36976981722705,
+      "predicted": 130.2899021006342
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 33,
+      "actual": 121.57619138903198,
+      "predicted": 134.0122365826178
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 34,
+      "actual": 122.62383005225414,
+      "predicted": 127.50300144457105
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 35,
+      "actual": 113.30146104202817,
+      "predicted": 110.78288329022962
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 36,
+      "actual": 92.8924756870262,
+      "predicted": 99.0920447222702
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 37,
+      "actual": 94.63004656611074,
+      "predicted": 106.64472407175663
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 38,
+      "actual": 115.29052245620282,
+      "predicted": 119.25772074385941
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 39,
+      "actual": 121.99260855867092,
+      "predicted": 133.4707461914909
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 40,
+      "actual": 133.0255101141307,
+      "predicted": 137.14060928185336
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 41,
+      "actual": 129.99403380540164,
+      "predicted": 128.66438136358556
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 42,
+      "actual": 98.65770783980302,
+      "predicted": 113.5975164660199
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 43,
+      "actual": 95.09474433887098,
+      "predicted": 104.32384413121463
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 44,
+      "actual": 117.30559649202367,
+      "predicted": 110.7145779954235
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 45,
+      "actual": 126.13362033514865,
+      "predicted": 122.3455112300162
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 46,
+      "actual": 137.83891663575216,
+      "predicted": 139.48185396076906
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 47,
+      "actual": 135.970652397336,
+      "predicted": 143.04427482808705
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 48,
+      "actual": 140.9704932389893,
+      "predicted": 134.8799818186435
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 49,
+      "actual": 121.55928301358107,
+      "predicted": 117.61524342608027
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 50,
+      "actual": 109.35513038862916,
+      "predicted": 107.70678024679637
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 51,
+      "actual": 108.52200156026218,
+      "predicted": 111.56665412017037
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 52,
+      "actual": 119.03623605774726,
+      "predicted": 124.16060842489878
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 53,
+      "actual": 139.51322003640877,
+      "predicted": 140.20002327204247
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 54,
+      "actual": 144.34258294738277,
+      "predicted": 143.51305781326664
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 55,
+      "actual": 123.36455770601205,
+      "predicted": 135.66182834460005
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 56,
+      "actual": 102.92439078369651,
+      "predicted": 119.6718820796882
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 57,
+      "actual": 122.26421209702438,
+      "predicted": 109.12343525735287
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 58,
+      "actual": 116.81487760857743,
+      "predicted": 114.26353210996876
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 59,
+      "actual": 127.51602275388787,
+      "predicted": 126.516067273516
+    },
+    {
+      "experiment": "horizon_sensitivity",
+      "variant": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "holdout_day": 60,
+      "actual": 133.57672330897668,
+      "predicted": 141.13689885750182
+    }
+  ]
+}

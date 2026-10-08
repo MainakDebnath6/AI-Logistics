@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from sqlalchemy import DateTime, Float, ForeignKey, Index, Integer, func
+from sqlalchemy import JSON, DateTime, Float, ForeignKey, Index, Integer, func
 from sqlalchemy.dialects.postgresql import UUID as PGUUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -39,6 +39,7 @@ class Route(Base):
     )
     total_distance_km: Mapped[float] = mapped_column(Float, nullable=False)
     total_load: Mapped[int] = mapped_column(Integer, nullable=False)
+    optimization_result: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
     optimization_started_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
         nullable=True,

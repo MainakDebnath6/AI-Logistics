@@ -1,0 +1,58 @@
+{
+  "configuration": {
+    "seed": 20261008,
+    "observations": 730,
+    "training_days": 670,
+    "holdout_days": 60,
+    "base_demand": 100.0,
+    "linear_growth_per_day": 0.04,
+    "weekly_amplitude": 18.0,
+    "annual_amplitude": 25.0,
+    "noise_standard_deviation": 7.0,
+    "horizons": [
+      7,
+      14,
+      30,
+      60
+    ]
+  },
+  "methodology": {
+    "split": "chronological",
+    "training_days": 670,
+    "holdout_days": 60,
+    "models": [
+      "last observation naive",
+      "additive weekly Holt-Winters",
+      "seasonal linear regression"
+    ],
+    "holt_winters_gain_grid": [
+      0.2,
+      0.5,
+      0.8
+    ],
+    "mape_zero_actual_policy": "zero observations excluded"
+  },
+  "results": [
+    {
+      "model": "naive_last_value",
+      "horizon_days": 60,
+      "mae": 23.55491466246219,
+      "rmse": 27.47941160531561,
+      "mape_percent": 19.259595738440282
+    },
+    {
+      "model": "holt_winters_weekly",
+      "horizon_days": 60,
+      "mae": 21.44090129835623,
+      "rmse": 25.46935242590355,
+      "mape_percent": 18.03160366125272
+    },
+    {
+      "model": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "mae": 6.3645546374600945,
+      "rmse": 8.03832599976096,
+      "mape_percent": 5.786667371385101
+    }
+  ]
+}

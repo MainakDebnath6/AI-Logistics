@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+from datetime import datetime, timezone
 from typing import Sequence, TypedDict
 
 from ortools.constraint_solver import pywrapcp, routing_enums_pb2
@@ -125,10 +126,17 @@ class RouteOptimizerService:
 		search_parameters.time_limit.FromSeconds(self._resolve_timeout_seconds())
 
 		if self._runtime_time_windows_enabled(orders):
+			def time_callback(from_index: int, to_index: int) -> int:
+				from_node = manager.IndexToNode(from_index)
+				to_node = manager.IndexToNode(to_index)
+				distance_m = data["distance_matrix"][from_node][to_node]
+				return self._estimate_travel_time_minutes(distance_m)
+
+			time_transit_callback_index = routing.RegisterTransitCallback(time_callback)
 			self._add_time_windows_constraint(
 				routing=routing,
 				manager=manager,
-				transit_callback_index=transit_callback_index,
+				transit_callback_index=time_transit_callback_index,
 				orders=orders,
 			)
 
@@ -408,6 +416,17 @@ class RouteOptimizerService:
 
 	def _estimate_duration_minutes(self, distance_m: int) -> float:
 		"""Estimate route duration from distance and configured average speed."""
+		average_speed_kmph = self._average_speed_kmph()
+		distance_km = float(distance_m) / 1000.0
+		return round((distance_km / average_speed_kmph) * 60.0, 2)
+
+	def _estimate_travel_time_minutes(self, distance_m: int) -> int:
+		"""Estimate integer travel minutes for the OR-Tools time dimension."""
+		distance_km = float(distance_m) / 1000.0
+		return int(math.ceil((distance_km / self._average_speed_kmph()) * 60.0))
+
+	def _average_speed_kmph(self) -> float:
+		"""Return a positive configured average speed for duration estimates."""
 		average_speed_kmph = float(
 			getattr(
 				self._settings,
@@ -415,9 +434,7 @@ class RouteOptimizerService:
 				35.0,
 			)
 		)
-		safe_speed_kmph = max(average_speed_kmph, 1.0)
-		distance_km = float(distance_m) / 1000.0
-		return round((distance_km / safe_speed_kmph) * 60.0, 2)
+		return max(average_speed_kmph, 1.0)
 
 	@staticmethod
 	def _time_windows_enabled(orders: Sequence[Order], enabled_by_request: bool = False) -> bool:
@@ -479,14 +496,24 @@ class RouteOptimizerService:
 
 	@staticmethod
 	def _extract_time_window(order: Order) -> tuple[int, int] | None:
-		"""Extract a normalized order time window in minutes."""
+		"""Extract an order time window as integer minutes on a UTC timeline."""
 		start = getattr(order, "time_window_start", None)
 		end = getattr(order, "time_window_end", None)
 		if start is None or end is None:
 			return None
 
-		start_min = int(start)
-		end_min = int(end)
+		if isinstance(start, datetime) or isinstance(end, datetime):
+			if not isinstance(start, datetime) or not isinstance(end, datetime):
+				raise ValueError("Time-window bounds must use the same value type.")
+			if start.utcoffset() is None or end.utcoffset() is None:
+				raise ValueError("Datetime time-window bounds must include timezone information.")
+
+			start_min = int(start.astimezone(timezone.utc).timestamp() // 60)
+			end_min = int(end.astimezone(timezone.utc).timestamp() // 60)
+		else:
+			start_min = int(start)
+			end_min = int(end)
+
 		if end_min < start_min:
 			start_min, end_min = end_min, start_min
 		return (start_min, end_min)

@@ -24,6 +24,21 @@ class RouteRepository:
         self.db.refresh(route)
         return route
 
+    def create_many(self, routes: list[Route]) -> list[Route]:
+        """Persist a set of route records atomically."""
+        if not routes:
+            return []
+
+        try:
+            self.db.add_all(routes)
+            self.db.commit()
+            for route in routes:
+                self.db.refresh(route)
+        except Exception:
+            self.db.rollback()
+            raise
+        return routes
+
     def get_by_id(self, route_id: UUID) -> Route | None:
         """Return a route by primary key if it exists."""
 

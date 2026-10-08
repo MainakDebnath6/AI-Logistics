@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+from datetime import datetime, timezone
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -10,15 +11,16 @@ from app.db.session import get_db
 from app.dependencies.auth import get_current_dispatcher
 from app.models.driver import Driver
 from app.models.order import Order
+from app.models.route import Route
 from app.models.user import User
 from app.models.vehicle import Vehicle
 from app.repositories.driver_repository import DriverRepository
 from app.repositories.order_repository import OrderRepository
+from app.repositories.route_repository import RouteRepository
 from app.repositories.vehicle_repository import VehicleRepository
 from app.schemas.optimization import OptimizationRequest, OptimizationResponse
 from app.services.route_optimizer import RouteOptimizerService
 from app.services.routing_service import RoutingService
-
 
 router = APIRouter(
 	prefix="/optimization",
@@ -39,6 +41,11 @@ def get_vehicle_repository(db: Session = Depends(get_db)) -> VehicleRepository:
 def get_order_repository(db: Session = Depends(get_db)) -> OrderRepository:
 	"""Create an order repository instance."""
 	return OrderRepository(db)
+
+
+def get_route_repository(db: Session = Depends(get_db)) -> RouteRepository:  # noqa: B008
+	"""Create a route repository instance."""
+	return RouteRepository(db)
 
 
 def get_routing_service() -> RoutingService:
@@ -106,6 +113,7 @@ def optimize_routes(
 	driver_repository: DriverRepository = Depends(get_driver_repository),
 	vehicle_repository: VehicleRepository = Depends(get_vehicle_repository),
 	order_repository: OrderRepository = Depends(get_order_repository),
+	route_repository: RouteRepository = Depends(get_route_repository),  # noqa: B008
 	optimizer_service: RouteOptimizerService = Depends(get_route_optimizer_service_with_routing),
 ) -> OptimizationResponse:
 	"""Optimize routes for the requested drivers, vehicles, and orders."""
@@ -134,8 +142,9 @@ def optimize_routes(
 		optimization_timeout_seconds=payload.optimization_timeout_seconds,
 	)
 
+	optimization_started_at = datetime.now(timezone.utc)
 	try:
-		return optimizer_service.optimize(
+		result = optimizer_service.optimize(
 			drivers=drivers,
 			vehicles=vehicles,
 			orders=orders,
@@ -150,3 +159,20 @@ def optimize_routes(
 			status_code=status.HTTP_400_BAD_REQUEST,
 			detail=str(error),
 		) from error
+
+	optimization_completed_at = datetime.now(timezone.utc)
+	route_repository.create_many(
+		[
+			Route(
+				driver_id=route.driver.id,
+				vehicle_id=route.vehicle.id,
+				total_distance_km=route.total_distance_km,
+				total_load=route.total_demand,
+				optimization_result=route.model_dump(mode="json"),
+				optimization_started_at=optimization_started_at,
+				optimization_completed_at=optimization_completed_at,
+			)
+			for route in result.routes
+		]
+	)
+	return result

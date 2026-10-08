@@ -1,0 +1,114 @@
+{
+  "configuration": {
+    "seed": 20261008,
+    "observations": 730,
+    "training_days": 670,
+    "holdout_days": 60,
+    "base_demand": 100.0,
+    "linear_growth_per_day": 0.04,
+    "weekly_amplitude": 18.0,
+    "annual_amplitude": 25.0,
+    "noise_standard_deviation": 7.0,
+    "horizons": [
+      7,
+      14,
+      30,
+      60
+    ]
+  },
+  "methodology": {
+    "horizons_days": [
+      7,
+      14,
+      30,
+      60
+    ],
+    "forecast_origins": "single fixed origin at end of training window"
+  },
+  "results": [
+    {
+      "model": "naive_last_value",
+      "horizon_days": 7,
+      "mae": 15.750629469094019,
+      "rmse": 18.265523595703197,
+      "mape_percent": 14.062305385456556
+    },
+    {
+      "model": "holt_winters_weekly",
+      "horizon_days": 7,
+      "mae": 5.541062257585677,
+      "rmse": 6.678190870375157,
+      "mape_percent": 5.336193057409963
+    },
+    {
+      "model": "seasonal_linear_regression",
+      "horizon_days": 7,
+      "mae": 4.186613763523913,
+      "rmse": 4.958721389744356,
+      "mape_percent": 4.177432035231217
+    },
+    {
+      "model": "naive_last_value",
+      "horizon_days": 14,
+      "mae": 16.546426298820787,
+      "rmse": 19.944916886995582,
+      "mape_percent": 14.597085300012628
+    },
+    {
+      "model": "holt_winters_weekly",
+      "horizon_days": 14,
+      "mae": 5.495986085932819,
+      "rmse": 7.490220951876003,
+      "mape_percent": 4.948215517459398
+    },
+    {
+      "model": "seasonal_linear_regression",
+      "horizon_days": 14,
+      "mae": 5.428694755722705,
+      "rmse": 6.854404861210916,
+      "mape_percent": 5.391950625351765
+    },
+    {
+      "model": "naive_last_value",
+      "horizon_days": 30,
+      "mae": 19.006982987712483,
+      "rmse": 22.99208014756792,
+      "mape_percent": 16.242364842769483
+    },
+    {
+      "model": "holt_winters_weekly",
+      "horizon_days": 30,
+      "mae": 12.049226531964411,
+      "rmse": 15.518338437069229,
+      "mape_percent": 10.584434397502536
+    },
+    {
+      "model": "seasonal_linear_regression",
+      "horizon_days": 30,
+      "mae": 6.7185921315630655,
+      "rmse": 8.479539272655952,
+      "mape_percent": 6.295314551943772
+    },
+    {
+      "model": "naive_last_value",
+      "horizon_days": 60,
+      "mae": 23.55491466246219,
+      "rmse": 27.47941160531561,
+      "mape_percent": 19.259595738440282
+    },
+    {
+      "model": "holt_winters_weekly",
+      "horizon_days": 60,
+      "mae": 21.44090129835623,
+      "rmse": 25.46935242590355,
+      "mape_percent": 18.03160366125272
+    },
+    {
+      "model": "seasonal_linear_regression",
+      "horizon_days": 60,
+      "mae": 6.3645546374600945,
+      "rmse": 8.03832599976096,
+      "mape_percent": 5.786667371385101
+    }
+  ]
+}

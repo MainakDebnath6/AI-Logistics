@@ -15,6 +15,7 @@ class RouteCreate(BaseModel):
     vehicle_id: UUID
     total_distance_km: float
     total_load: int
+    optimization_result: dict
     optimization_started_at: datetime | None = None
     optimization_completed_at: datetime | None = None
 
@@ -45,5 +46,6 @@ class RouteSummary(BaseModel):
     vehicle_id: UUID
     total_distance_km: float
     total_load: int
+    optimization_result: dict
     optimization_completed_at: datetime | None = None
     created_at: datetime

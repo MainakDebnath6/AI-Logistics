@@ -37,6 +37,31 @@ class DemandForecastService:
         """Backward-compatible facade using explicit values naming."""
         return self.forecast_demand(historical_demand_values)
 
+    def forecast_demand_for_horizon(
+        self,
+        historical_demand: Sequence[float],
+        horizon_days: int,
+    ) -> float:
+        """Return cumulative workload forecast across successive daily steps."""
+        if horizon_days < 1:
+            raise ValueError("Forecast horizon must be at least one day.")
+
+        history = self._normalize_history(historical_demand)
+        if self._model is None:
+            return round(self._forecast_with_smoothing(history) * horizon_days, 2)
+
+        projected_history = list(history)
+        total_forecast = 0.0
+        for _ in range(horizon_days):
+            features = self._build_feature_row(projected_history)
+            predictions = self._model.predict([features])
+            if len(predictions) == 0:
+                raise ValueError("Prediction model returned no demand value.")
+            predicted_value = max(float(predictions[0]), 0.0)
+            total_forecast += predicted_value
+            projected_history.append(predicted_value)
+        return round(total_forecast, 2)
+
     @staticmethod
     def _normalize_history(historical_demand: Sequence[float]) -> list[float]:
         """Validate and normalize historical demand values."""

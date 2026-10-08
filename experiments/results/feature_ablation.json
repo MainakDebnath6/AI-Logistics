@@ -1,0 +1,75 @@
+{
+  "configuration": {
+    "seed": 20261008,
+    "observations": 730,
+    "training_days": 670,
+    "holdout_days": 60,
+    "base_demand": 100.0,
+    "linear_growth_per_day": 0.04,
+    "weekly_amplitude": 18.0,
+    "annual_amplitude": 25.0,
+    "noise_standard_deviation": 7.0,
+    "horizons": [
+      7,
+      14,
+      30,
+      60
+    ]
+  },
+  "methodology": {
+    "full_model_features": {
+      "weekly": "weekly Fourier terms, harmonics 1-3",
+      "annual": "annual Fourier terms, harmonics 1-2",
+      "lags": "lags 1, 7, 14, 28, and 365 days",
+      "rolling": "trailing means 7, 28, and 365 days"
+    },
+    "baseline_features": [
+      "intercept",
+      "linear time trend"
+    ]
+  },
+  "results": [
+    {
+      "ablation": "full",
+      "horizon_days": 60,
+      "mae": 6.3645546374600945,
+      "rmse": 8.03832599976096,
+      "mape_percent": 5.786667371385101
+    },
+    {
+      "ablation": "remove_weekly",
+      "horizon_days": 60,
+      "mae": 6.283474765579984,
+      "rmse": 8.14904898294609,
+      "mape_percent": 5.820918320472357
+    },
+    {
+      "ablation": "remove_annual",
+      "horizon_days": 60,
+      "mae": 8.450941621141155,
+      "rmse": 10.634393791141973,
+      "mape_percent": 7.238466964815491
+    },
+    {
+      "ablation": "remove_lags",
+      "horizon_days": 60,
+      "mae": 6.3186161474021265,
+      "rmse": 7.963262768313034,
+      "mape_percent": 5.754465100575875
+    },
+    {
+      "ablation": "remove_rolling",
+      "horizon_days": 60,
+      "mae": 7.158396007042757,
+      "rmse": 8.77252975206413,
+      "mape_percent": 6.494090543065963
+    },
+    {
+      "ablation": "remove_weekly_and_annual",
+      "horizon_days": 60,
+      "mae": 11.131752674027613,
+      "rmse": 12.947779103584828,
+      "mape_percent": 9.375348315470559
+    }
+  ]
+}
