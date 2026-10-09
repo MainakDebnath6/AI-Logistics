@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from datetime import datetime, timezone
 from types import SimpleNamespace
 from uuid import uuid4
@@ -30,6 +31,71 @@ from pydantic import ValidationError
 from scripts.seed_demo import seed_demo
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
+
+
+def _cors_response(monkeypatch, origin: str):
+    import app.main as main
+
+    settings = Settings(backend_cors_origins="https://existing.example")
+    monkeypatch.setattr(main, "get_settings", lambda: settings)
+    messages = []
+
+    async def receive():
+        return {"type": "http.request", "body": b"", "more_body": False}
+
+    async def send(message):
+        messages.append(message)
+
+    scope = {
+        "type": "http",
+        "asgi": {"version": "3.0", "spec_version": "2.3"},
+        "http_version": "1.1",
+        "method": "GET",
+        "scheme": "http",
+        "path": "/",
+        "raw_path": b"/",
+        "query_string": b"",
+        "root_path": "",
+        "headers": [(b"host", b"testserver"), (b"origin", origin.encode())],
+        "client": ("127.0.0.1", 1234),
+        "server": ("testserver", 80),
+    }
+    asyncio.run(main.create_app()(scope, receive, send))
+    response_start = next(message for message in messages if message["type"] == "http.response.start")
+    headers = {key.decode(): value.decode() for key, value in response_start["headers"]}
+    return settings, headers
+
+
+def test_cors_allows_exact_production_frontend_origin(monkeypatch):
+    settings, response = _cors_response(
+        monkeypatch,
+        "https://ai-logistics-umber.vercel.app",
+    )
+
+    assert "https://existing.example" in settings.cors_origins
+    assert response["access-control-allow-origin"] == "https://ai-logistics-umber.vercel.app"
+    assert response["access-control-allow-credentials"] == "true"
+
+
+def test_cors_allows_project_preview_origin(monkeypatch):
+    _, response = _cors_response(
+        monkeypatch,
+        "https://ai-logistics-feature-123-mainak-d.vercel.app",
+    )
+
+    assert response["access-control-allow-origin"] == (
+        "https://ai-logistics-feature-123-mainak-d.vercel.app"
+    )
+    assert response["access-control-allow-credentials"] == "true"
+
+
+def test_cors_rejects_unrelated_vercel_origin(monkeypatch):
+    _, response = _cors_response(
+        monkeypatch,
+        "https://another-project-mainak-d.vercel.app",
+    )
+
+    assert "access-control-allow-origin" not in response
 
 
 def test_demand_forecast_fallback_is_deterministic():

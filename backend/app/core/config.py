@@ -5,6 +5,11 @@ from functools import lru_cache
 from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+PRODUCTION_FRONTEND_ORIGIN = "https://ai-logistics-umber.vercel.app"
+PROJECT_PREVIEW_ORIGIN_REGEX = (
+    r"^https://ai-logistics-[a-z0-9-]+-mainak-d\.vercel\.app$"
+)
+
 
 class Settings(BaseSettings):
     """Runtime configuration for the FastAPI application."""
@@ -23,6 +28,7 @@ class Settings(BaseSettings):
     backend_cors_origins: str = Field(
         default="http://localhost:4173,http://localhost:5173,http://127.0.0.1:4173,http://127.0.0.1:5173"
     )
+    backend_cors_origin_regex: str | None = Field(default=PROJECT_PREVIEW_ORIGIN_REGEX)
     algorithm: str = Field(default="HS256")
     access_token_expire_minutes: int = Field(default=30)
     hgfc_max_horizon_days: int = Field(default=14, ge=1)
@@ -31,8 +37,8 @@ class Settings(BaseSettings):
     DEFAULT_LOCAL_SEARCH: str = Field(default="GUIDED_LOCAL_SEARCH")
     DEFAULT_LOCAL_SEARCH_METAHEURISTIC: str = Field(default="GUIDED_LOCAL_SEARCH")
     DEFAULT_FIRST_SOLUTION_STRATEGY: str = Field(default="PATH_CHEAPEST_ARC")
-    DEFAULT_DEPOT_LATITUDE: float = Field(default=0.0)
-    DEFAULT_DEPOT_LONGITUDE: float = Field(default=0.0)
+    DEFAULT_DEPOT_LATITUDE: float | None = Field(default=None, ge=-90.0, le=90.0)
+    DEFAULT_DEPOT_LONGITUDE: float | None = Field(default=None, ge=-180.0, le=180.0)
 
     optimization_timeout_seconds: int = Field(default=5)
     optimization_default_depot_latitude: float = Field(default=0.0)
@@ -47,7 +53,10 @@ class Settings(BaseSettings):
     @property
     def cors_origins(self) -> list[str]:
         """Return configured CORS origins as a normalized list."""
-        return [origin.strip() for origin in self.backend_cors_origins.split(",") if origin.strip()]
+        origins = [origin.strip() for origin in self.backend_cors_origins.split(",") if origin.strip()]
+        if PRODUCTION_FRONTEND_ORIGIN not in origins:
+            origins.append(PRODUCTION_FRONTEND_ORIGIN)
+        return origins
 
     @model_validator(mode="after")
     def validate_production_security(self) -> "Settings":
@@ -61,6 +70,10 @@ class Settings(BaseSettings):
                 raise ValueError("SECRET_KEY must be explicitly configured in production.")
             if "*" in self.cors_origins:
                 raise ValueError("Credentialed CORS cannot use a wildcard origin in production.")
+            if self.backend_cors_origin_regex != PROJECT_PREVIEW_ORIGIN_REGEX:
+                raise ValueError(
+                    "Credentialed CORS preview regex must match only this project's Vercel previews."
+                )
         return self
 
 
