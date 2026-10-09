@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import json
 import math
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Sequence
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import urlopen
@@ -37,8 +37,8 @@ class RoutingService:
 			raise RoadRoutingError("At least two route coordinates are required for road routing.")
 		for index, point in enumerate(route_coordinates):
 			try:
-				latitude = float(getattr(point, "latitude"))
-				longitude = float(getattr(point, "longitude"))
+				latitude = float(point.latitude)
+				longitude = float(point.longitude)
 			except (AttributeError, OverflowError, TypeError, ValueError) as error:
 				raise RoadRoutingError(
 					f"Route coordinate {index} has invalid latitude/longitude values."
@@ -109,7 +109,11 @@ class RoutingService:
 			raise RoadRoutingError("OSRM returned a malformed response object.")
 		if payload.get("code") != "Ok":
 			code = payload.get("code")
-			raise RoadRoutingError(f"OSRM could not route the requested stops (code: {code}).")
+			message = {
+				"NoRoute": "OSRM found no drivable route between the requested stops.",
+				"NoSegment": "OSRM could not match one or more requested coordinates to a road.",
+			}.get(code, f"OSRM could not route the requested stops (code: {code}).")
+			raise RoadRoutingError(message)
 
 		routes = payload.get("routes")
 		if not isinstance(routes, list) or not routes:
@@ -131,9 +135,9 @@ class RoutingService:
 		waypoints = payload.get("waypoints")
 		if not isinstance(waypoints, list) or len(waypoints) != len(route_coordinates):
 			raise RoadRoutingError("OSRM response does not contain the requested ordered waypoints.")
-		for index, waypoint in enumerate(waypoints):
-			if not isinstance(waypoint, dict) or waypoint.get("waypoint_index") != index:
-				raise RoadRoutingError("OSRM waypoint order does not match the optimized stop sequence.")
+		for index, (waypoint, requested_point) in enumerate(zip(waypoints, route_coordinates)):
+			if not isinstance(waypoint, dict):
+				raise RoadRoutingError(f"OSRM returned a malformed snapped waypoint at index {index}.")
 			location = waypoint.get("location")
 			if not self._valid_lon_lat(location):
 				raise RoadRoutingError(f"OSRM returned an invalid snapped waypoint at index {index}.")
@@ -141,13 +145,23 @@ class RoutingService:
 				snap_distance = float(waypoint["distance"])
 			except (KeyError, OverflowError, TypeError, ValueError) as error:
 				raise RoadRoutingError(f"OSRM omitted snap distance for waypoint {index}.") from error
-			if not math.isfinite(snap_distance) or snap_distance < 0.0 or snap_distance > distance_meters:
+			if not math.isfinite(snap_distance) or snap_distance < 0.0:
+				raise RoadRoutingError(f"OSRM returned an invalid snap distance for waypoint {index}.")
+			requested_gap = self._haversine_distance_meters(
+				float(requested_point.latitude),
+				float(requested_point.longitude),
+				float(location[1]),
+				float(location[0]),
+			)
+			if abs(requested_gap - snap_distance) > max(25.0, requested_gap * 0.05):
 				raise RoadRoutingError(
-					f"OSRM snapped waypoint {index} farther than the returned route distance."
+					f"OSRM snapped waypoint {index} does not correspond to the requested coordinate."
 				)
 
 		geometry = primary_route.get("geometry")
-		geo_coordinates = geometry.get("coordinates") if isinstance(geometry, dict) else None
+		if not isinstance(geometry, dict) or geometry.get("type") != "LineString":
+			raise RoadRoutingError("OSRM returned geometry that is not a GeoJSON LineString.")
+		geo_coordinates = geometry.get("coordinates")
 		if not isinstance(geo_coordinates, list) or len(geo_coordinates) < 2:
 			raise RoadRoutingError("OSRM returned no detailed road geometry.")
 
@@ -172,6 +186,25 @@ class RoutingService:
 			distance_meters=distance_meters,
 			duration_seconds=duration_seconds,
 		)
+
+	@staticmethod
+	def _haversine_distance_meters(
+		latitude_a: float,
+		longitude_a: float,
+		latitude_b: float,
+		longitude_b: float,
+	) -> float:
+		"""Measure input-to-snapped waypoint separation for response validation."""
+		radius_meters = 6_371_000.0
+		latitude_delta = math.radians(latitude_b - latitude_a)
+		longitude_delta = math.radians(longitude_b - longitude_a)
+		a = (
+			math.sin(latitude_delta / 2.0) ** 2
+			+ math.cos(math.radians(latitude_a))
+			* math.cos(math.radians(latitude_b))
+			* math.sin(longitude_delta / 2.0) ** 2
+		)
+		return 2.0 * radius_meters * math.asin(math.sqrt(min(a, 1.0)))
 
 	@staticmethod
 	def _valid_lon_lat(point: object) -> bool:

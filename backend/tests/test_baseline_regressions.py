@@ -124,7 +124,7 @@ def test_routing_service_preserves_geojson_longitude_latitude_order(monkeypatch)
             return None
 
         def read(self):
-            return b'{"code":"Ok","waypoints":[{"waypoint_index":0,"location":[88.3639,22.5726],"distance":0},{"waypoint_index":1,"location":[88.3739,22.5826],"distance":0}],"routes":[{"distance":1000,"duration":120,"geometry":{"coordinates":[[88.3639,22.5726],[88.3739,22.5826]]}}]}'
+            return b'{"code":"Ok","waypoints":[{"waypoint_index":0,"location":[88.3639,22.5726],"distance":0},{"waypoint_index":1,"location":[88.3739,22.5826],"distance":0}],"routes":[{"distance":1000,"duration":120,"geometry":{"type":"LineString","coordinates":[[88.3639,22.5726],[88.3739,22.5826]]}}]}'
 
     monkeypatch.setattr("app.services.routing_service.urlopen", lambda *_args, **_kwargs: FakeResponse())
     route = RoutingService().build_road_route(

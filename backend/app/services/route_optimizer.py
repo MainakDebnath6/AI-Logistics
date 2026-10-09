@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import math
 from collections.abc import Sequence
 from datetime import datetime, timezone
@@ -20,6 +21,8 @@ from app.schemas.optimization import (
 	RouteCoordinate,
 )
 from app.services.routing_service import RoadRoutingError, RoutingService
+
+logger = logging.getLogger(__name__)
 
 
 class _OptimizationDataModel(TypedDict):
@@ -429,8 +432,20 @@ class RouteOptimizerService:
 					road_route = self._routing_service.build_road_route(route_coordinates)
 					if road_route is None:
 						raise RoadRoutingError("Road routing service returned no route geometry.")
-				except Exception as error:
+				except RoadRoutingError as error:
 					road_route_error = str(error) or "Road routing failed without a diagnostic message."
+					logger.warning(
+						"Road routing unavailable for driver_id=%s: %s",
+						drivers[vehicle_idx].id,
+						road_route_error,
+					)
+				except Exception as error:  # noqa: BLE001
+					road_route_error = "Road routing provider failed unexpectedly."
+					logger.warning(
+						"Road routing provider raised %s for driver_id=%s",
+						type(error).__name__,
+						drivers[vehicle_idx].id,
+					)
 				else:
 					road_geometry = road_route.road_geometry
 					road_distance_km = float(road_route.distance_meters) / 1000.0

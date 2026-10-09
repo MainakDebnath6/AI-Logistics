@@ -26,8 +26,8 @@ def osrm_payload(geometry=None, waypoints=None, code="Ok"):
         "waypoints": waypoints
         if waypoints is not None
         else [
-            {"waypoint_index": 0, "location": [88.3639, 22.5726], "distance": 0},
-            {"waypoint_index": 1, "location": [88.3739, 22.5826], "distance": 0},
+            {"location": [88.3639, 22.5726], "distance": 0},
+            {"location": [88.3739, 22.5826], "distance": 0},
         ],
         "routes": [
             {
@@ -80,6 +80,44 @@ def test_osrm_geometry_is_detailed_ordered_and_uses_lon_lat_request(monkeypatch)
     ]
 
 
+def test_osrm_waypoint_array_order_validates_intermediate_geometry(monkeypatch):
+    payload = {
+        "code": "Ok",
+        "waypoints": [
+            {"location": [88.3639, 22.5726], "distance": 0},
+            {"location": [88.3680, 22.5770], "distance": 0},
+            {"location": [88.3739, 22.5826], "distance": 0},
+        ],
+        "routes": [
+            {
+                "distance": 2400,
+                "duration": 360,
+                "geometry": {
+                    "type": "LineString",
+                    "coordinates": [
+                        [88.3639, 22.5726],
+                        [88.3680, 22.5770],
+                        [88.3739, 22.5826],
+                    ],
+                },
+            }
+        ],
+    }
+    monkeypatch.setattr(
+        "app.services.routing_service.urlopen",
+        lambda *_args, **_kwargs: FakeResponse(payload),
+    )
+    middle = RouteCoordinate(latitude=22.5770, longitude=88.3680)
+
+    result = RoutingService().build_road_route([DEPOT, middle, STOP])
+
+    assert len(result.road_geometry) == 3
+    assert (result.road_geometry[1].latitude, result.road_geometry[1].longitude) == (
+        middle.latitude,
+        middle.longitude,
+    )
+
+
 @pytest.mark.parametrize(
     ("failure", "message"),
     [
@@ -100,27 +138,34 @@ def test_osrm_transport_failures_are_reported(monkeypatch, failure, message):
     ("body", "message"),
     [
         (b"not-json", "malformed JSON"),
-        (osrm_payload(code="NoRoute"), "could not route"),
+        (osrm_payload(code="NoRoute"), "no drivable route"),
+        (osrm_payload(code="NoSegment"), "could not match"),
         (osrm_payload(geometry=[]), "no detailed road geometry"),
         ({"code": "Ok", "routes": ["malformed"]}, "malformed route object"),
+        (
+            {
+                **osrm_payload(),
+                "routes": [
+                    {
+                        **osrm_payload()["routes"][0],
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [88.3639, 22.5726],
+                        },
+                    }
+                ],
+            },
+            "not a GeoJSON LineString",
+        ),
         (osrm_payload(geometry=[[88.3639, 22.5726], [22.5826, 88.3739]]), "does not match"),
         (
             osrm_payload(
                 waypoints=[
-                    {"waypoint_index": 1, "location": [88.3639, 22.5726], "distance": 0},
-                    {"waypoint_index": 0, "location": [88.3739, 22.5826], "distance": 0},
+                    {"location": [22.5726, 88.3639], "distance": 0},
+                    {"location": [88.3739, 22.5826], "distance": 0},
                 ]
             ),
-            "waypoint order",
-        ),
-        (
-            osrm_payload(
-                waypoints=[
-                    {"waypoint_index": 0, "location": [22.5726, 88.3639], "distance": 0},
-                    {"waypoint_index": 1, "location": [88.3739, 22.5826], "distance": 0},
-                ]
-            ),
-            "geometry start",
+            "does not correspond to the requested coordinate",
         ),
         (osrm_payload(geometry=[[88.3639, 22.5726], [float("nan"), 22.5826]]), "invalid longitude/latitude"),
     ],
@@ -168,3 +213,7 @@ def test_optimizer_does_not_publish_straight_line_fallback_as_road_route(
     assert route.road_geometry == []
     assert route.total_duration_minutes is None
     assert len(route.route_coordinates) >= 2
+    response_payload = result.model_dump(mode="json")
+    assert response_payload["routes"][0]["road_route_status"] == "failed"
+    assert response_payload["routes"][0]["road_geometry"] == []
+    assert response_payload["routes"][0]["total_duration_minutes"] is None
