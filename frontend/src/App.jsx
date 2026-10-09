@@ -17,6 +17,7 @@ import Drivers from "./pages/Drivers";
 import Login from "./pages/Login";
 import Optimization from "./pages/Optimization";
 import Orders from "./pages/Orders";
+import ResearchAnalytics from "./pages/ResearchAnalytics";
 import Vehicles from "./pages/Vehicles";
 
 function AuthBootScreen() {
@@ -72,6 +73,7 @@ function AppRoutes() {
           <Route path="/orders" element={<Orders />} />
           <Route path="/optimization" element={<Optimization />} />
           <Route path="/analytics" element={<Analytics />} />
+          <Route path="/research-analytics" element={<ResearchAnalytics />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Route>

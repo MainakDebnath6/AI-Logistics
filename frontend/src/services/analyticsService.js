@@ -263,3 +263,74 @@ export function buildEtaVsDistanceData(analytics) {
 
   return [];
 }
+
+export async function getResearchAnalytics() {
+  const response = await api.get("/analytics/research");
+  return response.data;
+}
+
+export function buildSyntheticDemandSeries(payload) {
+  const observations = payload?.synthetic_demand?.observations ?? [];
+
+  return observations.map((entry) => ({
+    date: entry.date,
+    demand: toNumber(entry.demand) ?? 0,
+  }));
+}
+
+export function buildForecastComparisonData(payload) {
+  const results = payload?.forecast_models?.results ?? [];
+
+  return results.map((entry) => ({
+    model: entry.model ?? "unknown",
+    mae: toNumber(entry.mae) ?? 0,
+    rmse: toNumber(entry.rmse) ?? 0,
+    mape: toNumber(entry.mape_percent) ?? 0,
+  }));
+}
+
+export function buildHorizonSensitivityData(payload) {
+  const results = payload?.horizon_sensitivity?.results ?? [];
+
+  return results.map((entry) => ({
+    horizon: `H${entry.horizon_days ?? "?"}`,
+    model: entry.model ?? "unknown",
+    mae: toNumber(entry.mae) ?? 0,
+    rmse: toNumber(entry.rmse) ?? 0,
+    mape: toNumber(entry.mape_percent) ?? 0,
+  }));
+}
+
+export function buildFeatureAblationData(payload) {
+  const results = payload?.feature_ablation?.results ?? [];
+
+  return results.map((entry) => ({
+    ablation: entry.ablation ?? "unknown",
+    mae: toNumber(entry.mae) ?? 0,
+    rmse: toNumber(entry.rmse) ?? 0,
+    mape: toNumber(entry.mape_percent) ?? 0,
+  }));
+}
+
+export function buildCvrpBenchmarkData(payload) {
+  const results = payload?.cvrp_benchmark?.results ?? [];
+
+  return results.map((entry) => ({
+    scenario: `Scenario ${entry.scenario_id ?? "?"}`,
+    feasible: Boolean(entry.feasible),
+    demand: toNumber(entry.confirmed_demand) ?? 0,
+    capacity: toNumber(entry.available_capacity) ?? 0,
+    serviceLevel: toNumber(entry.service_level_percent) ?? 0,
+  }));
+}
+
+export function buildHgfcAdvisoryData(payload) {
+  const results = payload?.hgfc_advisory?.results ?? [];
+
+  return results.map((entry) => ({
+    leadDays: entry.forecast_lead_days ?? entry.scenario_id ?? 0,
+    forecastDemand: toNumber(entry.forecast_demand) ?? 0,
+    risk: toNumber(entry.capacity_risk) ?? 0,
+    intervention: Boolean(entry.preparation_intervention),
+  }));
+}
