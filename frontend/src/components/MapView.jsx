@@ -42,29 +42,6 @@ function toNumber(value) {
   return null;
 }
 
-function normalizeMapPoint(point) {
-  if (!point) {
-    return null;
-  }
-
-  const rawLat = toNumber(point?.latitude ?? point?.lat);
-  const rawLng = toNumber(point?.longitude ?? point?.lng);
-
-  if (rawLat === null || rawLng === null) {
-    return null;
-  }
-
-  if (Math.abs(rawLat) > 90 || Math.abs(rawLng) > 180) {
-    return { latitude: rawLng, longitude: rawLat };
-  }
-
-  if (Math.abs(rawLat) > 60 && Math.abs(rawLng) <= 60) {
-    return { latitude: rawLng, longitude: rawLat };
-  }
-
-  return { latitude: rawLat, longitude: rawLng };
-}
-
 function extractRoutePolyline(route) {
   const geometry = Array.isArray(route?.road_geometry)
     ? route.road_geometry
@@ -74,8 +51,9 @@ function extractRoutePolyline(route) {
 
   return geometry
     .map((point) => {
-      const normalized = normalizeMapPoint(point);
-      return normalized ? [normalized.latitude, normalized.longitude] : null;
+      const lat = toNumber(point?.latitude);
+      const lng = toNumber(point?.longitude);
+      return lat !== null && lng !== null ? [lat, lng] : null;
     })
     .filter(Boolean);
 }
@@ -125,8 +103,7 @@ export default function MapView({
         .map((stop) => {
           const lat = toNumber(stop?.delivery_latitude);
           const lng = toNumber(stop?.delivery_longitude);
-          const normalized = lat !== null && lng !== null ? normalizeMapPoint({ latitude: lat, longitude: lng }) : null;
-          return normalized ? [normalized.latitude, normalized.longitude] : null;
+          return lat !== null && lng !== null ? [lat, lng] : null;
         })
         .filter(Boolean),
     [stops]

@@ -20,7 +20,7 @@ from app.repositories.order_repository import OrderRepository
 from app.repositories.route_repository import RouteRepository
 from app.repositories.vehicle_repository import VehicleRepository
 from app.schemas.hgfc import HGFCForecastRequest, HGFCRequest, HGFCStatus
-from app.schemas.optimization import OptimizationRequest, OptimizationResponse
+from app.schemas.optimization import OptimizationRequest, OptimizationResponse, RouteCoordinate
 from app.schemas.order import OrderCreate
 from app.services.demand_forecast_service import DemandForecastService
 from app.services.hgfc_service import HGFCService
@@ -47,12 +47,74 @@ def test_demand_forecast_horizon_returns_cumulative_daily_workload():
     assert service.forecast_demand([10, 20, 30]) == 19.27
 
 
-def test_routing_service_normalizes_swapped_geojson_points():
-    lon, lat = RoutingService._normalize_geojson_point(41.0, -87.0)
-    assert (lon, lat) == (-87.0, 41.0)
+def test_routing_service_preserves_geojson_longitude_latitude_order(monkeypatch):
+    class FakeResponse:
+        def __enter__(self):
+            return self
 
-    lon, lat = RoutingService._normalize_geojson_point(-87.0, 41.0)
-    assert (lon, lat) == (-87.0, 41.0)
+        def __exit__(self, *_args):
+            return None
+
+        def read(self):
+            return b'{"code":"Ok","routes":[{"distance":1000,"duration":120,"geometry":{"coordinates":[[88.3639,22.5726],[88.3739,22.5826]]}}]}'
+
+    monkeypatch.setattr("app.services.routing_service.urlopen", lambda *_args, **_kwargs: FakeResponse())
+    route = RoutingService().build_road_route(
+        [
+            RouteCoordinate(latitude=22.5726, longitude=88.3639),
+            RouteCoordinate(latitude=22.5826, longitude=88.3739),
+        ]
+    )
+
+    assert route is not None
+    assert [(point.latitude, point.longitude) for point in route.road_geometry] == [
+        (22.5726, 88.3639),
+        (22.5826, 88.3739),
+    ]
+
+
+def test_optimizer_requires_explicit_depot_when_not_configured(optimizer, make_driver, make_vehicle, make_order):
+    optimizer._settings = Settings(DEFAULT_DEPOT_LATITUDE=None, DEFAULT_DEPOT_LONGITUDE=None)
+    vehicle = make_vehicle()
+
+    with pytest.raises(ValueError, match="Depot coordinates are required"):
+        optimizer.optimize(
+            [make_driver(vehicle.id)],
+            [vehicle],
+            [make_order()],
+        )
+
+
+def test_kolkata_route_uses_latitude_longitude_and_stays_local(
+    optimizer,
+    make_driver,
+    make_vehicle,
+    make_order,
+):
+    depot = (22.5726, 88.3639)
+    orders = [
+        make_order(60, latitude=22.5800, longitude=88.3700),
+        make_order(80, latitude=22.5900, longitude=88.3800),
+        make_order(80, latitude=22.5650, longitude=88.3500),
+    ]
+    vehicle = make_vehicle(220)
+    result = optimizer.optimize(
+        [make_driver(vehicle.id)],
+        [vehicle],
+        orders,
+        depot_coordinates=depot,
+    )
+    route = result.routes[0]
+
+    assert (route.route_coordinates[0].latitude, route.route_coordinates[0].longitude) == depot
+    assert (route.route_coordinates[-1].latitude, route.route_coordinates[-1].longitude) == depot
+    assert route.total_orders == len(orders)
+    assert route.total_demand == 220
+    assert route.total_distance_km == pytest.approx(route.distance / 1000.0, abs=0.001)
+    assert route.total_distance_km < 100
+    for stop in route.stops:
+        assert abs(stop.delivery_latitude - depot[0]) < 1
+        assert abs(stop.delivery_longitude - depot[1]) < 1
 
 
 def test_cvrp_routes_respect_vehicle_capacity(
