@@ -59,6 +59,15 @@ function AnalyticsIcon() {
   );
 }
 
+function ResearchIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" className="h-5 w-5">
+      <path d="M5 19V5h14v14" />
+      <path d="M9 16V9m3 7V5m3 11v-6" />
+    </svg>
+  );
+}
+
 const NAV_ITEMS = [
   { to: "/dashboard", label: "Dashboard", icon: DashboardIcon },
   { to: "/drivers", label: "Drivers", icon: DriversIcon },
@@ -66,6 +75,7 @@ const NAV_ITEMS = [
   { to: "/orders", label: "Orders", icon: OrdersIcon },
   { to: "/optimization", label: "Optimization", icon: OptimizationIcon },
   { to: "/analytics", label: "Analytics", icon: AnalyticsIcon },
+  { to: "/research-analytics", label: "Research Analytics", icon: ResearchIcon },
 ];
 
 export default function Sidebar({ isCollapsed, isOpen, onClose }) {
