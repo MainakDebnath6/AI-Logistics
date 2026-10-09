@@ -81,7 +81,7 @@ class RoutingService:
 		)
 
 		try:
-			with urlopen(url, timeout=max(timeout_seconds, 0.5)) as response:
+			with urlopen(url, timeout=min(max(timeout_seconds, 0.5), 30.0)) as response:
 				status = getattr(response, "status", None)
 				if status is None:
 					status = response.getcode()

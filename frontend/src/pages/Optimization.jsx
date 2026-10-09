@@ -96,7 +96,7 @@ export default function Optimization() {
                 </article>
 
                 <article className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-                  <p className="text-xs uppercase tracking-wide text-slate-400">Total Distance</p>
+                  <p className="text-xs uppercase tracking-wide text-slate-400">Optimized Distance (Haversine)</p>
                   <p className="mt-2 text-2xl font-bold text-white">{formatDistance(summary.totalDistance)}</p>
                 </article>
 

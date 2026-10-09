@@ -5,12 +5,19 @@ from types import SimpleNamespace
 from urllib.error import HTTPError
 
 import pytest
+from app.core.config import Settings
 from app.schemas.optimization import RouteCoordinate
 from app.services.routing_service import RoadRoutingError, RoutingService
 
 
 DEPOT = RouteCoordinate(latitude=22.5726, longitude=88.3639)
 STOP = RouteCoordinate(latitude=22.5826, longitude=88.3739)
+
+
+def test_osrm_timeout_setting_is_bounded():
+    assert Settings(OSRM_TIMEOUT_SECONDS=30.0).OSRM_TIMEOUT_SECONDS == 30.0
+    with pytest.raises(ValueError):
+        Settings(OSRM_TIMEOUT_SECONDS=30.1)
 
 
 def osrm_payload(geometry=None, waypoints=None, code="Ok"):

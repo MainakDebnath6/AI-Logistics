@@ -40,7 +40,7 @@ class Settings(BaseSettings):
     DEFAULT_DEPOT_LATITUDE: float | None = Field(default=None, ge=-90.0, le=90.0)
     DEFAULT_DEPOT_LONGITUDE: float | None = Field(default=None, ge=-180.0, le=180.0)
     OSRM_BASE_URL: str = Field(default="https://router.project-osrm.org")
-    OSRM_TIMEOUT_SECONDS: float = Field(default=4.0, gt=0.0)
+    OSRM_TIMEOUT_SECONDS: float = Field(default=4.0, gt=0.0, le=30.0)
 
     optimization_timeout_seconds: int = Field(default=5)
     optimization_default_depot_latitude: float = Field(default=0.0)
