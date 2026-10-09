@@ -4,6 +4,7 @@ from types import SimpleNamespace
 from uuid import uuid4
 
 import pytest
+from app.core.config import Settings
 from app.models.order import OrderStatus
 from app.services.route_optimizer import RouteOptimizerService
 
@@ -17,7 +18,9 @@ class OfflineRoutingService:
 
 @pytest.fixture
 def optimizer() -> RouteOptimizerService:
-    return RouteOptimizerService(routing_service=OfflineRoutingService())
+    service = RouteOptimizerService(routing_service=OfflineRoutingService())
+    service._settings = Settings(DEFAULT_DEPOT_LATITUDE=40.0, DEFAULT_DEPOT_LONGITUDE=-73.0)
+    return service
 
 
 @pytest.fixture

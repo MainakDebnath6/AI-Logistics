@@ -10,6 +10,7 @@ import {
   useMap,
 } from "react-leaflet";
 import LoadingSpinner from "./LoadingSpinner";
+import { extractCanonicalPoint, extractRoadPolyline } from "./routeGeometry";
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
@@ -31,50 +32,13 @@ const stopIcon = L.divIcon({
   iconAnchor: [6, 6],
 });
 
-function toNumber(value) {
-  if (typeof value === "number" && Number.isFinite(value)) {
-    return value;
-  }
-  if (typeof value === "string" && value.trim()) {
-    const parsed = Number(value);
-    return Number.isFinite(parsed) ? parsed : null;
-  }
-  return null;
-}
-
-function extractRoutePolyline(route) {
-  const geometry = Array.isArray(route?.road_geometry)
-    ? route.road_geometry
-    : Array.isArray(route?.route_coordinates)
-      ? route.route_coordinates
-      : [];
-
-  return geometry
-    .map((point) => {
-      const lat = toNumber(point?.latitude);
-      const lng = toNumber(point?.longitude);
-      return lat !== null && lng !== null ? [lat, lng] : null;
-    })
-    .filter(Boolean);
-}
-
 function extractStops(route) {
   return Array.isArray(route?.stops) ? route.stops : [];
 }
 
 function extractDriverPoint(route) {
-  const firstStop = Array.isArray(route?.stops) && route.stops.length > 0 ? route.stops[0] : null;
-  if (!firstStop) {
-    return null;
-  }
-
-  const latitude = toNumber(firstStop.pickup_latitude);
-  const longitude = toNumber(firstStop.pickup_longitude);
-  if (latitude === null || longitude === null) {
-    return null;
-  }
-
-  return [latitude, longitude];
+  const depot = Array.isArray(route?.route_coordinates) ? route.route_coordinates[0] : null;
+  return extractCanonicalPoint(depot);
 }
 
 function FitBounds({ points }) {
@@ -93,17 +57,19 @@ export default function MapView({
   loading = false,
   className = "",
 }) {
-  const polyline = useMemo(() => extractRoutePolyline(route), [route]);
+  const polyline = useMemo(() => extractRoadPolyline(route), [route]);
   const stops = useMemo(() => extractStops(route), [route]);
   const driverPoint = useMemo(() => extractDriverPoint(route), [route]);
 
   const stopPoints = useMemo(
     () =>
       stops
-        .map((stop) => {
-          const lat = toNumber(stop?.delivery_latitude);
-          const lng = toNumber(stop?.delivery_longitude);
-          return lat !== null && lng !== null ? [lat, lng] : null;
+        .map((stop, index) => {
+          const point = extractCanonicalPoint({
+            latitude: stop?.delivery_latitude,
+            longitude: stop?.delivery_longitude,
+          });
+          return point ? { point, stop, index } : null;
         })
         .filter(Boolean),
     [stops]
@@ -116,16 +82,24 @@ export default function MapView({
       points.push(driverPoint);
     }
 
-    stopPoints.forEach((point) => points.push(point));
+    stopPoints.forEach(({ point }) => points.push(point));
     polyline.forEach((point) => points.push(point));
 
     return points;
   }, [driverPoint, stopPoints, polyline]);
+  const routeStatus = route?.road_route_status === "available" && polyline.length < 2
+    ? "Road geometry is invalid; no route line was drawn."
+    : route?.road_route_status === "available"
+      ? ""
+      : route?.road_route_error || "Road geometry is unavailable; no route line was drawn.";
 
   return (
     <section className={`rounded-xl border border-slate-800 bg-slate-900/70 p-4 ${className}`}>
       <header className="mb-3">
         <h3 className="text-base font-semibold text-white">Route Map</h3>
+        {route && routeStatus ? (
+          <p role="status" className="mt-1 text-sm text-amber-300">{routeStatus}</p>
+        ) : null}
       </header>
 
       <div className="relative overflow-hidden rounded-lg border border-slate-800 bg-slate-950" style={{ height: 360 }}>
@@ -168,8 +142,7 @@ export default function MapView({
               </Marker>
             ) : null}
 
-            {stopPoints.map((point, index) => {
-              const stop = stops[index];
+            {stopPoints.map(({ point, stop, index }) => {
               return (
                 <Marker key={`${stop?.id || stop?.order_id || index}`} position={point} icon={stopIcon}>
                   <Popup>

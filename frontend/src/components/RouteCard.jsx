@@ -51,9 +51,16 @@ function formatDemand(value) {
 
 function formatDuration(value) {
   if (typeof value !== "number") {
-    return "--";
+    return "Unavailable";
   }
   return `${value.toFixed(1)} min`;
+}
+
+function formatRoadStatus(route) {
+  if (route?.road_route_status === "available") {
+    return "Road routing available";
+  }
+  return route?.road_route_error || "Road routing unavailable";
 }
 
 function StopRow({ stop, index }) {
@@ -91,6 +98,7 @@ export default function RouteCard({
 
   const stops = useMemo(() => getStops(route), [route]);
   const distance = useMemo(() => getDistance(route), [route]);
+  const roadDistance = useMemo(() => toNumber(route?.road_distance_km), [route]);
   const durationMinutes = useMemo(() => getDurationMinutes(route), [route]);
   const totalDemand = useMemo(() => getDemand(route), [route]);
   const totalOrders = useMemo(() => toNumber(route?.total_orders), [route]);
@@ -125,7 +133,7 @@ export default function RouteCard({
         ) : null}
       </div>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-4">
+      <div className="mt-4 grid gap-3 sm:grid-cols-3 lg:grid-cols-5">
         <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
           <p className="text-xs uppercase tracking-wide text-slate-400">Stops</p>
           <p className="mt-1 text-lg font-semibold text-white">{totalOrders ?? stops.length}</p>
@@ -135,14 +143,25 @@ export default function RouteCard({
           <p className="mt-1 text-lg font-semibold text-white">{formatDemand(totalDemand)}</p>
         </div>
         <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
-          <p className="text-xs uppercase tracking-wide text-slate-400">Distance</p>
+          <p className="text-xs uppercase tracking-wide text-slate-400">Optimized distance (Haversine)</p>
           <p className="mt-1 text-lg font-semibold text-white">{formatDistance(distance)}</p>
         </div>
         <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
-          <p className="text-xs uppercase tracking-wide text-slate-400">Duration</p>
+          <p className="text-xs uppercase tracking-wide text-slate-400">Road distance (OSRM)</p>
+          <p className="mt-1 text-lg font-semibold text-white">{formatDistance(roadDistance)}</p>
+        </div>
+        <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
+          <p className="text-xs uppercase tracking-wide text-slate-400">Road ETA (OSRM)</p>
           <p className="mt-1 text-lg font-semibold text-white">{formatDuration(durationMinutes)}</p>
         </div>
       </div>
+
+      <p
+        role="status"
+        className={`mt-3 text-sm ${route?.road_route_status === "available" ? "text-emerald-300" : "text-amber-300"}`}
+      >
+        {formatRoadStatus(route)}
+      </p>
 
       <div className="mt-4">
         <button

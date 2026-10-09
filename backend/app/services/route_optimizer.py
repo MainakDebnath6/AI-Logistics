@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import math
 from collections.abc import Sequence
 from datetime import datetime, timezone
@@ -19,7 +20,9 @@ from app.schemas.optimization import (
 	OptimizedRoute,
 	RouteCoordinate,
 )
-from app.services.routing_service import RoutingService
+from app.services.routing_service import RoadRoutingError, RoutingService
+
+logger = logging.getLogger(__name__)
 
 
 class _OptimizationDataModel(TypedDict):
@@ -257,16 +260,38 @@ class RouteOptimizerService:
 			raise ValueError("Each selected driver must have exactly one selected vehicle.")
 
 		if depot_coordinates is None:
-			depot_coordinates = (
-				float(self._settings.DEFAULT_DEPOT_LATITUDE),
-				float(self._settings.DEFAULT_DEPOT_LONGITUDE),
-			)
-		depot_coord = (float(depot_coordinates[0]), float(depot_coordinates[1]))
-		order_coords = [
-			(float(order.delivery_latitude), float(order.delivery_longitude))
-			for order in orders
-		]
+			depot_latitude = self._settings.DEFAULT_DEPOT_LATITUDE
+			depot_longitude = self._settings.DEFAULT_DEPOT_LONGITUDE
+			if depot_latitude is None or depot_longitude is None:
+				raise ValueError(
+					"Depot coordinates are required; provide both depot coordinates in the request "
+					"or configure DEFAULT_DEPOT_LATITUDE and DEFAULT_DEPOT_LONGITUDE."
+				)
+			depot_coordinates = (float(depot_latitude), float(depot_longitude))
+		try:
+			depot_coord = (float(depot_coordinates[0]), float(depot_coordinates[1]))
+		except (IndexError, TypeError, ValueError) as error:
+			raise ValueError("Depot coordinates must contain valid latitude and longitude values.") from error
+
+		order_coords: list[tuple[float, float]] = []
+		for order_index, order in enumerate(orders):
+			try:
+				order_coords.append(
+					(float(order.delivery_latitude), float(order.delivery_longitude))
+				)
+			except (AttributeError, TypeError, ValueError) as error:
+				raise ValueError(
+					f"Order at optimization index {order_index} has missing or invalid delivery coordinates."
+				) from error
 		coordinates = [depot_coord, *order_coords]
+		for index, (latitude, longitude) in enumerate(coordinates):
+			if (
+				not math.isfinite(latitude)
+				or not math.isfinite(longitude)
+				or not -90.0 <= latitude <= 90.0
+				or not -180.0 <= longitude <= 180.0
+			):
+				raise ValueError(f"Route coordinate {index} has invalid latitude/longitude values.")
 
 		demands = [0, *[int(order.demand) for order in orders]]
 		vehicle_capacities = [int(vehicle.capacity) for vehicle in vehicles]
@@ -398,20 +423,41 @@ class RouteOptimizerService:
 					latitude=depot_latitude,
 					longitude=depot_longitude,
 				)
-				fallback_duration_minutes = self._estimate_duration_minutes(route_distance_m)
-
-				road_geometry = list(route_coordinates)
+				road_geometry: list[RouteCoordinate] = []
 				road_distance_km: float | None = None
-				duration_seconds = float(fallback_duration_minutes * 60.0)
-
-				road_route = self._routing_service.build_road_route(route_coordinates)
-				if road_route is not None:
+				duration_seconds: float | None = None
+				road_route_status = "failed"
+				road_route_error: str | None = None
+				try:
+					road_route = self._routing_service.build_road_route(route_coordinates)
+					if road_route is None:
+						raise RoadRoutingError("Road routing service returned no route geometry.")
+				except RoadRoutingError as error:
+					road_route_error = str(error) or "Road routing failed without a diagnostic message."
+					logger.warning(
+						"Road routing unavailable for driver_id=%s: %s",
+						drivers[vehicle_idx].id,
+						road_route_error,
+					)
+				except Exception as error:  # noqa: BLE001
+					road_route_error = "Road routing provider failed unexpectedly."
+					logger.warning(
+						"Road routing provider raised %s for driver_id=%s",
+						type(error).__name__,
+						drivers[vehicle_idx].id,
+					)
+				else:
 					road_geometry = road_route.road_geometry
 					road_distance_km = float(road_route.distance_meters) / 1000.0
 					duration_seconds = float(road_route.duration_seconds)
+					road_route_status = "available"
 
 				route_distance_km = round(route_distance_m / 1000.0, 3)
-				route_duration_minutes = round(duration_seconds / 60.0, 2)
+				route_duration_minutes = (
+					round(duration_seconds / 60.0, 2)
+					if duration_seconds is not None
+					else None
+				)
 				driver = drivers[vehicle_idx]
 				vehicle = vehicles[vehicle_idx]
 				driver_full_name = getattr(getattr(driver, "user", None), "full_name", None) or f"Driver {driver.id}"
@@ -434,6 +480,8 @@ class RouteOptimizerService:
 						stops=stops,
 						route_coordinates=route_coordinates,
 						road_geometry=road_geometry,
+						road_route_status=road_route_status,
+						road_route_error=road_route_error,
 						distance=float(route_distance_m),
 						duration=duration_seconds,
 						road_distance_km=road_distance_km,

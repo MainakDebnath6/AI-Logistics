@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from datetime import datetime, timezone
 from types import SimpleNamespace
 from uuid import uuid4
@@ -20,15 +21,81 @@ from app.repositories.order_repository import OrderRepository
 from app.repositories.route_repository import RouteRepository
 from app.repositories.vehicle_repository import VehicleRepository
 from app.schemas.hgfc import HGFCForecastRequest, HGFCRequest, HGFCStatus
-from app.schemas.optimization import OptimizationRequest, OptimizationResponse
+from app.schemas.optimization import OptimizationRequest, OptimizationResponse, RouteCoordinate
 from app.schemas.order import OrderCreate
 from app.services.demand_forecast_service import DemandForecastService
 from app.services.hgfc_service import HGFCService
+from app.services.routing_service import RoutingService
 from fastapi import HTTPException
 from pydantic import ValidationError
 from scripts.seed_demo import seed_demo
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
+
+
+def _cors_response(monkeypatch, origin: str):
+    import app.main as main
+
+    settings = Settings(backend_cors_origins="https://existing.example")
+    monkeypatch.setattr(main, "get_settings", lambda: settings)
+    messages = []
+
+    async def receive():
+        return {"type": "http.request", "body": b"", "more_body": False}
+
+    async def send(message):
+        messages.append(message)
+
+    scope = {
+        "type": "http",
+        "asgi": {"version": "3.0", "spec_version": "2.3"},
+        "http_version": "1.1",
+        "method": "GET",
+        "scheme": "http",
+        "path": "/",
+        "raw_path": b"/",
+        "query_string": b"",
+        "root_path": "",
+        "headers": [(b"host", b"testserver"), (b"origin", origin.encode())],
+        "client": ("127.0.0.1", 1234),
+        "server": ("testserver", 80),
+    }
+    asyncio.run(main.create_app()(scope, receive, send))
+    response_start = next(message for message in messages if message["type"] == "http.response.start")
+    headers = {key.decode(): value.decode() for key, value in response_start["headers"]}
+    return settings, headers
+
+
+def test_cors_allows_exact_production_frontend_origin(monkeypatch):
+    settings, response = _cors_response(
+        monkeypatch,
+        "https://ai-logistics-umber.vercel.app",
+    )
+
+    assert "https://existing.example" in settings.cors_origins
+    assert response["access-control-allow-origin"] == "https://ai-logistics-umber.vercel.app"
+    assert response["access-control-allow-credentials"] == "true"
+
+
+def test_cors_allows_project_preview_origin(monkeypatch):
+    _, response = _cors_response(
+        monkeypatch,
+        "https://ai-logistics-feature-123-mainak-d.vercel.app",
+    )
+
+    assert response["access-control-allow-origin"] == (
+        "https://ai-logistics-feature-123-mainak-d.vercel.app"
+    )
+    assert response["access-control-allow-credentials"] == "true"
+
+
+def test_cors_rejects_unrelated_vercel_origin(monkeypatch):
+    _, response = _cors_response(
+        monkeypatch,
+        "https://another-project-mainak-d.vercel.app",
+    )
+
+    assert "access-control-allow-origin" not in response
 
 
 def test_demand_forecast_fallback_is_deterministic():
@@ -44,6 +111,97 @@ def test_demand_forecast_horizon_returns_cumulative_daily_workload():
     with pytest.raises(ValueError, match="at least one day"):
         service.forecast_demand_for_horizon([10, 20, 30], 0)
     assert service.forecast_demand([10, 20, 30]) == 19.27
+
+
+def test_routing_service_preserves_geojson_longitude_latitude_order(monkeypatch):
+    class FakeResponse:
+        def __enter__(self):
+            return self
+
+        status = 200
+
+        def __exit__(self, *_args):
+            return None
+
+        def read(self):
+            return b'{"code":"Ok","waypoints":[{"waypoint_index":0,"location":[88.3639,22.5726],"distance":0},{"waypoint_index":1,"location":[88.3739,22.5826],"distance":0}],"routes":[{"distance":1000,"duration":120,"geometry":{"type":"LineString","coordinates":[[88.3639,22.5726],[88.3739,22.5826]]}}]}'
+
+    monkeypatch.setattr("app.services.routing_service.urlopen", lambda *_args, **_kwargs: FakeResponse())
+    route = RoutingService().build_road_route(
+        [
+            RouteCoordinate(latitude=22.5726, longitude=88.3639),
+            RouteCoordinate(latitude=22.5826, longitude=88.3739),
+        ]
+    )
+
+    assert route is not None
+    assert [(point.latitude, point.longitude) for point in route.road_geometry] == [
+        (22.5726, 88.3639),
+        (22.5826, 88.3739),
+    ]
+
+
+def test_optimizer_requires_explicit_depot_when_not_configured(optimizer, make_driver, make_vehicle, make_order):
+    optimizer._settings = Settings(DEFAULT_DEPOT_LATITUDE=None, DEFAULT_DEPOT_LONGITUDE=None)
+    vehicle = make_vehicle()
+
+    with pytest.raises(ValueError, match="Depot coordinates are required"):
+        optimizer.optimize(
+            [make_driver(vehicle.id)],
+            [vehicle],
+            [make_order()],
+        )
+
+
+def test_optimizer_rejects_missing_delivery_coordinates(optimizer, make_driver, make_vehicle, make_order):
+    vehicle = make_vehicle()
+    order = make_order()
+    order.delivery_latitude = None
+
+    with pytest.raises(ValueError, match="missing or invalid delivery coordinates"):
+        optimizer.optimize(
+            [make_driver(vehicle.id)],
+            [vehicle],
+            [order],
+            depot_coordinates=(22.5726, 88.3639),
+        )
+
+
+def test_kolkata_route_uses_latitude_longitude_and_stays_local(
+    optimizer,
+    make_driver,
+    make_vehicle,
+    make_order,
+):
+    depot = (22.5726, 88.3639)
+    orders = [
+        make_order(60, latitude=22.5800, longitude=88.3700),
+        make_order(80, latitude=22.5900, longitude=88.3800),
+        make_order(80, latitude=22.5650, longitude=88.3500),
+    ]
+    vehicle = make_vehicle(220)
+    result = optimizer.optimize(
+        [make_driver(vehicle.id)],
+        [vehicle],
+        orders,
+        depot_coordinates=depot,
+    )
+    route = result.routes[0]
+
+    assert (route.route_coordinates[0].latitude, route.route_coordinates[0].longitude) == depot
+    assert (route.route_coordinates[-1].latitude, route.route_coordinates[-1].longitude) == depot
+    assert route.total_orders == len(orders)
+    assert route.total_demand == 220
+    assert route.total_distance_km == pytest.approx(route.distance / 1000.0, abs=0.001)
+    assert route.total_distance_km < 100
+    assert [
+        (point.latitude, point.longitude) for point in route.route_coordinates[1:-1]
+    ] == [
+        (stop.delivery_latitude, stop.delivery_longitude) for stop in route.stops
+    ]
+    for stop in route.stops:
+        assert abs(stop.delivery_latitude - depot[0]) < 1
+        assert abs(stop.delivery_longitude - depot[1]) < 1
 
 
 def test_cvrp_routes_respect_vehicle_capacity(
