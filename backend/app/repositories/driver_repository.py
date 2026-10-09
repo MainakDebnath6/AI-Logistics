@@ -5,7 +5,7 @@ from uuid import UUID
 
 from app.models.driver import Driver, DriverStatus
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
 
 class DriverRepository:
@@ -27,7 +27,7 @@ class DriverRepository:
     def get_by_id(self, driver_id: UUID) -> Driver | None:
         """Return a driver by primary key if it exists."""
 
-        statement = select(Driver).where(Driver.id == driver_id)
+        statement = select(Driver).options(selectinload(Driver.user)).where(Driver.id == driver_id)
         return self.db.scalar(statement)
 
     def get_by_ids(self, driver_ids: list[UUID]) -> list[Driver]:
@@ -36,7 +36,7 @@ class DriverRepository:
         if not driver_ids:
             return []
 
-        statement = select(Driver).where(Driver.id.in_(driver_ids))
+        statement = select(Driver).options(selectinload(Driver.user)).where(Driver.id.in_(driver_ids))
         drivers = list(self.db.scalars(statement).all())
         drivers_by_id = {driver.id: driver for driver in drivers}
         return [
@@ -61,7 +61,11 @@ class DriverRepository:
         """Return drivers ordered by newest first with pagination."""
 
         statement = (
-            select(Driver).order_by(Driver.created_at.desc()).offset(skip).limit(limit)
+            select(Driver)
+            .options(selectinload(Driver.user))
+            .order_by(Driver.created_at.desc())
+            .offset(skip)
+            .limit(limit)
         )
         return list(self.db.scalars(statement).all())
 
@@ -70,6 +74,7 @@ class DriverRepository:
 
         statement = (
             select(Driver)
+            .options(selectinload(Driver.user))
             .where(
                 Driver.status == DriverStatus.AVAILABLE,
                 Driver.is_available.is_(True),

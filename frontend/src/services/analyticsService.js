@@ -5,6 +5,7 @@ import {
   buildForecastComparisonData,
   buildHgfcAdvisoryData,
   buildHorizonSensitivityData,
+  buildPairedRoutingData,
   buildSyntheticDemandSeries,
 } from "./researchAnalyticsData";
 
@@ -14,6 +15,7 @@ export {
   buildForecastComparisonData,
   buildHgfcAdvisoryData,
   buildHorizonSensitivityData,
+  buildPairedRoutingData,
   buildSyntheticDemandSeries,
 };
 
@@ -112,6 +114,13 @@ export function normalizeDashboardAnalytics(payload) {
       "summary.pending_orders",
       "dashboard.pending_orders",
     ]),
+    cancelledOrders: pickNumber(source, [
+      "cancelled_orders",
+      "cancelledOrders",
+      "orders.cancelled",
+      "summary.cancelled_orders",
+      "dashboard.cancelled_orders",
+    ]),
     totalDrivers: null,
     totalVehicles: null,
     fleetUtilization: pickNumber(source, [
@@ -207,7 +216,8 @@ export function buildOrderStatusChartData(analytics) {
 
   const fallback = [
     { name: "Completed", value: analytics.completedOrders },
-    { name: "Pending", value: analytics.pendingOrders },
+    { name: "Open", value: analytics.pendingOrders },
+    { name: "Cancelled", value: analytics.cancelledOrders },
   ].filter((item) => typeof item.value === "number");
 
   return fallback;
@@ -238,19 +248,6 @@ export function buildKpiTrendSeries(analytics) {
     }));
   }
 
-  if (
-    typeof analytics.routeEfficiency === "number" ||
-    typeof analytics.onTimeDelivery === "number"
-  ) {
-    return [
-      {
-        label: "Current",
-        routeEfficiency: analytics.routeEfficiency,
-        onTimeDelivery: analytics.onTimeDelivery,
-      },
-    ];
-  }
-
   return [];
 }
 
@@ -266,16 +263,6 @@ export function buildEtaVsDistanceData(analytics) {
       distanceCovered:
         toNumber(item.distanceCovered ?? item.distance_covered ?? item.distance) ?? null,
     }));
-  }
-
-  if (typeof analytics.averageEta === "number" || typeof analytics.distanceCovered === "number") {
-    return [
-      {
-        label: "Current",
-        averageEta: analytics.averageEta,
-        distanceCovered: analytics.distanceCovered,
-      },
-    ];
   }
 
   return [];

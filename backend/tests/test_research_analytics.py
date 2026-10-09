@@ -62,6 +62,8 @@ def test_get_research_analytics_uses_real_experiment_results():
     assert payload["feature_ablation"]["results"]
     assert payload["cvrp_benchmark"]["results"]
     assert payload["hgfc_advisory"]["results"]
+    assert payload["reactive_vs_hgfc"]["results"]
+    assert payload["reactive_vs_hgfc"]["methodology"]["routing_arms"].startswith("identical confirmed demand")
 
 
 def test_runtime_image_declares_research_artifact_inputs():
@@ -74,7 +76,27 @@ def test_runtime_image_declares_research_artifact_inputs():
         "feature_ablation.json",
         "cvrp_benchmark.json",
         "hgfc_advisory.json",
+        "reactive_vs_hgfc.json",
     ):
         assert f"COPY experiments/results/{filename} ./experiments/results/{filename}" in dockerfile
         assert (repository_root / "experiments/results" / filename).is_file()
     assert "COPY data/raw/synthetic_demand.csv ./data/raw/synthetic_demand.csv" in dockerfile
+
+
+def test_research_artifact_loader_reports_missing_and_malformed_files(tmp_path, monkeypatch):
+    from app.api import analytics
+
+    monkeypatch.setattr(analytics, "RESEARCH_RESULTS_DIR", tmp_path)
+    missing = analytics._load_research_result_file("missing.json")
+    assert missing["results"] == []
+    assert "unavailable" in missing["error"]
+
+    (tmp_path / "broken.json").write_text("{broken", encoding="utf-8")
+    malformed = analytics._load_research_result_file("broken.json")
+    assert malformed["results"] == []
+    assert "could not be read" in malformed["error"]
+
+    (tmp_path / "wrong-shape.json").write_text("[]", encoding="utf-8")
+    invalid = analytics._load_research_result_file("wrong-shape.json")
+    assert invalid["results"] == []
+    assert "invalid structure" in invalid["error"]

@@ -3,6 +3,15 @@ import { getDrivers } from "../services/driverService";
 import { getOrders } from "../services/orderService";
 import { getApiErrorMessage, optimizeRoutes } from "../services/optimizationService";
 import { getVehicles } from "../services/vehicleService";
+import {
+  getDriverLabel,
+  getDriverSelectionIssue,
+  getOrderDescription,
+  getOrderLabel,
+  getOrderSelectionIssue,
+  getVehicleLabel,
+  getVehicleStatus,
+} from "./optimizationSelection";
 
 function normalizeListResponse(response) {
   if (Array.isArray(response)) {
@@ -17,30 +26,6 @@ function normalizeListResponse(response) {
   return [];
 }
 
-function getDriverLabel(driver) {
-  return driver?.full_name || driver?.name || driver?.email || `Driver ${driver?.id ?? "-"}`;
-}
-
-function getVehicleLabel(vehicle) {
-  return (
-    vehicle?.plate_number ||
-    vehicle?.plate ||
-    vehicle?.registration_number ||
-    vehicle?.model ||
-    `Vehicle ${vehicle?.id ?? "-"}`
-  );
-}
-
-function getOrderLabel(order) {
-  return (
-    order?.customer_name ||
-    order?.reference ||
-    order?.order_number ||
-    order?.id ||
-    "Order"
-  );
-}
-
 function getItemId(item) {
   return item?.id ?? item?._id ?? item?.uuid ?? null;
 }
@@ -52,6 +37,9 @@ function SelectionGroup({
   onToggle,
   disabled,
   getLabel,
+  getDescription,
+  getDisabledReason,
+  readOnly = false,
   emptyLabel,
   searchText,
   onSearchTextChange,
@@ -61,8 +49,10 @@ function SelectionGroup({
     if (!query) {
       return items;
     }
-    return items.filter((item) => getLabel(item).toLowerCase().includes(query));
-  }, [getLabel, items, searchText]);
+    return items.filter((item) =>
+      `${getLabel(item)} ${getDescription?.(item) || ""}`.toLowerCase().includes(query)
+    );
+  }, [getDescription, getLabel, items, searchText]);
 
   return (
     <section className="space-y-2">
@@ -101,10 +91,18 @@ function SelectionGroup({
                   type="checkbox"
                   checked={checked}
                   onChange={() => onToggle(String(id))}
-                  disabled={disabled}
+                  disabled={disabled || readOnly || Boolean(getDisabledReason?.(item))}
                   className="mt-0.5 h-4 w-4 rounded border-slate-600 bg-slate-900 text-teal-400 focus:ring-teal-400"
                 />
-                <span className="break-words">{getLabel(item)}</span>
+                <span className="min-w-0 wrap-break-word">
+                  <span className="block">{getLabel(item)}</span>
+                  {getDescription?.(item) ? (
+                    <span className="mt-0.5 block text-xs text-slate-400">{getDescription(item)}</span>
+                  ) : null}
+                  {getDisabledReason?.(item) ? (
+                    <span className="mt-0.5 block text-xs text-amber-300">{getDisabledReason(item)}</span>
+                  ) : null}
+                </span>
               </label>
             );
           })
@@ -190,6 +188,58 @@ export default function OptimizationForm({
     });
   }
 
+  function getDriverDisabledReason(driver) {
+    const driverId = String(getItemId(driver));
+    if (selectedDriverIds.includes(driverId)) {
+      return null;
+    }
+    const issue = getDriverSelectionIssue(driver, vehicles);
+    if (issue) {
+      return issue;
+    }
+    const duplicatePair = drivers.some(
+      (candidate) =>
+        selectedDriverIds.includes(String(getItemId(candidate)))
+        && String(candidate?.vehicle_id) === String(driver.vehicle_id),
+    );
+    return duplicatePair ? "Assigned vehicle is already paired with a selected driver." : null;
+  }
+
+  function toggleDriverSelection(driverId) {
+    const driver = drivers.find((item) => String(getItemId(item)) === driverId);
+    if (!driver) {
+      return;
+    }
+    const vehicleId = driver.vehicle_id ? String(driver.vehicle_id) : null;
+    if (selectedDriverIds.includes(driverId)) {
+      setSelectedDriverIds((previous) => previous.filter((id) => id !== driverId));
+      if (vehicleId) {
+        setSelectedVehicleIds((previous) => previous.filter((id) => id !== vehicleId));
+      }
+      setValidationErrors((previous) => ({ ...previous, pairing: "" }));
+      return;
+    }
+
+    const issue = getDriverDisabledReason(driver);
+    if (issue) {
+      setValidationErrors((previous) => ({ ...previous, pairing: issue }));
+      return;
+    }
+    setSelectedDriverIds((previous) => [...previous, driverId]);
+    setSelectedVehicleIds((previous) => [...new Set([...previous, vehicleId])]);
+    setValidationErrors((previous) => ({ ...previous, pairing: "" }));
+  }
+
+  function getVehicleDescription(vehicle) {
+    const assignedDriver = drivers.find(
+      (driver) => String(driver?.vehicle_id) === String(getItemId(vehicle)),
+    );
+    const assignment = assignedDriver
+      ? `Assigned to ${getDriverLabel(assignedDriver)}`
+      : "No driver assigned";
+    return `${getVehicleStatus(vehicle)} · ${assignment}`;
+  }
+
   function validate() {
     const errors = {};
 
@@ -216,6 +266,19 @@ export default function OptimizationForm({
         assignedVehicleIds.some((id) => !selectedVehicleIds.includes(id)))
     ) {
       errors.pairing = "Select each driver's assigned vehicle, with one vehicle per driver.";
+    }
+    if (selectedDrivers.some((driver) => getDriverSelectionIssue(driver, vehicles))) {
+      errors.pairing = "Selected drivers must be available and have an active, available assigned vehicle.";
+    }
+    if (new Set(assignedVehicleIds).size !== assignedVehicleIds.length) {
+      errors.pairing = "A vehicle can only be paired with one selected driver.";
+    }
+
+    const selectedOrders = orders.filter((order) =>
+      selectedOrderIds.includes(String(getItemId(order)))
+    );
+    if (selectedOrders.length !== selectedOrderIds.length || selectedOrders.some(getOrderSelectionIssue)) {
+      errors.orders = "Remove unavailable orders or orders with invalid delivery coordinates.";
     }
 
     setValidationErrors(errors);
@@ -285,9 +348,16 @@ export default function OptimizationForm({
             title="Drivers"
             items={drivers}
             selected={selectedDriverIds}
-            onToggle={(id) => toggleSelected(setSelectedDriverIds, id)}
+            onToggle={toggleDriverSelection}
             disabled={optimizing}
             getLabel={getDriverLabel}
+            getDescription={(driver) => {
+              const assignedVehicle = vehicles.find(
+                (vehicle) => String(vehicle.id) === String(driver?.vehicle_id),
+              );
+              return `${driver?.status || "Unknown status"} · ${driver?.is_available ? "Available" : "Unavailable"} · ${assignedVehicle ? `Assigned: ${getVehicleLabel(assignedVehicle)}` : "No assigned vehicle"}`;
+            }}
+            getDisabledReason={getDriverDisabledReason}
             emptyLabel="No drivers available."
             searchText={driversQuery}
             onSearchTextChange={setDriversQuery}
@@ -297,12 +367,22 @@ export default function OptimizationForm({
           ) : null}
 
           <SelectionGroup
-            title="Vehicles"
+            title="Assigned Vehicles"
             items={vehicles}
             selected={selectedVehicleIds}
-            onToggle={(id) => toggleSelected(setSelectedVehicleIds, id)}
+            onToggle={() => {}}
             disabled={optimizing}
+            readOnly
             getLabel={getVehicleLabel}
+            getDescription={getVehicleDescription}
+            getDisabledReason={(vehicle) => {
+              if (vehicle?.status !== "available" || vehicle?.is_active !== true) {
+                return "Unavailable for optimization.";
+              }
+              return selectedVehicleIds.includes(String(getItemId(vehicle)))
+                ? "Selected automatically with its assigned driver."
+                : "Select the assigned driver to include this vehicle.";
+            }}
             emptyLabel="No vehicles available."
             searchText={vehiclesQuery}
             onSearchTextChange={setVehiclesQuery}
@@ -321,6 +401,8 @@ export default function OptimizationForm({
             onToggle={(id) => toggleSelected(setSelectedOrderIds, id)}
             disabled={optimizing}
             getLabel={getOrderLabel}
+            getDescription={getOrderDescription}
+            getDisabledReason={getOrderSelectionIssue}
             emptyLabel="No orders available."
             searchText={ordersQuery}
             onSearchTextChange={setOrdersQuery}

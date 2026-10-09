@@ -36,27 +36,52 @@ export function buildSyntheticDemandSeries(payload) {
 export function buildForecastComparisonData(payload) {
   return getResults(payload, "forecast_models")
     .map((entry) => ({
-      model: entry.model,
+      model: {
+        naive_previous_week: "Previous-week naive",
+        holt_winters_weekly: "Holt-Winters",
+        seasonal_linear_regression: "Seasonal linear regression",
+      }[entry.model] || entry.model,
       ...normalizeErrorMetrics(entry),
     }))
     .filter((entry) => typeof entry.model === "string" && entry.mae !== null);
 }
 
 export function buildHorizonSensitivityData(payload) {
-  return getResults(payload, "horizon_sensitivity")
-    .map((entry) => ({
-      horizonDays: toFiniteNumber(entry.horizon_days),
-      model: entry.model,
-      ...normalizeErrorMetrics(entry),
-    }))
-    .filter((entry) => entry.horizonDays !== null && typeof entry.model === "string" && entry.mae !== null)
-    .map((entry) => ({ ...entry, horizon: `H${entry.horizonDays}` }));
+  const modelKeys = [
+    "naive_previous_week",
+    "holt_winters_weekly",
+    "seasonal_linear_regression",
+  ];
+  const rowsByHorizon = new Map();
+  for (const entry of getResults(payload, "horizon_sensitivity")) {
+    const horizonDays = toFiniteNumber(entry.horizon_days);
+    if (horizonDays === null || !modelKeys.includes(entry.model)) {
+      continue;
+    }
+    const mae = toFiniteNumber(entry.mae);
+    if (mae === null) {
+      continue;
+    }
+    const horizonRow = rowsByHorizon.get(horizonDays) || { horizon: `H${horizonDays}` };
+    horizonRow[entry.model] = mae;
+    rowsByHorizon.set(horizonDays, horizonRow);
+  }
+  return [...rowsByHorizon.entries()]
+    .sort(([left], [right]) => left - right)
+    .map(([, row]) => row);
 }
 
 export function buildFeatureAblationData(payload) {
   return getResults(payload, "feature_ablation")
     .map((entry) => ({
-      ablation: entry.ablation,
+      ablation: {
+        full: "Full model",
+        remove_weekly: "Remove weekly seasonality",
+        remove_annual: "Remove annual seasonality",
+        remove_lags: "Remove lag features",
+        remove_rolling: "Remove rolling features",
+        remove_weekly_and_annual: "Remove weekly + annual seasonality",
+      }[entry.ablation] || entry.ablation,
       ...normalizeErrorMetrics(entry),
     }))
     .filter((entry) => typeof entry.ablation === "string" && entry.mae !== null);
@@ -84,4 +109,18 @@ export function buildHgfcAdvisoryData(payload) {
       intervention: Boolean(entry.preparation_intervention),
     }))
     .filter((entry) => entry.leadDays !== null && entry.forecastDemand !== null);
+}
+
+export function buildPairedRoutingData(payload) {
+  return getResults(payload, "reactive_vs_hgfc")
+    .map((entry) => ({
+      scenarioId: toFiniteNumber(entry.scenario_id),
+      leadDays: toFiniteNumber(entry.forecast_lead_days),
+      reactiveDistance: toFiniteNumber(entry.reactive_route_distance_km),
+      advisoryDistance: toFiniteNumber(entry.hgfc_route_distance_km),
+      reactiveServiceLevel: toFiniteNumber(entry.reactive_service_level_percent),
+      advisoryServiceLevel: toFiniteNumber(entry.hgfc_service_level_percent),
+    }))
+    .filter((entry) => entry.scenarioId !== null)
+    .map((entry) => ({ ...entry, scenario: `Lead ${entry.leadDays ?? "?"}d` }));
 }

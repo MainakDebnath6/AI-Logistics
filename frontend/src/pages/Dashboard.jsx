@@ -173,8 +173,14 @@ export default function Dashboard() {
         color: "emerald",
       },
       {
-        title: "Pending Orders",
+        title: "Open Orders",
         value: formatInteger(analytics.pendingOrders),
+        icon: <ClockIcon />,
+        color: "amber",
+      },
+      {
+        title: "Cancelled Orders",
+        value: formatInteger(analytics.cancelledOrders),
         icon: <ClockIcon />,
         color: "amber",
       },
@@ -191,7 +197,7 @@ export default function Dashboard() {
         color: "teal",
       },
       {
-        title: "Route Efficiency",
+        title: "Order Completion Rate",
         value: formatPercentage(analytics.routeEfficiency),
         icon: <TruckIcon />,
         color: "blue",
@@ -214,8 +220,8 @@ export default function Dashboard() {
       {loading ? (
         <>
           <LoadingSpinner size="md" label="Loading fleet dashboard..." />
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, index) => (
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {Array.from({ length: 7 }).map((_, index) => (
               <DashboardCardSkeleton key={index} />
             ))}
           </div>
