@@ -24,6 +24,7 @@ from app.schemas.optimization import OptimizationRequest, OptimizationResponse
 from app.schemas.order import OrderCreate
 from app.services.demand_forecast_service import DemandForecastService
 from app.services.hgfc_service import HGFCService
+from app.services.routing_service import RoutingService
 from fastapi import HTTPException
 from pydantic import ValidationError
 from scripts.seed_demo import seed_demo
@@ -44,6 +45,14 @@ def test_demand_forecast_horizon_returns_cumulative_daily_workload():
     with pytest.raises(ValueError, match="at least one day"):
         service.forecast_demand_for_horizon([10, 20, 30], 0)
     assert service.forecast_demand([10, 20, 30]) == 19.27
+
+
+def test_routing_service_normalizes_swapped_geojson_points():
+    lon, lat = RoutingService._normalize_geojson_point(41.0, -87.0)
+    assert (lon, lat) == (-87.0, 41.0)
+
+    lon, lat = RoutingService._normalize_geojson_point(-87.0, 41.0)
+    assert (lon, lat) == (-87.0, 41.0)
 
 
 def test_cvrp_routes_respect_vehicle_capacity(

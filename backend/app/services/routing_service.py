@@ -25,6 +25,20 @@ class RoutingService:
 	def __init__(self) -> None:
 		self._settings = get_settings()
 
+	@staticmethod
+	def _normalize_geojson_point(longitude: float, latitude: float) -> tuple[float, float]:
+		"""Return a conventional lon/lat tuple when a route payload is misordered."""
+		lon_value = float(longitude)
+		lat_value = float(latitude)
+
+		if abs(lat_value) > 90.0 or abs(lon_value) > 180.0:
+			return float(lat_value), float(lon_value)
+
+		if abs(lat_value) > 60.0 and abs(lon_value) <= 60.0:
+			return float(lat_value), float(lon_value)
+
+		return float(lon_value), float(lat_value)
+
 	def build_road_route(self, route_coordinates: Sequence[RouteCoordinate]) -> RoadRouteResult | None:
 		"""Resolve route geometry via OSRM. Returns None when routing is unavailable."""
 		if len(route_coordinates) < 2:
@@ -85,8 +99,7 @@ class RoutingService:
 		for point in geo_coordinates:
 			if not isinstance(point, list) or len(point) < 2:
 				continue
-			lon = float(point[0])
-			lat = float(point[1])
+			lon, lat = self._normalize_geojson_point(point[0], point[1])
 			road_geometry.append(RouteCoordinate(latitude=lat, longitude=lon))
 
 		if len(road_geometry) < 2:
