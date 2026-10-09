@@ -7,7 +7,8 @@ from urllib.error import HTTPError
 import pytest
 from app.core.config import Settings
 from app.schemas.optimization import RouteCoordinate
-from app.services.routing_service import RoadRoutingError, RoutingService
+from app.services.route_optimizer import RouteOptimizerService
+from app.services.routing_service import RoadRouteResult, RoadRoutingError, RoutingService
 
 
 DEPOT = RouteCoordinate(latitude=22.5726, longitude=88.3639)
@@ -217,3 +218,46 @@ def test_optimizer_does_not_publish_straight_line_fallback_as_road_route(
     assert response_payload["routes"][0]["road_route_status"] == "failed"
     assert response_payload["routes"][0]["road_geometry"] == []
     assert response_payload["routes"][0]["total_duration_minutes"] is None
+
+
+def test_single_order_route_passes_depot_delivery_depot_once_to_road_router(
+    make_driver,
+    make_vehicle,
+    make_order,
+):
+    class CapturingRoutingService:
+        received = None
+
+        def build_road_route(self, route_coordinates):
+            self.received = list(route_coordinates)
+            return RoadRouteResult(
+                road_geometry=list(route_coordinates),
+                distance_meters=2400,
+                duration_seconds=360,
+            )
+
+    depot = (22.5726, 88.3639)
+    vehicle = make_vehicle(10)
+    order = make_order(2, latitude=22.5800, longitude=88.3700)
+    routing = CapturingRoutingService()
+    service = RouteOptimizerService(routing_service=routing)
+    service._settings = Settings(
+        DEFAULT_DEPOT_LATITUDE=depot[0],
+        DEFAULT_DEPOT_LONGITUDE=depot[1],
+    )
+
+    result = service.optimize([make_driver(vehicle.id)], [vehicle], [order])
+
+    expected = [
+        (depot[0], depot[1]),
+        (order.delivery_latitude, order.delivery_longitude),
+        (depot[0], depot[1]),
+    ]
+    actual = [(point.latitude, point.longitude) for point in routing.received]
+    route = result.routes[0]
+    assert actual == expected
+    assert route.total_orders == 1
+    assert route.stops[0].order_id == order.id
+    assert route.road_route_status == "available"
+    assert route.road_distance_km == pytest.approx(2.4)
+    assert route.total_duration_minutes == pytest.approx(6.0)

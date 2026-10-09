@@ -95,11 +95,11 @@ class RoutingService:
 		except URLError as error:
 			if isinstance(error.reason, TimeoutError) or "timed out" in str(error.reason).lower():
 				raise RoadRoutingError("OSRM road routing request timed out.") from error
-			raise RoadRoutingError(f"OSRM road routing request failed: {error.reason}.") from error
+			raise RoadRoutingError("OSRM road routing request failed due to a network error.") from error
 		except (TimeoutError, OSError) as error:
 			if isinstance(error, (TimeoutError,)) or "timed out" in str(error).lower():
 				raise RoadRoutingError("OSRM road routing request timed out.") from error
-			raise RoadRoutingError(f"OSRM road routing request failed: {error}.") from error
+			raise RoadRoutingError("OSRM road routing request failed due to a network error.") from error
 		except (UnicodeDecodeError, json.JSONDecodeError) as error:
 			raise RoadRoutingError("OSRM returned malformed JSON.") from error
 		except Exception as error:

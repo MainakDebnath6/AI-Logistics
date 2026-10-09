@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from app.api.analytics import get_research_analytics, summarize_synthetic_demand_rows
 
 
@@ -60,3 +62,19 @@ def test_get_research_analytics_uses_real_experiment_results():
     assert payload["feature_ablation"]["results"]
     assert payload["cvrp_benchmark"]["results"]
     assert payload["hgfc_advisory"]["results"]
+
+
+def test_runtime_image_declares_research_artifact_inputs():
+    repository_root = Path(__file__).resolve().parents[2]
+    dockerfile = (repository_root / "Dockerfile").read_text(encoding="utf-8")
+
+    for filename in (
+        "forecast_models.json",
+        "horizon_sensitivity.json",
+        "feature_ablation.json",
+        "cvrp_benchmark.json",
+        "hgfc_advisory.json",
+    ):
+        assert f"COPY experiments/results/{filename} ./experiments/results/{filename}" in dockerfile
+        assert (repository_root / "experiments/results" / filename).is_file()
+    assert "COPY data/raw/synthetic_demand.csv ./data/raw/synthetic_demand.csv" in dockerfile
