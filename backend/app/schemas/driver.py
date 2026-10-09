@@ -4,7 +4,7 @@ from datetime import datetime
 from uuid import UUID
 
 from app.models.driver import DriverStatus
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import AliasPath, BaseModel, ConfigDict, Field
 
 
 class DriverCreate(BaseModel):
@@ -56,6 +56,7 @@ class DriverResponse(BaseModel):
 
     id: UUID
     user_id: UUID
+    full_name: str | None = Field(default=None, validation_alias=AliasPath("user", "full_name"))
     license_number: str
     phone: str
     vehicle_id: UUID | None

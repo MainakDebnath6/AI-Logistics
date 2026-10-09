@@ -142,28 +142,31 @@ export default function Analytics() {
         color: "teal",
       },
       {
-        title: "Route Efficiency",
+        title: "Order Completion Rate",
         value: formatPercentage(analytics.routeEfficiency),
         icon: <RouteIcon />,
         color: "violet",
       },
       {
-        title: "Average ETA",
+        title: "Average OSRM Road ETA",
         value: formatEta(analytics.averageEta),
         icon: <ClockIcon />,
         color: "amber",
+        subtitle: "Average of successful OSRM routes in recent route history",
       },
       {
         title: "On-Time Delivery",
         value: formatPercentage(analytics.onTimeDelivery),
         icon: <DeliveryIcon />,
         color: "emerald",
+        subtitle: "Unavailable: order records have no delivery timestamps",
       },
       {
-        title: "Distance Covered",
+        title: "Average Optimized Distance (Haversine)",
         value: formatDistance(analytics.distanceCovered),
         icon: <DistanceIcon />,
         color: "cyan",
+        subtitle: "Haversine optimizer distance; not OSRM road distance",
       },
     ];
   }, [analytics]);
@@ -214,20 +217,20 @@ export default function Analytics() {
                 { key: "onTimeDelivery", name: "On-Time Delivery", color: "#34d399" },
               ]}
               unit="%"
-              emptyMessage="KPI trend data is not available."
+              emptyMessage="No operational KPI time series is available. Current completion rate is shown above."
             />
           </div>
 
           <AnalyticsChart
             type="line"
-            title="Average ETA vs Distance"
+            title="Operational Route History Trend"
             data={etaDistanceData}
             xKey="label"
             series={[
-              { key: "averageEta", name: "Average ETA", color: "#f59e0b" },
-              { key: "distanceCovered", name: "Distance Covered", color: "#60a5fa" },
+              { key: "averageEta", name: "OSRM road ETA (minutes)", color: "#f59e0b" },
+              { key: "distanceCovered", name: "Haversine route distance (km)", color: "#60a5fa" },
             ]}
-            emptyMessage="ETA and distance trend data is not available."
+            emptyMessage="No route time series is available yet. Distance and successful OSRM ETA summaries are shown above."
           />
         </>
       )}

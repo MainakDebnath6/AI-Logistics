@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import json
+import logging
 from pathlib import Path
 from typing import Any
 
@@ -19,6 +20,7 @@ from app.models.user import User
 from app.models.vehicle import Vehicle
 from app.repositories.driver_repository import DriverRepository
 from app.repositories.order_repository import OrderRepository
+from app.repositories.route_repository import RouteRepository
 from app.repositories.vehicle_repository import VehicleRepository
 from app.schemas.analytics import FleetAnalyticsResponse
 from app.schemas.optimization import OptimizationResponse
@@ -29,10 +31,12 @@ router = APIRouter(
     prefix="/analytics",
     tags=["Analytics"],
 )
+logger = logging.getLogger(__name__)
 
 RESEARCH_RESULTS_DIR = Path(__file__).resolve().parents[3] / "experiments" / "results"
 SYNTHETIC_DEMAND_CSV_PATH = Path(__file__).resolve().parents[3] / "data" / "raw" / "synthetic_demand.csv"
 MAX_SYNTHETIC_DEMAND_ROWS = 730
+DASHBOARD_ROUTE_HISTORY_LIMIT = 100
 
 
 def get_analytics_service() -> AnalyticsService:
@@ -53,6 +57,11 @@ def get_vehicle_repository(db: Session = Depends(get_db)) -> VehicleRepository:
 def get_order_repository(db: Session = Depends(get_db)) -> OrderRepository:
     """Create an order repository instance."""
     return OrderRepository(db)
+
+
+def get_route_repository(db: Session = Depends(get_db)) -> RouteRepository:
+    """Create a route repository instance."""
+    return RouteRepository(db)
 
 
 def get_optimization_result_from_state(
@@ -202,10 +211,24 @@ def _load_research_result_file(filename: str) -> dict[str, Any]:
     """Read the cached experiment summary file for research analytics."""
     path = RESEARCH_RESULTS_DIR / filename
     if not path.exists():
-        return {"results": []}
+        logger.warning("Research result artifact is missing: filename=%s", filename)
+        return {"results": [], "error": "This experiment result file is unavailable."}
 
-    with path.open("r", encoding="utf-8") as handle:
-        return json.load(handle)
+    try:
+        with path.open("r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
+        logger.warning(
+            "Research result artifact could not be read: filename=%s error_type=%s",
+            filename,
+            type(error).__name__,
+        )
+        return {"results": [], "error": "This experiment result file could not be read."}
+
+    if not isinstance(payload, dict) or not isinstance(payload.get("results"), list):
+        logger.warning("Research result artifact has an invalid structure: filename=%s", filename)
+        return {"results": [], "error": "This experiment result file has an invalid structure."}
+    return payload
 
 
 def get_research_analytics(db: Session | None = None) -> dict[str, Any]:
@@ -218,6 +241,7 @@ def get_research_analytics(db: Session | None = None) -> dict[str, Any]:
         "feature_ablation": _load_research_result_file("feature_ablation.json"),
         "cvrp_benchmark": _load_research_result_file("cvrp_benchmark.json"),
         "hgfc_advisory": _load_research_result_file("hgfc_advisory.json"),
+        "reactive_vs_hgfc": _load_research_result_file("reactive_vs_hgfc.json"),
     }
 
 
@@ -228,6 +252,7 @@ def get_dashboard(
     driver_repository: DriverRepository = Depends(get_driver_repository),
     vehicle_repository: VehicleRepository = Depends(get_vehicle_repository),
     order_repository: OrderRepository = Depends(get_order_repository),
+    route_repository: RouteRepository = Depends(get_route_repository),
     optimization_result: OptimizationResponse | None = Depends(
         get_optimization_result_from_state
     ),
@@ -242,12 +267,14 @@ def get_dashboard(
     drivers: list[Driver] = driver_repository.get_all(skip=0, limit=10_000)
     vehicles: list[Vehicle] = vehicle_repository.get_all(skip=0, limit=10_000)
     orders: list[Order] = order_repository.get_all(skip=0, limit=10_000)
+    route_history = route_repository.get_all(skip=0, limit=DASHBOARD_ROUTE_HISTORY_LIMIT)
 
     return analytics_service.get_dashboard_metrics(
         drivers=drivers,
         vehicles=vehicles,
         orders=orders,
         optimization_result=optimization_result,
+        route_history=route_history,
     )
 
 

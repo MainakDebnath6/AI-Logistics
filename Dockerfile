@@ -28,6 +28,7 @@ COPY experiments/results/horizon_sensitivity.json ./experiments/results/horizon_
 COPY experiments/results/feature_ablation.json ./experiments/results/feature_ablation.json
 COPY experiments/results/cvrp_benchmark.json ./experiments/results/cvrp_benchmark.json
 COPY experiments/results/hgfc_advisory.json ./experiments/results/hgfc_advisory.json
+COPY experiments/results/reactive_vs_hgfc.json ./experiments/results/reactive_vs_hgfc.json
 COPY data/raw/synthetic_demand.csv ./data/raw/synthetic_demand.csv
 
 RUN useradd -m -u 10001 appuser \

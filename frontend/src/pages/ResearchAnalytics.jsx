@@ -8,6 +8,7 @@ import {
   buildForecastComparisonData,
   buildHgfcAdvisoryData,
   buildHorizonSensitivityData,
+  buildPairedRoutingData,
   buildSyntheticDemandSeries,
   getResearchAnalytics,
 } from "../services/analyticsService";
@@ -95,11 +96,15 @@ export default function ResearchAnalytics() {
   const featureAblation = useMemo(() => buildFeatureAblationData(research), [research]);
   const cvrpBenchmark = useMemo(() => buildCvrpBenchmarkData(research), [research]);
   const hgfcAdvisory = useMemo(() => buildHgfcAdvisoryData(research), [research]);
+  const pairedRouting = useMemo(() => buildPairedRoutingData(research), [research]);
+  const experimentConfig = research?.forecast_models?.configuration;
+  const comparisonOrigins = research?.forecast_models?.results?.[0]?.forecast_origins;
+  const emptyMessage = (artifact, fallback) => research?.[artifact]?.error || fallback;
 
   const summaryCards = [
     {
       title: "Daily observations",
-      value: syntheticDemand.count ?? 0,
+      value: Number.isFinite(syntheticDemand.count) ? syntheticDemand.count : "--",
       icon: <DemandIcon />,
       color: "teal",
       subtitle: "Synthetic demand records",
@@ -112,13 +117,13 @@ export default function ResearchAnalytics() {
       subtitle: "Research dataset window",
     },
     {
-      title: "Average demand",
+      title: "Average daily demand",
       value: Number.isFinite(syntheticDemand.average_demand)
         ? `${Number(syntheticDemand.average_demand).toFixed(2)}`
-        : "0.00",
+        : "--",
       icon: <AverageIcon />,
       color: "violet",
-      subtitle: "Mean daily demand",
+      subtitle: "Synthetic dataset units per day",
     },
   ];
 
@@ -127,7 +132,7 @@ export default function ResearchAnalytics() {
       <header>
         <h2 className="text-2xl font-bold text-white">Research Analytics</h2>
         <p className="mt-1 text-sm text-slate-300">
-          Synthetic demand, forecast comparisons, horizon sensitivity, and HGFCI advisory outputs.
+          Synthetic demand, forecast comparisons, horizon sensitivity, and advisory-only HGFCI outputs.
         </p>
       </header>
 
@@ -139,6 +144,16 @@ export default function ResearchAnalytics() {
         </div>
       ) : (
         <>
+          <aside className="rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-100">
+            All research results use synthetic demand, not live fleet measurements. The reactive/HGFCI
+            artifact reuses identical confirmed orders and fleet inputs; it checks non-interference and
+            does not evaluate operational benefit. The model comparison uses {comparisonOrigins ?? "unavailable"}
+            {comparisonOrigins === 1 ? " forecast origin" : " forecast origins"}.
+            {experimentConfig
+              ? ` Evaluation: ${experimentConfig.training_days}-day chronological training prefix, ${experimentConfig.holdout_days}-day holdout, seed ${experimentConfig.seed}.`
+              : " Evaluation configuration is unavailable."}
+          </aside>
+
           <div className="grid gap-4 md:grid-cols-3">
             {summaryCards.map((card) => (
               <MetricCard key={card.title} {...card} />
@@ -157,12 +172,12 @@ export default function ResearchAnalytics() {
 
             <AnalyticsChart
               type="bar"
-              title="Forecast model comparison (MAE)"
+              title="60-day model comparison (MAE)"
               data={forecastComparison}
               xKey="model"
               series={[{ key: "mae", name: "MAE", color: "#60a5fa" }]}
-              unit=""
-              emptyMessage="Forecast model comparison data is not available."
+              unit=" synthetic units"
+              emptyMessage={emptyMessage("forecast_models", "Forecast model comparison data is not available.")}
             />
           </div>
 
@@ -172,8 +187,13 @@ export default function ResearchAnalytics() {
               title="Horizon sensitivity"
               data={horizonSensitivity}
               xKey="horizon"
-              series={[{ key: "mae", name: "MAE", color: "#34d399" }]}
-              emptyMessage="Horizon sensitivity results are not available."
+              series={[
+                { key: "naive_previous_week", name: "Previous-week naive", color: "#34d399" },
+                { key: "holt_winters_weekly", name: "Holt-Winters", color: "#60a5fa" },
+                { key: "seasonal_linear_regression", name: "Seasonal linear regression", color: "#f59e0b" },
+              ]}
+              unit=" synthetic units"
+              emptyMessage={emptyMessage("horizon_sensitivity", "Horizon sensitivity results are not available.")}
             />
 
             <AnalyticsChart
@@ -182,7 +202,8 @@ export default function ResearchAnalytics() {
               data={featureAblation}
               xKey="ablation"
               series={[{ key: "mae", name: "MAE", color: "#f59e0b" }]}
-              emptyMessage="Feature ablation results are not available."
+              unit=" synthetic units"
+              emptyMessage={emptyMessage("feature_ablation", "Feature ablation results are not available.")}
             />
           </div>
 
@@ -192,8 +213,11 @@ export default function ResearchAnalytics() {
               title="CVRP benchmark"
               data={cvrpBenchmark}
               xKey="scenario"
-              series={[{ key: "demand", name: "Confirmed demand", color: "#a78bfa" }]}
-              emptyMessage="CVRP benchmark data is not available."
+              series={[
+                { key: "demand", name: "Confirmed demand", color: "#a78bfa" },
+                { key: "capacity", name: "Available capacity", color: "#34d399" },
+              ]}
+              emptyMessage={emptyMessage("cvrp_benchmark", "CVRP benchmark data is not available.")}
             />
 
             <AnalyticsChart
@@ -202,9 +226,22 @@ export default function ResearchAnalytics() {
               data={hgfcAdvisory}
               xKey="leadDays"
               series={[{ key: "risk", name: "Capacity risk", color: "#f472b6" }]}
-              emptyMessage="HGFCI advisory data is not available."
+              emptyMessage={emptyMessage("hgfc_advisory", "HGFCI advisory data is not available.")}
             />
           </div>
+
+          <AnalyticsChart
+            type="bar"
+            title="Reactive CVRP vs HGFCI advisory (route distance)"
+            data={pairedRouting}
+            xKey="scenario"
+            series={[
+              { key: "reactiveDistance", name: "Reactive CVRP", color: "#60a5fa" },
+              { key: "advisoryDistance", name: "HGFCI advisory arm", color: "#f59e0b" },
+            ]}
+            unit=" km"
+            emptyMessage={emptyMessage("reactive_vs_hgfc", "Paired routing experiment results are not available.")}
+          />
         </>
       )}
     </section>

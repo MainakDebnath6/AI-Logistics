@@ -10,15 +10,16 @@ class FleetAnalyticsResponse(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-    vehicle_utilization_percentage: float
-    driver_utilization_percentage: float
-    average_route_distance_km: float
-    average_eta_minutes: float
+    vehicle_utilization_percentage: float | None
+    driver_utilization_percentage: float | None
+    average_route_distance_km: float | None
+    average_eta_minutes: float | None
     completed_orders: int
     pending_orders: int
+    cancelled_orders: int
     total_orders: int
-    route_efficiency_percentage: float
-    on_time_delivery_percentage: float
+    route_efficiency_percentage: float | None
+    on_time_delivery_percentage: float | None
     generated_at: datetime
 
 
@@ -50,3 +51,4 @@ class ResearchAnalyticsResponse(BaseModel):
     feature_ablation: dict
     cvrp_benchmark: dict
     hgfc_advisory: dict
+    reactive_vs_hgfc: dict
