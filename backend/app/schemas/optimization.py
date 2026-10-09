@@ -45,8 +45,8 @@ class OptimizationVehicle(BaseModel):
 class RouteCoordinate(BaseModel):
 	"""Canonical coordinate point for route plotting."""
 
-	latitude: float
-	longitude: float
+	latitude: float = Field(ge=-90.0, le=90.0, allow_inf_nan=False)
+	longitude: float = Field(ge=-180.0, le=180.0, allow_inf_nan=False)
 
 
 class OptimizationStop(BaseModel):
@@ -73,12 +73,14 @@ class OptimizedRoute(BaseModel):
 	driver: OptimizationDriver
 	vehicle: OptimizationVehicle
 	total_distance_km: float
-	total_duration_minutes: float
+	total_duration_minutes: float | None
 	total_demand: int
 	total_orders: int
 	stops: list[OptimizationStop]
 	route_coordinates: list[RouteCoordinate]
-	road_geometry: list[RouteCoordinate] = []
+	road_geometry: list[RouteCoordinate] = Field(default_factory=list)
+	road_route_status: str = "unavailable"
+	road_route_error: str | None = None
 	distance: float | None = None
 	duration: float | None = None
 	road_distance_km: float | None = None

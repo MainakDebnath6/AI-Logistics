@@ -1,0 +1,8 @@
+ backend/app/api/analytics.py              | 186 [32m+++++++++++++++++++++++++[m[31m-[m
+ backend/app/schemas/analytics.py          |  30 [32m+++++[m
+ backend/tests/test_research_analytics.py  |  62 [32m+++++++++[m
+ frontend/src/App.jsx                      |   2 [32m+[m
+ frontend/src/components/Sidebar.jsx       |  10 [32m++[m
+ frontend/src/pages/ResearchAnalytics.jsx  | 212 [32m++++++++++++++++++++++++++++++[m
+ frontend/src/services/analyticsService.js |  71 [32m++++++++++[m
+ 7 files changed, 572 insertions(+), 1 deletion(-)

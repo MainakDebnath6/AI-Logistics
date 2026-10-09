@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import json
+import math
 from dataclasses import dataclass
 from typing import Sequence
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import urlopen
 
@@ -19,16 +21,35 @@ class RoadRouteResult:
 	duration_seconds: float
 
 
+class RoadRoutingError(RuntimeError):
+	"""Raised when OSRM cannot provide valid road geometry for the requested route."""
+
+
 class RoutingService:
 	"""Service for external road geometry enrichment of optimized routes."""
 
 	def __init__(self) -> None:
 		self._settings = get_settings()
 
-	def build_road_route(self, route_coordinates: Sequence[RouteCoordinate]) -> RoadRouteResult | None:
-		"""Resolve route geometry via OSRM. Returns None when routing is unavailable."""
+	def build_road_route(self, route_coordinates: Sequence[RouteCoordinate]) -> RoadRouteResult:
+		"""Resolve and validate ordered road geometry via OSRM."""
 		if len(route_coordinates) < 2:
-			return None
+			raise RoadRoutingError("At least two route coordinates are required for road routing.")
+		for index, point in enumerate(route_coordinates):
+			try:
+				latitude = float(getattr(point, "latitude"))
+				longitude = float(getattr(point, "longitude"))
+			except (AttributeError, OverflowError, TypeError, ValueError) as error:
+				raise RoadRoutingError(
+					f"Route coordinate {index} has invalid latitude/longitude values."
+				) from error
+			if (
+				not math.isfinite(latitude)
+				or not math.isfinite(longitude)
+				or not -90.0 <= latitude <= 90.0
+				or not -180.0 <= longitude <= 180.0
+			):
+				raise RoadRoutingError(f"Route coordinate {index} has invalid latitude/longitude values.")
 
 		base_url = str(
 			getattr(
@@ -61,39 +82,132 @@ class RoutingService:
 
 		try:
 			with urlopen(url, timeout=max(timeout_seconds, 0.5)) as response:
+				status = getattr(response, "status", None)
+				if status is None:
+					status = response.getcode()
+				if not 200 <= status < 300:
+					raise RoadRoutingError(f"OSRM returned HTTP {status}.")
 				payload = json.loads(response.read().decode("utf-8"))
-		except Exception:
-			return None
+		except RoadRoutingError:
+			raise
+		except HTTPError as error:
+			raise RoadRoutingError(f"OSRM returned HTTP {error.code}.") from error
+		except URLError as error:
+			if isinstance(error.reason, TimeoutError) or "timed out" in str(error.reason).lower():
+				raise RoadRoutingError("OSRM road routing request timed out.") from error
+			raise RoadRoutingError(f"OSRM road routing request failed: {error.reason}.") from error
+		except (TimeoutError, OSError) as error:
+			if isinstance(error, (TimeoutError,)) or "timed out" in str(error).lower():
+				raise RoadRoutingError("OSRM road routing request timed out.") from error
+			raise RoadRoutingError(f"OSRM road routing request failed: {error}.") from error
+		except (UnicodeDecodeError, json.JSONDecodeError) as error:
+			raise RoadRoutingError("OSRM returned malformed JSON.") from error
+		except Exception as error:
+			raise RoadRoutingError(f"OSRM response could not be read: {error}.") from error
 
+		if not isinstance(payload, dict):
+			raise RoadRoutingError("OSRM returned a malformed response object.")
 		if payload.get("code") != "Ok":
-			return None
+			code = payload.get("code")
+			raise RoadRoutingError(f"OSRM could not route the requested stops (code: {code}).")
 
 		routes = payload.get("routes")
 		if not isinstance(routes, list) or not routes:
-			return None
+			raise RoadRoutingError("OSRM returned no route for the requested stops.")
 
 		primary_route = routes[0]
-		distance_meters = float(primary_route.get("distance") or 0.0)
-		duration_seconds = float(primary_route.get("duration") or 0.0)
+		if not isinstance(primary_route, dict):
+			raise RoadRoutingError("OSRM returned a malformed route object.")
+		try:
+			distance_meters = float(primary_route["distance"])
+			duration_seconds = float(primary_route["duration"])
+		except (KeyError, OverflowError, TypeError, ValueError) as error:
+			raise RoadRoutingError("OSRM route is missing valid distance or duration metrics.") from error
+		if not math.isfinite(distance_meters) or distance_meters <= 0.0:
+			raise RoadRoutingError("OSRM returned an invalid route distance.")
+		if not math.isfinite(duration_seconds) or duration_seconds <= 0.0:
+			raise RoadRoutingError("OSRM returned an invalid route duration.")
+
+		waypoints = payload.get("waypoints")
+		if not isinstance(waypoints, list) or len(waypoints) != len(route_coordinates):
+			raise RoadRoutingError("OSRM response does not contain the requested ordered waypoints.")
+		for index, waypoint in enumerate(waypoints):
+			if not isinstance(waypoint, dict) or waypoint.get("waypoint_index") != index:
+				raise RoadRoutingError("OSRM waypoint order does not match the optimized stop sequence.")
+			location = waypoint.get("location")
+			if not self._valid_lon_lat(location):
+				raise RoadRoutingError(f"OSRM returned an invalid snapped waypoint at index {index}.")
+			try:
+				snap_distance = float(waypoint["distance"])
+			except (KeyError, OverflowError, TypeError, ValueError) as error:
+				raise RoadRoutingError(f"OSRM omitted snap distance for waypoint {index}.") from error
+			if not math.isfinite(snap_distance) or snap_distance < 0.0 or snap_distance > distance_meters:
+				raise RoadRoutingError(
+					f"OSRM snapped waypoint {index} farther than the returned route distance."
+				)
 
 		geometry = primary_route.get("geometry")
 		geo_coordinates = geometry.get("coordinates") if isinstance(geometry, dict) else None
 		if not isinstance(geo_coordinates, list) or len(geo_coordinates) < 2:
-			return None
+			raise RoadRoutingError("OSRM returned no detailed road geometry.")
 
 		road_geometry: list[RouteCoordinate] = []
 		for point in geo_coordinates:
-			if not isinstance(point, list) or len(point) < 2:
-				continue
+			if not self._valid_lon_lat(point):
+				raise RoadRoutingError("OSRM road geometry contains an invalid longitude/latitude point.")
 			lon = float(point[0])
 			lat = float(point[1])
 			road_geometry.append(RouteCoordinate(latitude=lat, longitude=lon))
 
-		if len(road_geometry) < 2:
-			return None
+		first_waypoint = waypoints[0]["location"]
+		last_waypoint = waypoints[-1]["location"]
+		if not self._same_point(road_geometry[0], first_waypoint):
+			raise RoadRoutingError("OSRM geometry start does not match the first optimized stop.")
+		if not self._same_point(road_geometry[-1], last_waypoint):
+			raise RoadRoutingError("OSRM geometry end does not match the final optimized stop.")
+		self._validate_waypoint_sequence(road_geometry, waypoints)
 
 		return RoadRouteResult(
 			road_geometry=road_geometry,
-			distance_meters=max(distance_meters, 0.0),
-			duration_seconds=max(duration_seconds, 0.0),
+			distance_meters=distance_meters,
+			duration_seconds=duration_seconds,
 		)
+
+	@staticmethod
+	def _valid_lon_lat(point: object) -> bool:
+		if not isinstance(point, (list, tuple)) or len(point) < 2:
+			return False
+		try:
+			longitude, latitude = float(point[0]), float(point[1])
+		except (OverflowError, TypeError, ValueError):
+			return False
+		return (
+			math.isfinite(longitude)
+			and math.isfinite(latitude)
+			and -180.0 <= longitude <= 180.0
+			and -90.0 <= latitude <= 90.0
+		)
+
+	@staticmethod
+	def _same_point(point: RouteCoordinate, lon_lat: Sequence[float]) -> bool:
+		return (
+			abs(float(point.longitude) - float(lon_lat[0])) <= 1e-5
+			and abs(float(point.latitude) - float(lon_lat[1])) <= 1e-5
+		)
+
+	@classmethod
+	def _validate_waypoint_sequence(
+		cls,
+		geometry: Sequence[RouteCoordinate],
+		waypoints: Sequence[dict],
+	) -> None:
+		geometry_index = 0
+		for waypoint in waypoints:
+			location = waypoint["location"]
+			while geometry_index < len(geometry) and not cls._same_point(
+				geometry[geometry_index], location
+			):
+				geometry_index += 1
+			if geometry_index == len(geometry):
+				raise RoadRoutingError("OSRM geometry does not follow the optimized stop sequence.")
+			geometry_index += 1

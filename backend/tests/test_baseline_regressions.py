@@ -118,11 +118,13 @@ def test_routing_service_preserves_geojson_longitude_latitude_order(monkeypatch)
         def __enter__(self):
             return self
 
+        status = 200
+
         def __exit__(self, *_args):
             return None
 
         def read(self):
-            return b'{"code":"Ok","routes":[{"distance":1000,"duration":120,"geometry":{"coordinates":[[88.3639,22.5726],[88.3739,22.5826]]}}]}'
+            return b'{"code":"Ok","waypoints":[{"waypoint_index":0,"location":[88.3639,22.5726],"distance":0},{"waypoint_index":1,"location":[88.3739,22.5826],"distance":0}],"routes":[{"distance":1000,"duration":120,"geometry":{"coordinates":[[88.3639,22.5726],[88.3739,22.5826]]}}]}'
 
     monkeypatch.setattr("app.services.routing_service.urlopen", lambda *_args, **_kwargs: FakeResponse())
     route = RoutingService().build_road_route(
@@ -148,6 +150,20 @@ def test_optimizer_requires_explicit_depot_when_not_configured(optimizer, make_d
             [make_driver(vehicle.id)],
             [vehicle],
             [make_order()],
+        )
+
+
+def test_optimizer_rejects_missing_delivery_coordinates(optimizer, make_driver, make_vehicle, make_order):
+    vehicle = make_vehicle()
+    order = make_order()
+    order.delivery_latitude = None
+
+    with pytest.raises(ValueError, match="missing or invalid delivery coordinates"):
+        optimizer.optimize(
+            [make_driver(vehicle.id)],
+            [vehicle],
+            [order],
+            depot_coordinates=(22.5726, 88.3639),
         )
 
 
@@ -178,6 +194,11 @@ def test_kolkata_route_uses_latitude_longitude_and_stays_local(
     assert route.total_demand == 220
     assert route.total_distance_km == pytest.approx(route.distance / 1000.0, abs=0.001)
     assert route.total_distance_km < 100
+    assert [
+        (point.latitude, point.longitude) for point in route.route_coordinates[1:-1]
+    ] == [
+        (stop.delivery_latitude, stop.delivery_longitude) for stop in route.stops
+    ]
     for stop in route.stops:
         assert abs(stop.delivery_latitude - depot[0]) < 1
         assert abs(stop.delivery_longitude - depot[1]) < 1

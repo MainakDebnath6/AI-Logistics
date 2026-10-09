@@ -43,6 +43,15 @@ export default function Optimization() {
     setError(message);
   }
 
+  function handleOptimizingChange(isOptimizing) {
+    setOptimizing(isOptimizing);
+    if (isOptimizing) {
+      setOptimizationResult(null);
+      setSelectedRouteIndex(0);
+      setError("");
+    }
+  }
+
   return (
     <section className="space-y-6">
       <header>
@@ -56,7 +65,7 @@ export default function Optimization() {
         <OptimizationForm
           onOptimized={handleOptimized}
           onError={handleError}
-          onOptimizingChange={setOptimizing}
+          onOptimizingChange={handleOptimizingChange}
         />
 
         <section className="space-y-4">
