@@ -34,7 +34,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
 
-def _cors_response(monkeypatch, origin: str):
+def _cors_response(
+    monkeypatch,
+    origin: str,
+    *,
+    method: str = "GET",
+    path: str = "/",
+    request_headers: tuple[tuple[bytes, bytes], ...] = (),
+    configure_app=None,
+):
     import app.main as main
 
     settings = Settings(backend_cors_origins="https://existing.example")
@@ -47,43 +55,61 @@ def _cors_response(monkeypatch, origin: str):
     async def send(message):
         messages.append(message)
 
+    application = main.create_app()
+    if configure_app is not None:
+        configure_app(application.app)
+
     scope = {
         "type": "http",
         "asgi": {"version": "3.0", "spec_version": "2.3"},
         "http_version": "1.1",
-        "method": "GET",
+        "method": method,
         "scheme": "http",
-        "path": "/",
-        "raw_path": b"/",
+        "path": path,
+        "raw_path": path.encode(),
         "query_string": b"",
         "root_path": "",
-        "headers": [(b"host", b"testserver"), (b"origin", origin.encode())],
+        "headers": [
+            (b"host", b"testserver"),
+            (b"origin", origin.encode()),
+            *request_headers,
+        ],
         "client": ("127.0.0.1", 1234),
         "server": ("testserver", 80),
     }
-    asyncio.run(main.create_app()(scope, receive, send))
+    try:
+        asyncio.run(application(scope, receive, send))
+    except RuntimeError:
+        if not any(message["type"] == "http.response.start" for message in messages):
+            raise
     response_start = next(message for message in messages if message["type"] == "http.response.start")
     headers = {key.decode(): value.decode() for key, value in response_start["headers"]}
-    return settings, headers
+    body = b"".join(
+        message.get("body", b"") for message in messages
+        if message["type"] == "http.response.body"
+    ).decode()
+    return settings, response_start["status"], headers, body
 
 
 def test_cors_allows_exact_production_frontend_origin(monkeypatch):
-    settings, response = _cors_response(
+    settings, status_code, response, _ = _cors_response(
         monkeypatch,
         "https://ai-logistics-umber.vercel.app",
     )
 
     assert "https://existing.example" in settings.cors_origins
+    assert status_code == 200
     assert response["access-control-allow-origin"] == "https://ai-logistics-umber.vercel.app"
     assert response["access-control-allow-credentials"] == "true"
 
 
 def test_cors_allows_project_preview_origin(monkeypatch):
-    _, response = _cors_response(
+    _, status_code, response, _ = _cors_response(
         monkeypatch,
         "https://ai-logistics-feature-123-mainak-d.vercel.app",
     )
 
+    assert status_code == 200
     assert response["access-control-allow-origin"] == (
         "https://ai-logistics-feature-123-mainak-d.vercel.app"
     )
@@ -91,12 +117,102 @@ def test_cors_allows_project_preview_origin(monkeypatch):
 
 
 def test_cors_rejects_unrelated_vercel_origin(monkeypatch):
-    _, response = _cors_response(
+    _, status_code, response, _ = _cors_response(
         monkeypatch,
         "https://another-project-mainak-d.vercel.app",
+        method="OPTIONS",
+        path="/analytics/hccr-research/decision",
+        request_headers=(
+            (b"access-control-request-method", b"GET"),
+            (b"access-control-request-headers", b"authorization"),
+        ),
     )
 
+    assert status_code == 400
     assert "access-control-allow-origin" not in response
+
+
+def test_production_cors_preflight_allows_authorization_header(monkeypatch):
+    _, status_code, response, _ = _cors_response(
+        monkeypatch,
+        "https://ai-logistics-umber.vercel.app",
+        method="OPTIONS",
+        path="/analytics/hccr-research/decision",
+        request_headers=(
+            (b"access-control-request-method", b"GET"),
+            (b"access-control-request-headers", b"authorization"),
+        ),
+    )
+
+    assert status_code == 200
+    assert response["access-control-allow-origin"] == "https://ai-logistics-umber.vercel.app"
+    assert response["access-control-allow-credentials"] == "true"
+    assert "authorization" in response["access-control-allow-headers"].lower()
+
+
+def test_hccr_decision_requires_bearer_and_cors_covers_auth_errors(monkeypatch):
+    _, status_code, response, body = _cors_response(
+        monkeypatch,
+        "https://ai-logistics-umber.vercel.app",
+        path="/analytics/hccr-research/decision",
+    )
+
+    assert status_code == 401
+    assert "Not authenticated" in body
+    assert response["access-control-allow-origin"] == "https://ai-logistics-umber.vercel.app"
+    assert response["www-authenticate"] == "Bearer"
+
+
+def test_hccr_decision_accepts_valid_bearer_and_cors_covers_unhandled_errors(monkeypatch):
+    from app.api import analytics
+    from app.core.security import create_access_token
+    from app.dependencies import auth
+    from app.dependencies.database import get_db
+    from app.models.user import UserRole
+
+    class DispatcherRepository:
+        def __init__(self, _db):
+            pass
+
+        def get_by_email(self, email):
+            return SimpleNamespace(email=email, is_active=True, role=UserRole.DISPATCHER)
+
+    class ResearchService:
+        def get_hccr_decision(self, **parameters):
+            return {"authenticated": True, **parameters}
+
+    monkeypatch.setattr(auth, "UserRepository", DispatcherRepository)
+    token = create_access_token({"email": "dispatcher@example.com"})
+
+    def configure(application):
+        application.dependency_overrides[get_db] = lambda: object()
+        application.dependency_overrides[analytics.get_research_analytics_service] = ResearchService
+
+        async def fail():
+            raise RuntimeError("test server failure")
+
+        application.add_api_route("/__test_server_error", fail, methods=["GET"])
+
+    _, status_code, response, body = _cors_response(
+        monkeypatch,
+        "https://ai-logistics-umber.vercel.app",
+        path="/analytics/hccr-research/decision",
+        request_headers=((b"authorization", f"Bearer {token}".encode()),),
+        configure_app=configure,
+    )
+
+    assert status_code == 200, body
+    assert '"authenticated":true' in body
+    assert response["access-control-allow-origin"] == "https://ai-logistics-umber.vercel.app"
+
+    _, error_status, error_headers, _ = _cors_response(
+        monkeypatch,
+        "https://ai-logistics-umber.vercel.app",
+        path="/__test_server_error",
+        configure_app=configure,
+    )
+    assert error_status == 500
+    assert error_headers["access-control-allow-origin"] == "https://ai-logistics-umber.vercel.app"
 
 
 def test_demand_forecast_fallback_is_deterministic():
