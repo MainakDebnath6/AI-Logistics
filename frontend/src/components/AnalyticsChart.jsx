@@ -88,8 +88,8 @@ export default function AnalyticsChart({
                     name={item.name}
                     stroke={item.color || colors[index % colors.length]}
                     strokeWidth={2}
-                    dot={{ r: 3 }}
-                    activeDot={{ r: 5 }}
+                    dot={chartData.length <= 60 ? { r: 3 } : false}
+                    activeDot={chartData.length <= 60 ? { r: 5 } : false}
                   />
                 ))}
               </LineChart>

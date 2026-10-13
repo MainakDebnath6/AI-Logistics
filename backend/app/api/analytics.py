@@ -10,6 +10,7 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import FileResponse
+from sqlalchemy.exc import InterfaceError, OperationalError
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
@@ -38,6 +39,7 @@ logger = logging.getLogger(__name__)
 RESEARCH_RESULTS_DIR = Path(__file__).resolve().parents[3] / "experiments" / "results"
 SYNTHETIC_DEMAND_CSV_PATH = Path(__file__).resolve().parents[3] / "data" / "raw" / "synthetic_demand.csv"
 MAX_SYNTHETIC_DEMAND_ROWS = 730
+SYNTHETIC_DEMAND_TRAIN_ROWS = 670
 DASHBOARD_ROUTE_HISTORY_LIMIT = 100
 
 
@@ -103,7 +105,13 @@ def _normalize_date(value: Any) -> str | None:
     return str(value)
 
 
-def summarize_synthetic_demand_rows(rows: list[dict[str, Any]]) -> dict[str, Any]:
+def summarize_synthetic_demand_rows(
+    rows: list[dict[str, Any]],
+    *,
+    source: str = "unknown",
+    total_count: int | None = None,
+    fallback_reason: str | None = None,
+) -> dict[str, Any]:
     """Summarize ordered demand rows from the synthetic demand dataset."""
     ordered_rows = sorted(rows, key=lambda item: str(item.get("date") or ""))
     observations: list[dict[str, Any]] = []
@@ -116,46 +124,101 @@ def summarize_synthetic_demand_rows(rows: list[dict[str, Any]]) -> dict[str, Any
         observations.append({"date": date_value, "demand": float(demand_value)})
 
     if not observations:
-        return {
-            "count": 0,
+        summary = {
+            "count": total_count if total_count is not None else 0,
+            "observation_count": 0,
             "start_date": None,
             "end_date": None,
-            "average_demand": 0.0,
-            "min_demand": 0.0,
-            "max_demand": 0.0,
+            "average_demand": None,
+            "min_demand": None,
+            "max_demand": None,
             "observations": [],
         }
+    else:
+        demand_values = [observation["demand"] for observation in observations]
+        summary = {
+            "count": total_count if total_count is not None else len(observations),
+            "observation_count": len(observations),
+            "start_date": observations[0]["date"],
+            "end_date": observations[-1]["date"],
+            "average_demand": sum(demand_values) / len(demand_values),
+            "min_demand": min(demand_values),
+            "max_demand": max(demand_values),
+            "observations": observations,
+        }
 
-    demand_values = [observation["demand"] for observation in observations]
-    return {
-        "count": len(observations),
-        "start_date": observations[0]["date"],
-        "end_date": observations[-1]["date"],
-        "average_demand": sum(demand_values) / len(demand_values),
-        "min_demand": min(demand_values),
-        "max_demand": max(demand_values),
-        "observations": observations,
-    }
+    summary.update({
+        "source": source,
+        "provenance": (
+            "Database query ordered by date."
+            if source == "public.synthetic_demand"
+            else "Checked-in repository CSV; no values generated at request time."
+        ),
+        "units": "synthetic demand units per day",
+        "split": {
+            "train_observations": min(SYNTHETIC_DEMAND_TRAIN_ROWS, len(observations)),
+            "holdout_observations": max(0, len(observations) - SYNTHETIC_DEMAND_TRAIN_ROWS),
+            "chronological": True,
+        },
+    })
+    if fallback_reason:
+        summary["fallback_reason"] = fallback_reason
+    return summary
 
 
-def _fallback_synthetic_demand_summary() -> dict[str, Any]:
+def _empty_synthetic_demand_summary(
+    error: str,
+    fallback_reason: str | None = None,
+) -> dict[str, Any]:
+    summary = summarize_synthetic_demand_rows([], source="unavailable")
+    summary["error"] = error
+    if fallback_reason:
+        summary["fallback_reason"] = fallback_reason
+    return summary
+
+
+def _is_missing_synthetic_demand_table(error: Exception) -> bool:
+    original = getattr(error, "orig", error)
+    sqlstate = getattr(original, "sqlstate", None) or getattr(original, "pgcode", None)
+    message = str(original).lower()
+    return sqlstate == "42P01" or (
+        "synthetic_demand" in message
+        and ("no such table" in message or "does not exist" in message or "undefined table" in message)
+    )
+
+
+def _fallback_synthetic_demand_summary(reason: str | None = None) -> dict[str, Any]:
     """Load synthetic demand from the local CSV when database access is unavailable."""
-    if not SYNTHETIC_DEMAND_CSV_PATH.exists():
-        return {
-            "count": 0,
-            "start_date": None,
-            "end_date": None,
-            "average_demand": 0.0,
-            "min_demand": 0.0,
-            "max_demand": 0.0,
-            "observations": [],
-        }
+    if not SYNTHETIC_DEMAND_CSV_PATH.is_file():
+        return _empty_synthetic_demand_summary(
+            f"Synthetic demand CSV is missing: {SYNTHETIC_DEMAND_CSV_PATH}.",
+            reason,
+        )
 
-    with SYNTHETIC_DEMAND_CSV_PATH.open("r", encoding="utf-8", newline="") as csvfile:
-        reader = csv.DictReader(csvfile)
-        rows = [{"date": row.get("date"), "demand": row.get("demand")} for row in reader]
+    try:
+        with SYNTHETIC_DEMAND_CSV_PATH.open("r", encoding="utf-8", newline="") as csvfile:
+            reader = csv.DictReader(csvfile)
+            if not reader.fieldnames or not {"date", "demand"}.issubset(reader.fieldnames):
+                return _empty_synthetic_demand_summary(
+                    f"Synthetic demand CSV has an invalid header: {SYNTHETIC_DEMAND_CSV_PATH}.",
+                    reason,
+                )
+            rows = [{"date": row.get("date"), "demand": row.get("demand")} for row in reader]
+        summary = summarize_synthetic_demand_rows(
+            rows,
+            source="data/raw/synthetic_demand.csv",
+            fallback_reason=reason,
+        )
+    except (OSError, UnicodeDecodeError, csv.Error, ValueError) as exc:
+        logger.warning("Synthetic demand CSV could not be read: error_type=%s", type(exc).__name__)
+        return _empty_synthetic_demand_summary(
+            f"Synthetic demand CSV could not be read: {SYNTHETIC_DEMAND_CSV_PATH}.",
+            reason,
+        )
 
-    return summarize_synthetic_demand_rows(rows)
+    if not summary["observation_count"]:
+        summary["error"] = "Synthetic demand CSV contains no valid dated demand observations."
+    return summary
 
 
 def summarize_synthetic_demand(
@@ -163,9 +226,9 @@ def summarize_synthetic_demand(
     *,
     limit: int = MAX_SYNTHETIC_DEMAND_ROWS,
 ) -> dict[str, Any]:
-    """Return ordered synthetic demand observations and summary stats, defaulting to CSV fallback for local use."""
+    """Prefer populated DB rows and use the checked-in series only for missing/unavailable data."""
     if db is None:
-        return _fallback_synthetic_demand_summary()
+        return _fallback_synthetic_demand_summary("No database session was provided.")
 
     try:
         count_result = db.execute(
@@ -194,23 +257,33 @@ def summarize_synthetic_demand(
             {"limit": max(1, min(limit, MAX_SYNTHETIC_DEMAND_ROWS))},
         ).mappings().all()
     except Exception as exc:
+        if isinstance(exc, (OperationalError, InterfaceError)) or _is_missing_synthetic_demand_table(exc):
+            logger.warning("Synthetic demand database source unavailable: error_type=%s", type(exc).__name__)
+            return _fallback_synthetic_demand_summary(
+                "The public.synthetic_demand table could not be read."
+            )
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"Synthetic demand dataset is unavailable: {exc}",
         ) from exc
 
-    summary = {
-        "count": int((count_result or {}).get("count") or 0) if count_result else 0,
-        "start_date": _normalize_date((count_result or {}).get("start_date")) if count_result else None,
-        "end_date": _normalize_date((count_result or {}).get("end_date")) if count_result else None,
-        "average_demand": float((count_result or {}).get("average_demand") or 0.0) if count_result else 0.0,
-        "min_demand": float((count_result or {}).get("min_demand") or 0.0) if count_result else 0.0,
-        "max_demand": float((count_result or {}).get("max_demand") or 0.0) if count_result else 0.0,
-        "observations": [
-            {"date": _normalize_date(row["date"]), "demand": float(row["demand"])}
-            for row in observation_rows
-        ],
-    }
+    db_rows = [
+        {"date": _normalize_date(row["date"]), "demand": row["demand"]}
+        for row in observation_rows
+    ]
+    total_count = int((count_result or {}).get("count") or 0) if count_result else 0
+    if not db_rows:
+        return _fallback_synthetic_demand_summary("The public.synthetic_demand table is empty.")
+
+    summary = summarize_synthetic_demand_rows(
+        db_rows,
+        source="public.synthetic_demand",
+        total_count=max(total_count, len(db_rows)),
+    )
+    if not summary["observation_count"]:
+        return _fallback_synthetic_demand_summary(
+            "The public.synthetic_demand table contains no valid observations."
+        )
     return summary
 
 

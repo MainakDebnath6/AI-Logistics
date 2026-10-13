@@ -5,6 +5,7 @@ from __future__ import annotations
 import csv
 import json
 import math
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -263,11 +264,116 @@ class ResearchAnalyticsService:
             output.append(item)
         return output
 
+    def _public_dataset_summary(self) -> dict[str, Any]:
+        """Summarize the supplied UCI daily rentals as monthly totals without changing source data."""
+        package_root = self._results_dir.resolve().parent
+        relative_path = "research_hccr/realdata/data/day.csv"
+        path = package_root / "realdata" / "data" / "day.csv"
+        required_columns = {"dteday", "casual", "registered", "cnt"}
+        try:
+            with path.open("r", encoding="utf-8", newline="") as handle:
+                reader = csv.DictReader(handle)
+                if not reader.fieldnames or not required_columns.issubset(reader.fieldnames):
+                    raise ValueError("The daily bike-sharing CSV is missing required columns.")
+                daily_rows = list(reader)
+        except (OSError, UnicodeDecodeError, csv.Error, ValueError) as error:
+            return {
+                "status": "unavailable",
+                "source": "UCI Bike Sharing daily data",
+                "source_path": relative_path,
+                "units": "rental counts",
+                "observation_count": 0,
+                "monthly_observations": [],
+                "error": str(error),
+            }
+
+        monthly: dict[str, dict[str, int]] = {}
+        parsed_days: list[tuple[str, int, int, int]] = []
+        try:
+            for row in daily_rows:
+                day = date.fromisoformat(row["dteday"]).isoformat()
+                casual = int(row["casual"])
+                registered = int(row["registered"])
+                total = int(row["cnt"])
+                if min(casual, registered, total) < 0 or casual + registered != total:
+                    raise ValueError("The daily bike-sharing CSV contains inconsistent rental counts.")
+                parsed_days.append((day, casual, registered, total))
+        except (KeyError, TypeError, ValueError) as error:
+            return {
+                "status": "unavailable",
+                "source": "UCI Bike Sharing daily data",
+                "source_path": relative_path,
+                "units": "rental counts",
+                "observation_count": 0,
+                "monthly_observations": [],
+                "error": str(error),
+            }
+
+        parsed_days.sort(key=lambda row: row[0])
+        for day, casual, registered, total in parsed_days:
+            month = day[:7]
+            values = monthly.setdefault(month, {
+                "observation_days": 0,
+                "total_rentals": 0,
+                "casual_rentals": 0,
+                "registered_rentals": 0,
+            })
+            values["observation_days"] += 1
+            values["total_rentals"] += total
+            values["casual_rentals"] += casual
+            values["registered_rentals"] += registered
+
+        if not parsed_days:
+            return {
+                "status": "unavailable",
+                "source": "UCI Bike Sharing daily data",
+                "source_path": relative_path,
+                "units": "rental counts",
+                "observation_count": 0,
+                "monthly_observations": [],
+                "error": "The daily bike-sharing CSV contains no observations.",
+            }
+
+        monthly_rows = [
+            {
+                "month": month,
+                **values,
+                "mean_daily_rentals": values["total_rentals"] / values["observation_days"],
+            }
+            for month, values in sorted(monthly.items())
+        ]
+        rental_totals = [row[3] for row in parsed_days]
+        metadata = self._read_json(self._results_dir / "realdata_meta.json") or {}
+        expected_days = metadata.get("n_days")
+        status = "available" if expected_days in (None, len(parsed_days)) else "partial"
+        summary = {
+            "status": status,
+            "source": metadata.get("source", "UCI Bike Sharing daily data"),
+            "source_path": relative_path,
+            "license": "CC BY 4.0",
+            "units": "rental counts; monthly totals are rentals per calendar month",
+            "observation_count": len(parsed_days),
+            "expected_observation_count": expected_days,
+            "start_date": parsed_days[0][0],
+            "end_date": parsed_days[-1][0],
+            "total_rentals": sum(rental_totals),
+            "mean_daily_rentals": sum(rental_totals) / len(rental_totals),
+            "min_daily_rentals": min(rental_totals),
+            "max_daily_rentals": max(rental_totals),
+            "monthly_observations": monthly_rows,
+        }
+        if status == "partial":
+            summary["error"] = (
+                f"The bundled daily file has {len(parsed_days)} rows; metadata expects {expected_days}."
+            )
+        return summary
+
     def get_hccr_analytics(self) -> dict[str, Any]:
         """Return method, provenance and available summary results for the dashboard."""
         config = self._read_json(self._config_path)
         summary = self._read_json(self._results_dir / "experiment_summary.json")
         real_data = self._read_json(self._results_dir / "realdata_meta.json")
+        public_dataset = self._public_dataset_summary()
         manifest = self.get_artifact_manifest()
         artifacts = {
             key: self._read_csv(filename, columns)
@@ -305,6 +411,7 @@ class ResearchAnalyticsService:
             "configuration": config,
             "summary": summary,
             "real_data_metadata": real_data,
+            "public_dataset": public_dataset,
             "provenance": {
                 "simulation": "Synthetic multi-region, four-regime simulation; not operational data.",
                 "real_data": "Descriptive UCI Bike Sharing check; supply-censored rentals, no routing evaluation.",
