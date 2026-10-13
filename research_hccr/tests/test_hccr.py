@@ -44,7 +44,7 @@ def test_calibration_window_only_contains_realised_targets():
 
 def test_policy_decisions_independent_of_future_demand():
     cfg = SMALL; y = simulate("surge", 5, cfg["T"], cfg["region_levels"])
-    A = np.round(1.05 * y[:, :400].mean(1)); d = 555
+    A = capacity(y, cfg); d = 555
     def run(yy):
         F = forecast_seasonal_lr(yy, cfg["horizons"], 400, 7); res = residuals(yy, F)
         return decide_range(yy, F, res, pool(), A, 2.0, cfg["horizons"], [d], cfg, buf_frac={1: .1, 7: .1})

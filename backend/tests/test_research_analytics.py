@@ -173,7 +173,12 @@ def test_runtime_image_declares_research_artifact_inputs():
         assert (repository_root / "experiments/results" / filename).is_file()
     assert "COPY data/raw/synthetic_demand.csv ./data/raw/synthetic_demand.csv" in dockerfile
     assert "COPY research_hccr ./research_hccr" in dockerfile
+    assert "test -f research_hccr/realdata/data/day.csv" in dockerfile
+    assert "test -f research_hccr/results/operational_main.csv" in dockerfile
     assert (repository_root / "research_hccr/configs/study_config.json").is_file()
+    assert (repository_root / "research_hccr/study.py").is_file()
+    for filename in ("forecast_calibration_summary.csv", "operational_main.csv", "routing_summary.csv"):
+        assert (repository_root / "research_hccr/results" / filename).is_file()
     for filename in ("day.csv", "hour.csv"):
         assert (repository_root / "research_hccr/realdata/data" / filename).is_file()
 
