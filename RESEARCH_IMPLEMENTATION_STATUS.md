@@ -1,6 +1,14 @@
 # Research Implementation Status
 
-Status reflects the code and generated outputs in this repository as of 2026-10-08. The repository contains no paper source file and no real dated demand dataset; paper-number comparisons and empirical claims cannot be verified here.
+Status reflects the code and generated outputs in this repository as of 2026-10-08, with the paper-alignment note below added on 2026-10-13 after the research PDF was supplied. No real operational dated demand dataset is present.
+
+## Paper Alignment (2026-10-13)
+
+The supplied paper is `research_paper/HCCR_Research_Paper_6Page_Improved (1).pdf`. It defines HCCR as a causal, horizon-specific residual scenario policy, not as HGFCI or as a point-forecast capacity ratio. At decision day `d` for horizon `h`, residual `e[r,o,h] = y[r,o+h] - forecast[r,o,h]` is eligible only when its target is already observed (`o <= d-h`); the paper uses the most recent 200 eligible residuals and compares them with residuals pooled across horizons. Scenarios add eligible errors to the point forecast and clip demand at zero. The paper's reservation policy enumerates 27 vehicle-type sets under stated reservation and unmet-demand costs, with a validation-selected horizon gate. Activation uses confirmed demand, and OR-Tools routes only confirmed orders with real capacities.
+
+The checked-in application does not reproduce that HCCR policy. Its available dataset is one 730-day synthetic aggregate series with a 670/60 model-evaluation split, and its runtime fallback is recursive exponential smoothing. The paper instead reports a four-region, four-regime, 1,100-day simulation with direct-horizon seasonal regression, calibration/validation/test periods, and paper-specific reservation assumptions. The paper's raw simulation archive and executable scripts are not present. The app's Optimization panel therefore presents the existing HGFCI point-forecast advisory separately, marks repository data as synthetic and not the paper simulation, and explicitly reports HCCR as unavailable. It does not display calibrated intervals, quantiles, or paper reservation recommendations.
+
+The paper itself describes diagnostic simulation evidence, reports small and horizon-reversing pooled-versus-HCCR cost differences, and does not claim operational superiority or field validation. No paper metrics or recommendations are copied into runtime behavior.
 
 ## Implemented
 
@@ -34,7 +42,7 @@ Command executed: `python -m experiments.run_all` using seed 20261008. Outputs a
 - **Operational reactive-vs-prepared-fleet benefit:** No candidate fleet, availability schedule, intervention policy, or preparation lead-time data exist. Therefore no operational intervention is applied to CVRP inputs and no benefit comparison is claimed. The paired artifact reuses the identical CVRP result to check non-interference only. Delivery cost is unavailable because no cost model exists.
 - **Inferential statistics:** Horizon windows overlap and ablation has one holdout origin; no significance claims are supported by these runs.
 - **PostgreSQL runtime validation:** Migration upgrade/downgrade SQL generation was checked offline. No live PostgreSQL database was available, so an actual database upgrade/downgrade and API persistence transaction were not executed against PostgreSQL.
-- **Paper comparison:** No paper file is present in this checkout, so discrepancies against any published numeric claims cannot be calculated.
+- **Paper replication:** The supplied paper PDF is available, but its raw simulation archive, frozen configuration, and executable scripts are not present. Its reported results cannot be reproduced or independently verified from the repository's distinct synthetic series and experiment pipeline.
 
 ## Reproduction
 

@@ -7,7 +7,7 @@ from uuid import uuid4
 
 import pytest
 from app.api.optimization import optimize_routes
-from app.api.predictions import forecast_and_assess_capacity
+from app.api.predictions import forecast_and_assess_capacity, forecast_demand_for_horizon
 from app.core.config import Settings
 from app.db.base import Base
 from app.dependencies.auth import get_current_admin, get_current_dispatcher
@@ -23,6 +23,7 @@ from app.repositories.vehicle_repository import VehicleRepository
 from app.schemas.hgfc import HGFCForecastRequest, HGFCRequest, HGFCStatus
 from app.schemas.optimization import OptimizationRequest, OptimizationResponse, RouteCoordinate
 from app.schemas.order import OrderCreate
+from app.schemas.prediction import DemandHorizonForecastRequest
 from app.services.demand_forecast_service import DemandForecastService
 from app.services.hgfc_service import HGFCService
 from app.services.routing_service import RoutingService
@@ -111,6 +112,21 @@ def test_demand_forecast_horizon_returns_cumulative_daily_workload():
     with pytest.raises(ValueError, match="at least one day"):
         service.forecast_demand_for_horizon([10, 20, 30], 0)
     assert service.forecast_demand([10, 20, 30]) == 19.27
+
+
+@pytest.mark.parametrize("horizon_days", [1, 7, 14])
+def test_forecast_only_horizon_endpoint_returns_supported_horizon(horizon_days):
+    response = forecast_demand_for_horizon(
+        payload=DemandHorizonForecastRequest(
+            historical_demand_values=[10.0, 20.0, 30.0],
+            horizon_days=horizon_days,
+        ),
+        current_dispatcher=SimpleNamespace(role=UserRole.DISPATCHER),
+        demand_forecast_service=DemandForecastService(),
+    )
+
+    assert response.horizon_days == horizon_days
+    assert response.predicted_demand > 0
 
 
 def test_routing_service_preserves_geojson_longitude_latitude_order(monkeypatch):
@@ -637,6 +653,33 @@ def test_hgfc_assessment_does_not_mutate_confirmed_orders(
     assert [order.demand for order in orders] == demands_before
     assert vehicle.capacity == capacity_before
     assert sum(route.total_demand for route in result.routes) == sum(demands_before)
+
+
+def test_different_advisory_forecasts_preserve_identical_optimizer_inputs(
+    optimizer,
+    make_driver,
+    make_vehicle,
+    make_order,
+    monkeypatch,
+):
+    vehicle = make_vehicle(5)
+    orders = [make_order(3), make_order(2, latitude=40.1)]
+    captured_inputs = []
+    create_data_model = optimizer._create_data_model
+
+    def capture_data_model(*args, **kwargs):
+        data = create_data_model(*args, **kwargs)
+        captured_inputs.append((data["demands"], data["vehicle_capacities"]))
+        return data
+
+    monkeypatch.setattr(optimizer, "_create_data_model", capture_data_model)
+    for forecast in (0.0, 1000.0):
+        HGFCService().assess(
+            HGFCRequest(forecast_demand=forecast, available_capacity=5.0, horizon_days=1)
+        )
+        optimizer.optimize([make_driver(vehicle.id)], [vehicle], orders)
+
+    assert captured_inputs == [([0, 3, 2], [5]), ([0, 3, 2], [5])]
 
 
 def test_forecast_cannot_make_infeasible_confirmed_orders_feasible(

@@ -11,6 +11,8 @@ from app.schemas.hgfc import HGFCForecastRequest, HGFCRequest, HGFCResponse
 from app.schemas.prediction import (
     DemandForecastRequest,
     DemandForecastResponse,
+    DemandHorizonForecastRequest,
+    DemandHorizonForecastResponse,
     ETARequest,
     ETAResponse,
 )
@@ -104,6 +106,31 @@ def forecast_demand(
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)) from exc
 
     return DemandForecastResponse(predicted_demand=predicted_demand)
+
+
+@router.post("/demand/horizon", response_model=DemandHorizonForecastResponse)
+def forecast_demand_for_horizon(
+    payload: DemandHorizonForecastRequest,
+    current_dispatcher: User = Depends(get_current_dispatcher),
+    demand_forecast_service: DemandForecastService = Depends(get_demand_forecast_service),
+) -> DemandHorizonForecastResponse:
+    """Return a cumulative horizon forecast without a capacity assessment."""
+    _authorize_prediction_access(current_dispatcher)
+    try:
+        predicted_demand = demand_forecast_service.forecast_demand_for_horizon(
+            payload.historical_demand_values,
+            payload.horizon_days,
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(exc),
+        ) from exc
+
+    return DemandHorizonForecastResponse(
+        predicted_demand=predicted_demand,
+        horizon_days=payload.horizon_days,
+    )
 
 
 @router.post("/hgfc", response_model=HGFCResponse)

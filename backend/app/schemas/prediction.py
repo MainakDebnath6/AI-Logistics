@@ -43,3 +43,17 @@ class DemandForecastResponse(BaseModel):
     """Response payload for demand forecasting."""
 
     predicted_demand: float = Field(ge=0)
+
+
+class DemandHorizonForecastRequest(BaseModel):
+    """Historical-demand inputs for a cumulative horizon forecast."""
+
+    historical_demand_values: list[float] = Field(min_length=1)
+    horizon_days: int = Field(gt=0)
+
+
+class DemandHorizonForecastResponse(BaseModel):
+    """Cumulative demand forecast for a requested number of days."""
+
+    predicted_demand: float = Field(ge=0)
+    horizon_days: int = Field(gt=0)
