@@ -16,7 +16,7 @@ import {
 
 function EmptyState({ message }) {
   return (
-    <div className="flex h-[260px] items-center justify-center rounded-lg border border-dashed border-slate-700 px-4 text-center text-sm text-slate-400 sm:h-[280px]">
+    <div className="flex h-65 items-center justify-center rounded-lg border border-dashed border-slate-700 px-4 text-center text-sm text-slate-400 sm:h-70">
       {message}
     </div>
   );
@@ -31,6 +31,7 @@ function formatTooltipValue(value, unit) {
 
 export default function AnalyticsChart({
   title,
+  description = "",
   type = "bar",
   data = [],
   xKey = "name",
@@ -48,6 +49,7 @@ export default function AnalyticsChart({
     <section className={`rounded-xl border border-slate-800 bg-slate-900/70 p-4 ${className}`}>
       <header className="mb-4">
         <h3 className="text-base font-semibold text-white">{title}</h3>
+        {description ? <p className="mt-1 text-xs text-slate-400">{description}</p> : null}
       </header>
 
       {!Array.isArray(data) || data.length === 0 ? (

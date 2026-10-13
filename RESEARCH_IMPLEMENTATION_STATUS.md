@@ -1,14 +1,32 @@
 # Research Implementation Status
 
-Status reflects the code and generated outputs in this repository as of 2026-10-08, with the paper-alignment note below added on 2026-10-13 after the research PDF was supplied. No real operational dated demand dataset is present.
+Status updated 2026-10-13 from the supplied paper, `Research_files.zip`, checked-in experiments, and validation performed in this workspace. No real logistics orders/fleet dataset is present.
 
 ## Paper Alignment (2026-10-13)
 
-The supplied paper is `research_paper/HCCR_Research_Paper_6Page_Improved (1).pdf`. It defines HCCR as a causal, horizon-specific residual scenario policy, not as HGFCI or as a point-forecast capacity ratio. At decision day `d` for horizon `h`, residual `e[r,o,h] = y[r,o+h] - forecast[r,o,h]` is eligible only when its target is already observed (`o <= d-h`); the paper uses the most recent 200 eligible residuals and compares them with residuals pooled across horizons. Scenarios add eligible errors to the point forecast and clip demand at zero. The paper's reservation policy enumerates 27 vehicle-type sets under stated reservation and unmet-demand costs, with a validation-selected horizon gate. Activation uses confirmed demand, and OR-Tools routes only confirmed orders with real capacities.
+The supplied paper is `research_paper/HCCR_Research_Paper_6Page_Improved (1).pdf`; supporting source and evidence came from `Research_files.zip` and are preserved under `research_hccr/`. HCCR is distinct from HGFCI. The package implements the paper's direct-horizon forecasts, causal residual eligibility (`origin + horizon <= decision day`), newest 200 residuals per horizon, pooled residual scenarios, central 80% quantiles, and the reservation objective `c(S) + pi * mean(max(0, scenario - base capacity - reserved capacity))`. Three reserve vehicle types (10/20/40 units), counts 0-2 each, yield 27 candidates. Gate selection compares validation mean total cost with reactive; activation uses confirmed demand only; the existing OR-Tools CVRP receives confirmed orders and actual active fleet capacities.
 
-The checked-in application does not reproduce that HCCR policy. Its available dataset is one 730-day synthetic aggregate series with a 670/60 model-evaluation split, and its runtime fallback is recursive exponential smoothing. The paper instead reports a four-region, four-regime, 1,100-day simulation with direct-horizon seasonal regression, calibration/validation/test periods, and paper-specific reservation assumptions. The paper's raw simulation archive and executable scripts are not present. The app's Optimization panel therefore presents the existing HGFCI point-forecast advisory separately, marks repository data as synthetic and not the paper simulation, and explicitly reports HCCR as unavailable. It does not display calibrated intervals, quantiles, or paper reservation recommendations.
+The repository now includes the supplied source package, frozen configuration, output CSVs/JSON, preregistrations, paper source copy, bike-sharing inputs and invariant tests. A read-only authenticated analytics API serves summary artifacts; a single-origin API recomputes HCCR and pooled decisions from the frozen simulator and reports validation gate costs, residual sample counts, exact reserve sets, scenario objective components and retrospective test outcomes. It is a simulation research API, not a live operational recommendation. The Optimization page's existing HGFCI advisory remains separate and unchanged.
 
-The paper itself describes diagnostic simulation evidence, reports small and horizon-reversing pooled-versus-HCCR cost differences, and does not claim operational superiority or field validation. No paper metrics or recommendations are copied into runtime behavior.
+**Capacity-rule discrepancy:** the latest PDF specifies $A_r=\lceil\kappa\bar y_r\rceil$, while the supplied aggregate-generation code used `np.round`. A deterministic audit across all 30 primary seeds, four regimes and four regions found 240/480 values differ (example: 130.2256 gives 130 by nearest rounding and 131 by ceiling). `research_hccr.study.capacity` and the recomputed single-origin decision now use the paper's ceiling rule. The imported aggregate cost, gate, policy and routing tables are deliberately preserved and are still outputs of the prior nearest-round source; they are shown with an explicit warning, not represented as regenerated ceiling-rule results. Those aggregates need a complete rerun before they can support exact paper-formula comparisons.
+
+The paper is a diagnostic simulation study, not a new calibration algorithm or evidence of operational superiority. It reports small effects, a horizon reversal, and one descriptive public bike-sharing check without routing. No published-baseline superiority or logistics field-validation claim is made.
+
+The latest supplied PDF and `research_hccr/paper-source/main.pdf` have different SHA-256 hashes and extracted text/layout, although both are six pages with the same title. The archived `verify_claims.py` checks the bundle's `main.tex` and generated CSVs; it does not establish byte-for-byte identity or exhaustive claim verification for the separate latest PDF. The methods and principal numeric findings were cross-checked against the supplied HCCR code and artifacts; both PDFs remain unchanged.
+
+### Paper-to-code and result map
+
+- Direct-horizon Seasonal LR: `research_hccr/forecast.py`; four regimes and 1,100-day simulator: `simulate.py`; frozen chronological boundaries and costs: `configs/study_config.json`.
+- Residual definition and decision-time eligibility (`origin + h <= d`), newest 200: `calibrate.py` (`residuals`, `window_h`, `window_pooled`).
+- Scenario clipping, 80% interval coverage/width, policy variants and validation-only gate/buffer selection: `policies.py`.
+- Equation (1), 27 reserve combinations, vehicle capacities/costs and expected-shortage minimization: `reserve.py` (`ReservePool`).
+- Table I policy levels and Table II paired contrasts: `results/operational_main.csv`, `policy_levels_main.csv`, `paired_comparisons_main.csv`, and `paired_by_horizon_main.csv`; generated by `analysis.py`.
+- Coverage and horizon/model error figures: `results/forecast_calibration_summary.csv`, `intervals_main.csv`, `intervals_models.csv`, `forecast_model_ablation.csv`.
+- Routing feasibility/distance/runtime: `routing_eval.py`, `results/routing_instances.csv` and `routing_summary.csv`; infeasible instances are not assigned measured route distance.
+- Replication, mechanism and freshness claims: `replication_B.csv`, `mechanism_confirm_primary.csv`, `freshness_confirm_primary.csv`; bike-sharing diagnostic: `realdata_delta.csv`, `realdata_forecast_calibration.csv`, and `realdata_meta.json`. The latter has no routing evaluation.
+- `verify_claims.py` completed successfully against the archived manuscript TeX and result files (the source report records 144 checks); it is not a verifier for the distinct standalone latest PDF.
+
+The latest supplied PDF and `research_hccr/paper-source/main.pdf` have different SHA-256 hashes and extracted text/layout, although both are six pages with the same title. The archived `verify_claims.py` checks the bundle's `main.tex` and generated CSVs; it does not establish byte-for-byte identity or exhaustive claim verification for the separate latest PDF. The methods and principal numeric findings were cross-checked against the supplied HCCR code and artifacts; both PDFs remain unchanged.
 
 ## Implemented
 
@@ -17,6 +35,12 @@ The paper itself describes diagnostic simulation evidence, reports small and hor
 - Expanding-window rolling-origin evaluation for 7/14/30/60-day horizons. Zero actuals are excluded from MAPE and explicitly counted; MAE/RMSE include all targets. Raw daily actual/prediction rows and configuration are written to CSV/JSON.
 - Seasonal LR feature ablations remove the specified feature columns and share the same dataset, split, and training target rows; they use one fixed 60-day origin and are descriptive, not inferential.
 - HGFCI service/API is advisory only: horizon gate, Delta, Rho where defined, and nonnegative risk. At zero capacity, Rho is null and absolute risk remains defined. The default gate is inclusive through day 14.
+- Paper-defined HCCR source, frozen configuration, raw outputs, preregistrations, paper-source copy, bike-sharing inputs and invariant tests are preserved under `research_hccr/`; the method implements direct-horizon forecasts, causal 200-residual windows, 27 reserve candidates, the paper's cost-plus-shortage objective and validation-only gate.
+- Authenticated read-only APIs expose summary artifacts/downloads and recompute a selected synthetic test-origin HCCR-versus-pooled reservation decision, including validation gate costs, residual sample counts, reserve sets, expected objective and separately labelled retrospective test outcomes.
+- Research Analytics provides regime/horizon/model filters, coverage and interval widths, gated policy costs, Holm-adjusted primary tests, separate exploratory/replication/mechanism results, routing outcomes, an isolated public-data check and artifact downloads. The Optimization page's HGFCI advisory remains separate and unchanged.
+- Paper-defined HCCR source, frozen configuration, raw outputs, preregistrations, paper-source copy, bike-sharing inputs and invariant tests are preserved under `research_hccr/`; the method implements direct-horizon forecasts, causal 200-residual windows, 27 reserve candidates, the paper's cost-plus-shortage objective and validation-only gate.
+- Authenticated read-only APIs expose summary artifacts/downloads and recompute a selected synthetic test-origin HCCR-versus-pooled reservation decision, including validation gate costs, residual sample counts, reserve set, expected objective and separately labelled retrospective test outcome.
+- Research Analytics includes model/horizon/regime filters, interval coverage and width, gated policy costs, Holm-adjusted primary tests, separate exploratory and replication results, routing outcomes, an isolated public-data check and artifact downloads. The Optimization page's HGFCI advisory remains separate and unchanged.
 - Confirmed-order routing now uses an explicit configured/request depot and delivery nodes. OR-Tools capacity uses confirmed integer order demand and actual vehicle capacity. Selected drivers must match their mapped selected vehicles. Requested confirmed orders are mandatory; duplicate IDs are rejected and responses report served/requested IDs separately.
 - Optimized distance is the deterministic Haversine solver objective and route coordinates reconstruct depot → deliveries → depot. Optional OSRM geometry, duration, and road distance are returned separately and do not change optimized distance.
 - Time-window datetimes normalize to UTC; naive datetimes are explicitly interpreted as UTC. OR-Tools uses relative integer minutes from the earliest window. Partial, reversed, and mixed datetime/numeric windows are rejected. The feature remains opt-in.
@@ -25,6 +49,17 @@ The paper itself describes diagnostic simulation evidence, reports small and hor
 - Production settings reject placeholder JWT secrets and wildcard credentialed CORS; configured origins are used by FastAPI.
 
 ## Generated Synthetic Results
+
+### Supplied HCCR Study
+
+- The frozen primary study uses 1,100 days, four regions, four regimes, horizons 1/7/14/28, initial fit through day 399, calibration from day 400, validation from day 700, test from day 800, 200-residual horizon windows and 30 seeds per regime. The paper's policy costs and capacity assumptions are recorded in `research_hccr/configs/study_config.json`.
+- Important qualification: the archived aggregate outputs below use nearest-integer base capacity; the current recomputation code uses the paper's ceiling rule. Do not treat those aggregate values as a new rerun after the correction.
+- Primary pooled-minus-HCCR objective differences over horizons 1/7/14 (positive favors HCCR): IID -0.0003 [-0.0026, 0.0021], AR +0.0773 [0.0549, 0.1033], Surge +0.0126 [0.0055, 0.0199], Drift +0.0362 [0.0232, 0.0504]. These are synthetic results; they do not establish practical operational benefit.
+- The AR horizon-specific contrast reverses: pooled-minus-HCCR at h=1 is +0.291, h=14 -0.12, and h=28 -0.422 in the primary study. Independent seeds replicate the direction; effect magnitudes vary.
+- Central-80% coverage is not uniformly improved. For example, in AR at h=28 HCCR is 0.725 and pooled is 0.681; in AR at h=7 pooled is closer to nominal (0.788 versus 0.777). Interval coverage and reservation cost are distinct outcomes.
+- The bundle includes separate anticipative-window mechanism diagnostics (60 simulations; not deployable) and a deployable relative-freshness test (45 simulations). Freshness contrasts are approximately +0.097 at h=14 and +0.096 at h=28, with the confidence intervals overlapping the preselected 0.10 practical threshold; the long-horizon reversal is only partly explained.
+- Public-data diagnostic: UCI Bike Sharing, 731 days/four hour-of-day segments/103 test origins. Maximum absolute pooled-vs-HCCR cost contrast is below 0.33% of HCCR cost across the recorded cells; it is supply-censored rental demand and has no routing data.
+- Result rows and associated outputs are in `research_hccr/results/`; the source paper table/figure fragments are in `research_hccr/paper-source/`. `experiment_summary.json`, claim audit and preregistration hashes are archived alongside them.
 
 Command executed: `python -m experiments.run_all` using seed 20261008. Outputs are in `experiments/results/`.
 
@@ -40,15 +75,30 @@ Command executed: `python -m experiments.run_all` using seed 20261008. Outputs a
 - **Real-world forecasting:** No real order-history time series, provenance, demand aggregation policy, or operational units are supplied. Synthetic accuracy must not be presented as real-world accuracy.
 - **Sigma-based calibrated HGFCI:** Sigma 5 is implemented as generator noise standard deviation. There is no forecast-error calibration data or paper-defined uncertainty multiplier that justifies a calibrated risk band.
 - **Operational reactive-vs-prepared-fleet benefit:** No candidate fleet, availability schedule, intervention policy, or preparation lead-time data exist. Therefore no operational intervention is applied to CVRP inputs and no benefit comparison is claimed. The paired artifact reuses the identical CVRP result to check non-interference only. Delivery cost is unavailable because no cost model exists.
-- **Inferential statistics:** Horizon windows overlap and ablation has one holdout origin; no significance claims are supported by these runs.
+- **Legacy experiment inference:** The older 730-day repository ablation has one holdout origin and overlapping windows, so it supports no significance claims. The separate HCCR package uses the paper's seed-level paired tests and corrections; its results remain synthetic or descriptive-public-data evidence.
 - **PostgreSQL runtime validation:** Migration upgrade/downgrade SQL generation was checked offline. No live PostgreSQL database was available, so an actual database upgrade/downgrade and API persistence transaction were not executed against PostgreSQL.
-- **Paper replication:** The supplied paper PDF is available, but its raw simulation archive, frozen configuration, and executable scripts are not present. Its reported results cannot be reproduced or independently verified from the repository's distinct synthetic series and experiment pipeline.
+- **Fresh full experiment rerun in this workspace:** The supplied output bundle is loaded and its claims/tests are being checked, but the full multi-stage study was not rerun because the local environment lacks research-only `statsmodels` and `scipy`, and the archived stages take tens of minutes. Holt-Winters and inferential analysis need those packages; no additional packages were installed.
+- **Paper-exact aggregate HCCR results:** The ceiling correction is in the simulator, but the supplied primary, sensitivity, routing, mechanism and public-data aggregate outputs have not been regenerated from it. The method implementation is therefore corrected at the decision level, while aggregate paper result reproduction remains incomplete.
+- **Ablation coverage:** The supplied forecaster/sensitivity outputs predate the robust-cover policy addition and contain six policies; the robust policy is included in main/routing outputs, not claimed for every sensitivity/model ablation.
+- **Operational recommendation:** The HCCR decision endpoint is limited to the paper's synthetic simulator. Live fleet availability, unit alignment, order aggregation, reservation costs and dispatch lead times are not established. It must not be used to prepare a production fleet.
+- **Simulation source timestamps:** Archived result CSVs do not encode their execution timestamp; the UI reports this as unavailable instead of guessing.
 
 ## Reproduction
 
 ```bash
 python -m experiments.run_all
 python -m pytest
+python -m pytest research_hccr/tests -q
+python -m research_hccr.verify_claims
+python -m research_hccr.run_study --stage all
 ```
 
-The runner regenerates the synthetic CSV before evaluating forecast, ablation, horizon, CVRP, and advisory outputs. See `data/README.md` and `experiments/README.md` for complete definitions and limitations.
+The legacy runner regenerates the 730-day aggregate synthetic CSV. The HCCR runner uses the separate frozen four-region simulation and writes under `research_hccr/results/`; preserve a copy of supplied artifacts before rerunning. See `data/README.md`, `experiments/README.md`, and `research_hccr/README.md` for method definitions and limitations.
+
+## Validation in This Workspace (2026-10-13)
+
+- `python -m pytest`: 96 passed.
+- `npm --prefix frontend test`: 11 passed.
+- ESLint on changed frontend files: passed; frontend production build: passed with Vite's large-chunk warning.
+- `python -m pytest backend/tests/test_research_analytics.py -q`: 9 passed; `research_hccr/tests/test_hccr.py -q`: 13 passed, 1 blocked by missing `statsmodels`; `research_hccr/tests/test_mechanism.py -q`: collection blocked by missing `scipy`.
+- `python -m research_hccr.verify_claims`: completed successfully; `python -m research_hccr.run_study --help`: passed. The full multi-stage runner was not rerun; archived outputs were verified byte-identical to the supplied bundle.

@@ -1,0 +1,90 @@
+{
+  "_comment": "All values fixed BEFORE any test-period outcome was inspected. No value below was tuned on test data.",
+  "T": 1100,
+  "n_regions": 4,
+  "region_levels": [
+    80.0,
+    100.0,
+    120.0,
+    90.0
+  ],
+  "t_calibration_start": 400,
+  "t_validation_start": 700,
+  "t_test_start": 800,
+  "t_test_last_origin": 1071,
+  "horizons": [
+    1,
+    7,
+    14,
+    28
+  ],
+  "operational_horizons": [
+    1,
+    7,
+    14
+  ],
+  "refit_every_days": 7,
+  "hw_param_refit_every_days": 28,
+  "calibration_window": 200,
+  "interval_nominal": 0.8,
+  "regimes": [
+    "iid",
+    "ar",
+    "surge",
+    "drift"
+  ],
+  "n_seeds_main": 30,
+  "n_seeds_forecast_models": 10,
+  "capacity_pressure_kappa": 1.05,
+  "reserve_vehicle_capacities": [
+    10,
+    20,
+    40
+  ],
+  "reserve_vehicle_max_count": 2,
+  "reserve_cost_fixed": 4.0,
+  "reserve_cost_per_unit": 0.5,
+  "reserve_cost_scale": 1.0,
+  "shortage_penalty": 2.0,
+  "buffer_grid_fraction_of_level": [
+    0.0,
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.3
+  ],
+  "bootstrap_resamples": 10000,
+  "bootstrap_seed": 12345,
+  "sensitivity": {
+    "shortage_penalty": [
+      1.0,
+      4.0
+    ],
+    "reserve_cost_scale": [
+      0.5,
+      2.0
+    ],
+    "capacity_pressure_kappa": [
+      0.95,
+      1.2
+    ]
+  },
+  "routing": {
+    "n_seeds": 10,
+    "instances_per_seed": 6,
+    "horizon": 7,
+    "base_vehicle_max_capacity": 30,
+    "order_size_range": [
+      2,
+      12
+    ],
+    "solver_timeout_seconds": 1,
+    "solver_solution_limit": 1,
+    "region_box_deg": 0.08,
+    "depot": [
+      22.5726,
+      88.3639
+    ]
+  }
+}

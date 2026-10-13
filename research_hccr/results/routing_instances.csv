@@ -1,0 +1,1681 @@
+regime,seed,instance,region,origin,confirmed_demand,base_capacity,policy,n_reserved,reserve_cost,n_activated,fleet_capacity,aggregate_unmet,feasible,distance_km,runtime_s,served,requested,reason
+iid,0,0,0,870,88,87,reactive,0,0.0,0,87,1.0,False,,3.7847999976747815e-05,0,12,Insufficient vehicle capacity for all orders.
+iid,0,0,0,870,88,87,point,0,0.0,0,87,1.0,False,,3.7847999976747815e-05,0,12,Insufficient vehicle capacity for all orders.
+iid,0,0,0,870,88,87,buffer,1,9.0,1,97,0.0,True,89.764,0.007562277999966227,12,12,
+iid,0,0,0,870,88,87,pooled,0,0.0,0,87,1.0,False,,3.7847999976747815e-05,0,12,Insufficient vehicle capacity for all orders.
+iid,0,0,0,870,88,87,hspec,0,0.0,0,87,1.0,False,,3.7847999976747815e-05,0,12,Insufficient vehicle capacity for all orders.
+iid,0,0,0,870,88,87,robust,1,9.0,1,97,0.0,True,89.764,0.007562277999966227,12,12,
+iid,0,0,0,870,88,87,oracle,0,0.0,0,87,1.0,False,,3.7847999976747815e-05,0,12,Insufficient vehicle capacity for all orders.
+iid,0,1,2,819,158,130,reactive,0,0.0,0,130,28.0,False,,2.9055000027256028e-05,0,22,Insufficient vehicle capacity for all orders.
+iid,0,1,2,819,158,130,point,1,9.0,1,140,18.0,False,,1.928300002873584e-05,0,22,Insufficient vehicle capacity for all orders.
+iid,0,1,2,819,158,130,buffer,1,14.0,1,150,8.0,False,,4.7318999975232146e-05,0,22,Insufficient vehicle capacity for all orders.
+iid,0,1,2,819,158,130,pooled,1,14.0,1,150,8.0,False,,4.7318999975232146e-05,0,22,Insufficient vehicle capacity for all orders.
+iid,0,1,2,819,158,130,hspec,1,14.0,1,150,8.0,False,,4.7318999975232146e-05,0,22,Insufficient vehicle capacity for all orders.
+iid,0,1,2,819,158,130,robust,2,23.0,2,160,0.0,False,,1.0005576990000122,0,22,No feasible optimization solution found.
+iid,0,1,2,819,158,130,oracle,2,23.0,2,160,0.0,False,,1.0005576990000122,0,22,No feasible optimization solution found.
+iid,0,2,2,1071,168,130,reactive,0,0.0,0,130,38.0,False,,3.297799997881157e-05,0,24,Insufficient vehicle capacity for all orders.
+iid,0,2,2,1071,168,130,point,1,24.0,1,170,0.0,True,169.057,0.502968487999965,24,24,
+iid,0,2,2,1071,168,130,buffer,1,24.0,1,170,0.0,True,169.057,0.502968487999965,24,24,
+iid,0,2,2,1071,168,130,pooled,1,24.0,1,170,0.0,True,169.057,0.502968487999965,24,24,
+iid,0,2,2,1071,168,130,hspec,1,24.0,1,170,0.0,True,169.057,0.502968487999965,24,24,
+iid,0,2,2,1071,168,130,robust,2,33.0,1,170,0.0,True,169.057,0.502968487999965,24,24,
+iid,0,2,2,1071,168,130,oracle,1,24.0,1,170,0.0,True,169.057,0.502968487999965,24,24,
+iid,0,3,2,938,163,130,reactive,0,0.0,0,130,33.0,False,,3.042100001948711e-05,0,24,Insufficient vehicle capacity for all orders.
+iid,0,3,2,938,163,130,point,1,24.0,1,170,0.0,True,167.157,0.003320511000026727,24,24,
+iid,0,3,2,938,163,130,buffer,1,24.0,1,170,0.0,True,167.157,0.003320511000026727,24,24,
+iid,0,3,2,938,163,130,pooled,1,24.0,1,170,0.0,True,167.157,0.003320511000026727,24,24,
+iid,0,3,2,938,163,130,hspec,1,24.0,1,170,0.0,True,167.157,0.003320511000026727,24,24,
+iid,0,3,2,938,163,130,robust,2,33.0,1,170,0.0,True,167.157,0.003320511000026727,24,24,
+iid,0,3,2,938,163,130,oracle,1,24.0,1,170,0.0,True,167.157,0.003320511000026727,24,24,
+iid,0,4,2,1023,158,130,reactive,0,0.0,0,130,28.0,False,,2.5322000055894023e-05,0,19,Insufficient vehicle capacity for all orders.
+iid,0,4,2,1023,158,130,point,2,23.0,2,160,0.0,False,,1.0013945110000009,0,19,No feasible optimization solution found.
+iid,0,4,2,1023,158,130,buffer,2,23.0,2,160,0.0,False,,1.0013945110000009,0,19,No feasible optimization solution found.
+iid,0,4,2,1023,158,130,pooled,1,24.0,1,170,0.0,False,,1.000570664999998,0,19,No feasible optimization solution found.
+iid,0,4,2,1023,158,130,hspec,1,24.0,1,170,0.0,False,,1.000570664999998,0,19,No feasible optimization solution found.
+iid,0,4,2,1023,158,130,robust,1,24.0,1,170,0.0,False,,1.000570664999998,0,19,No feasible optimization solution found.
+iid,0,4,2,1023,158,130,oracle,2,23.0,2,160,0.0,False,,1.0013945110000009,0,19,No feasible optimization solution found.
+iid,0,5,3,952,128,97,reactive,0,0.0,0,97,31.0,False,,2.8830000019297586e-05,0,17,Insufficient vehicle capacity for all orders.
+iid,0,5,3,952,128,97,point,2,23.0,2,127,1.0,False,,1.8598999986352283e-05,0,17,Insufficient vehicle capacity for all orders.
+iid,0,5,3,952,128,97,buffer,2,23.0,2,127,1.0,False,,1.8598999986352283e-05,0,17,Insufficient vehicle capacity for all orders.
+iid,0,5,3,952,128,97,pooled,1,24.0,1,137,0.0,True,133.522,0.005308475999981965,17,17,
+iid,0,5,3,952,128,97,hspec,1,24.0,1,137,0.0,True,133.522,0.005308475999981965,17,17,
+iid,0,5,3,952,128,97,robust,1,24.0,1,137,0.0,True,133.522,0.005308475999981965,17,17,
+iid,0,5,3,952,128,97,oracle,1,24.0,1,137,0.0,True,133.522,0.005308475999981965,17,17,
+iid,1,0,2,1027,126,130,reactive,0,0.0,0,130,0.0,True,159.528,0.0032397370000012415,22,22,
+iid,1,0,2,1027,126,130,point,1,9.0,0,130,0.0,True,159.528,0.0032397370000012415,22,22,
+iid,1,0,2,1027,126,130,buffer,1,9.0,0,130,0.0,True,159.528,0.0032397370000012415,22,22,
+iid,1,0,2,1027,126,130,pooled,1,9.0,0,130,0.0,True,159.528,0.0032397370000012415,22,22,
+iid,1,0,2,1027,126,130,hspec,1,9.0,0,130,0.0,True,159.528,0.0032397370000012415,22,22,
+iid,1,0,2,1027,126,130,robust,1,14.0,0,130,0.0,True,159.528,0.0032397370000012415,22,22,
+iid,1,0,2,1027,126,130,oracle,0,0.0,0,130,0.0,True,159.528,0.0032397370000012415,22,22,
+iid,1,1,0,1015,111,88,reactive,0,0.0,0,88,23.0,False,,2.518099995540979e-05,0,17,Insufficient vehicle capacity for all orders.
+iid,1,1,0,1015,111,88,point,1,14.0,1,108,3.0,False,,1.4808000003085908e-05,0,17,Insufficient vehicle capacity for all orders.
+iid,1,1,0,1015,111,88,buffer,1,14.0,1,108,3.0,False,,1.4808000003085908e-05,0,17,Insufficient vehicle capacity for all orders.
+iid,1,1,0,1015,111,88,pooled,1,14.0,1,108,3.0,False,,1.4808000003085908e-05,0,17,Insufficient vehicle capacity for all orders.
+iid,1,1,0,1015,111,88,hspec,1,14.0,1,108,3.0,False,,1.4808000003085908e-05,0,17,Insufficient vehicle capacity for all orders.
+iid,1,1,0,1015,111,88,robust,2,23.0,2,118,0.0,True,134.629,0.007375747000025967,17,17,
+iid,1,1,0,1015,111,88,oracle,1,14.0,1,108,3.0,False,,1.4808000003085908e-05,0,17,Insufficient vehicle capacity for all orders.
+iid,1,2,3,901,103,99,reactive,0,0.0,0,99,4.0,False,,2.749399999402158e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,1,2,3,901,103,99,point,1,9.0,1,109,0.0,True,129.898,0.010574580999957561,15,15,
+iid,1,2,3,901,103,99,buffer,1,9.0,1,109,0.0,True,129.898,0.010574580999957561,15,15,
+iid,1,2,3,901,103,99,pooled,1,9.0,1,109,0.0,True,129.898,0.010574580999957561,15,15,
+iid,1,2,3,901,103,99,hspec,1,9.0,1,109,0.0,True,129.898,0.010574580999957561,15,15,
+iid,1,2,3,901,103,99,robust,1,14.0,1,119,0.0,True,116.657,0.002653658000042469,15,15,
+iid,1,2,3,901,103,99,oracle,0,0.0,0,99,4.0,False,,2.749399999402158e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,1,3,1,892,118,110,reactive,0,0.0,0,110,8.0,False,,2.4851000034686876e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,1,3,1,892,118,110,point,1,9.0,1,120,0.0,True,105.579,0.21281104799999184,15,15,
+iid,1,3,1,892,118,110,buffer,1,9.0,1,120,0.0,True,105.579,0.21281104799999184,15,15,
+iid,1,3,1,892,118,110,pooled,1,9.0,1,120,0.0,True,105.579,0.21281104799999184,15,15,
+iid,1,3,1,892,118,110,hspec,1,9.0,1,120,0.0,True,105.579,0.21281104799999184,15,15,
+iid,1,3,1,892,118,110,robust,1,14.0,1,130,0.0,True,95.523,0.002434656999980689,15,15,
+iid,1,3,1,892,118,110,oracle,1,9.0,1,120,0.0,True,105.579,0.21281104799999184,15,15,
+iid,1,4,0,966,100,88,reactive,0,0.0,0,88,12.0,False,,2.327499998955318e-05,0,16,Insufficient vehicle capacity for all orders.
+iid,1,4,0,966,100,88,point,1,9.0,1,98,2.0,False,,1.628600000458391e-05,0,16,Insufficient vehicle capacity for all orders.
+iid,1,4,0,966,100,88,buffer,1,14.0,1,108,0.0,True,97.996,0.002545510999993894,16,16,
+iid,1,4,0,966,100,88,pooled,1,9.0,1,98,2.0,False,,1.628600000458391e-05,0,16,Insufficient vehicle capacity for all orders.
+iid,1,4,0,966,100,88,hspec,1,9.0,1,98,2.0,False,,1.628600000458391e-05,0,16,Insufficient vehicle capacity for all orders.
+iid,1,4,0,966,100,88,robust,1,14.0,1,108,0.0,True,97.996,0.002545510999993894,16,16,
+iid,1,4,0,966,100,88,oracle,1,9.0,1,98,2.0,False,,1.628600000458391e-05,0,16,Insufficient vehicle capacity for all orders.
+iid,1,5,2,956,141,130,reactive,0,0.0,0,130,11.0,False,,2.6645999980701163e-05,0,19,Insufficient vehicle capacity for all orders.
+iid,1,5,2,956,141,130,point,1,14.0,1,150,0.0,True,122.091,0.01104922400003261,19,19,
+iid,1,5,2,956,141,130,buffer,1,14.0,1,150,0.0,True,122.091,0.01104922400003261,19,19,
+iid,1,5,2,956,141,130,pooled,1,14.0,1,150,0.0,True,122.091,0.01104922400003261,19,19,
+iid,1,5,2,956,141,130,hspec,1,14.0,1,150,0.0,True,122.091,0.01104922400003261,19,19,
+iid,1,5,2,956,141,130,robust,2,23.0,1,150,0.0,True,122.091,0.01104922400003261,19,19,
+iid,1,5,2,956,141,130,oracle,1,9.0,1,140,1.0,False,,4.1792999979861634e-05,0,19,Insufficient vehicle capacity for all orders.
+iid,2,0,3,911,114,98,reactive,0,0.0,0,98,16.0,False,,4.130899998244786e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,2,0,3,911,114,98,point,1,9.0,1,108,6.0,False,,1.9954999970650533e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,2,0,3,911,114,98,buffer,1,14.0,1,118,0.0,True,122.984,0.004592117000015605,18,18,
+iid,2,0,3,911,114,98,pooled,1,14.0,1,118,0.0,True,122.984,0.004592117000015605,18,18,
+iid,2,0,3,911,114,98,hspec,1,14.0,1,118,0.0,True,122.984,0.004592117000015605,18,18,
+iid,2,0,3,911,114,98,robust,1,14.0,1,118,0.0,True,122.984,0.004592117000015605,18,18,
+iid,2,0,3,911,114,98,oracle,1,14.0,1,118,0.0,True,122.984,0.004592117000015605,18,18,
+iid,2,1,2,906,136,130,reactive,0,0.0,0,130,6.0,False,,2.731900002572729e-05,0,22,Insufficient vehicle capacity for all orders.
+iid,2,1,2,906,136,130,point,1,9.0,1,140,0.0,True,147.134,0.003313626000021941,22,22,
+iid,2,1,2,906,136,130,buffer,1,9.0,1,140,0.0,True,147.134,0.003313626000021941,22,22,
+iid,2,1,2,906,136,130,pooled,1,9.0,1,140,0.0,True,147.134,0.003313626000021941,22,22,
+iid,2,1,2,906,136,130,hspec,1,9.0,1,140,0.0,True,147.134,0.003313626000021941,22,22,
+iid,2,1,2,906,136,130,robust,1,14.0,1,150,0.0,True,128.694,0.0030404670000052647,22,22,
+iid,2,1,2,906,136,130,oracle,1,9.0,1,140,0.0,True,147.134,0.003313626000021941,22,22,
+iid,2,2,1,969,116,109,reactive,0,0.0,0,109,7.0,False,,2.329800003053606e-05,0,16,Insufficient vehicle capacity for all orders.
+iid,2,2,1,969,116,109,point,1,9.0,1,119,0.0,True,136.619,0.038302800999986175,16,16,
+iid,2,2,1,969,116,109,buffer,1,9.0,1,119,0.0,True,136.619,0.038302800999986175,16,16,
+iid,2,2,1,969,116,109,pooled,1,9.0,1,119,0.0,True,136.619,0.038302800999986175,16,16,
+iid,2,2,1,969,116,109,hspec,1,9.0,1,119,0.0,True,136.619,0.038302800999986175,16,16,
+iid,2,2,1,969,116,109,robust,1,14.0,1,129,0.0,True,134.346,0.0034382069999878695,16,16,
+iid,2,2,1,969,116,109,oracle,1,9.0,1,119,0.0,True,136.619,0.038302800999986175,16,16,
+iid,2,3,2,1016,141,130,reactive,0,0.0,0,130,11.0,False,,3.080999999838241e-05,0,21,Insufficient vehicle capacity for all orders.
+iid,2,3,2,1016,141,130,point,0,0.0,0,130,11.0,False,,3.080999999838241e-05,0,21,Insufficient vehicle capacity for all orders.
+iid,2,3,2,1016,141,130,buffer,0,0.0,0,130,11.0,False,,3.080999999838241e-05,0,21,Insufficient vehicle capacity for all orders.
+iid,2,3,2,1016,141,130,pooled,0,0.0,0,130,11.0,False,,3.080999999838241e-05,0,21,Insufficient vehicle capacity for all orders.
+iid,2,3,2,1016,141,130,hspec,0,0.0,0,130,11.0,False,,3.080999999838241e-05,0,21,Insufficient vehicle capacity for all orders.
+iid,2,3,2,1016,141,130,robust,1,9.0,1,140,1.0,False,,1.918100002740175e-05,0,21,Insufficient vehicle capacity for all orders.
+iid,2,3,2,1016,141,130,oracle,1,9.0,1,140,1.0,False,,1.918100002740175e-05,0,21,Insufficient vehicle capacity for all orders.
+iid,2,4,2,842,148,130,reactive,0,0.0,0,130,18.0,False,,1.998200002617523e-05,0,24,Insufficient vehicle capacity for all orders.
+iid,2,4,2,842,148,130,point,1,9.0,1,140,8.0,False,,1.7970000044442713e-05,0,24,Insufficient vehicle capacity for all orders.
+iid,2,4,2,842,148,130,buffer,1,9.0,1,140,8.0,False,,1.7970000044442713e-05,0,24,Insufficient vehicle capacity for all orders.
+iid,2,4,2,842,148,130,pooled,1,9.0,1,140,8.0,False,,1.7970000044442713e-05,0,24,Insufficient vehicle capacity for all orders.
+iid,2,4,2,842,148,130,hspec,1,9.0,1,140,8.0,False,,1.7970000044442713e-05,0,24,Insufficient vehicle capacity for all orders.
+iid,2,4,2,842,148,130,robust,1,14.0,1,150,0.0,True,161.76,0.012928297999962979,24,24,
+iid,2,4,2,842,148,130,oracle,1,14.0,1,150,0.0,True,161.76,0.012928297999962979,24,24,
+iid,2,5,0,904,98,87,reactive,0,0.0,0,87,11.0,False,,2.675199999657707e-05,0,17,Insufficient vehicle capacity for all orders.
+iid,2,5,0,904,98,87,point,1,9.0,1,97,1.0,False,,1.5423000036207668e-05,0,17,Insufficient vehicle capacity for all orders.
+iid,2,5,0,904,98,87,buffer,1,14.0,1,107,0.0,True,104.523,0.002673040999980003,17,17,
+iid,2,5,0,904,98,87,pooled,1,9.0,1,97,1.0,False,,1.5423000036207668e-05,0,17,Insufficient vehicle capacity for all orders.
+iid,2,5,0,904,98,87,hspec,1,9.0,1,97,1.0,False,,1.5423000036207668e-05,0,17,Insufficient vehicle capacity for all orders.
+iid,2,5,0,904,98,87,robust,1,14.0,1,107,0.0,True,104.523,0.002673040999980003,17,17,
+iid,2,5,0,904,98,87,oracle,1,9.0,1,97,1.0,False,,1.5423000036207668e-05,0,17,Insufficient vehicle capacity for all orders.
+iid,3,0,2,919,130,132,reactive,0,0.0,0,132,0.0,True,162.682,0.20258206699998027,20,20,
+iid,3,0,2,919,130,132,point,0,0.0,0,132,0.0,True,162.682,0.20258206699998027,20,20,
+iid,3,0,2,919,130,132,buffer,1,9.0,0,132,0.0,True,162.682,0.20258206699998027,20,20,
+iid,3,0,2,919,130,132,pooled,0,0.0,0,132,0.0,True,162.682,0.20258206699998027,20,20,
+iid,3,0,2,919,130,132,hspec,0,0.0,0,132,0.0,True,162.682,0.20258206699998027,20,20,
+iid,3,0,2,919,130,132,robust,1,14.0,0,132,0.0,True,162.682,0.20258206699998027,20,20,
+iid,3,0,2,919,130,132,oracle,0,0.0,0,132,0.0,True,162.682,0.20258206699998027,20,20,
+iid,3,1,3,884,107,99,reactive,0,0.0,0,99,8.0,False,,2.6527999978043226e-05,0,14,Insufficient vehicle capacity for all orders.
+iid,3,1,3,884,107,99,point,1,9.0,1,109,0.0,True,87.123,0.004451368999980332,14,14,
+iid,3,1,3,884,107,99,buffer,1,14.0,1,119,0.0,True,108.301,0.0022497200000088924,14,14,
+iid,3,1,3,884,107,99,pooled,1,14.0,1,119,0.0,True,108.301,0.0022497200000088924,14,14,
+iid,3,1,3,884,107,99,hspec,1,14.0,1,119,0.0,True,108.301,0.0022497200000088924,14,14,
+iid,3,1,3,884,107,99,robust,2,23.0,1,109,0.0,True,87.123,0.004451368999980332,14,14,
+iid,3,1,3,884,107,99,oracle,1,9.0,1,109,0.0,True,87.123,0.004451368999980332,14,14,
+iid,3,2,3,977,108,99,reactive,0,0.0,0,99,9.0,False,,2.335699997502161e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,3,2,3,977,108,99,point,0,0.0,0,99,9.0,False,,2.335699997502161e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,3,2,3,977,108,99,buffer,0,0.0,0,99,9.0,False,,2.335699997502161e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,3,2,3,977,108,99,pooled,0,0.0,0,99,9.0,False,,2.335699997502161e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,3,2,3,977,108,99,hspec,0,0.0,0,99,9.0,False,,2.335699997502161e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,3,2,3,977,108,99,robust,1,9.0,1,109,0.0,False,,1.4785475239999641,0,15,No feasible optimization solution found.
+iid,3,2,3,977,108,99,oracle,1,9.0,1,109,0.0,False,,1.4785475239999641,0,15,No feasible optimization solution found.
+iid,3,3,0,899,85,88,reactive,0,0.0,0,88,0.0,True,96.76,0.0022199030000251696,12,12,
+iid,3,3,0,899,85,88,point,0,0.0,0,88,0.0,True,96.76,0.0022199030000251696,12,12,
+iid,3,3,0,899,85,88,buffer,0,0.0,0,88,0.0,True,96.76,0.0022199030000251696,12,12,
+iid,3,3,0,899,85,88,pooled,0,0.0,0,88,0.0,True,96.76,0.0022199030000251696,12,12,
+iid,3,3,0,899,85,88,hspec,0,0.0,0,88,0.0,True,96.76,0.0022199030000251696,12,12,
+iid,3,3,0,899,85,88,robust,1,9.0,0,88,0.0,True,96.76,0.0022199030000251696,12,12,
+iid,3,3,0,899,85,88,oracle,0,0.0,0,88,0.0,True,96.76,0.0022199030000251696,12,12,
+iid,3,4,1,845,124,110,reactive,0,0.0,0,110,14.0,False,,2.668299998731527e-05,0,19,Insufficient vehicle capacity for all orders.
+iid,3,4,1,845,124,110,point,0,0.0,0,110,14.0,False,,2.668299998731527e-05,0,19,Insufficient vehicle capacity for all orders.
+iid,3,4,1,845,124,110,buffer,1,9.0,1,120,4.0,False,,1.7990000003464957e-05,0,19,Insufficient vehicle capacity for all orders.
+iid,3,4,1,845,124,110,pooled,0,0.0,0,110,14.0,False,,2.668299998731527e-05,0,19,Insufficient vehicle capacity for all orders.
+iid,3,4,1,845,124,110,hspec,0,0.0,0,110,14.0,False,,2.668299998731527e-05,0,19,Insufficient vehicle capacity for all orders.
+iid,3,4,1,845,124,110,robust,1,14.0,1,130,0.0,True,126.121,0.0026577180000231237,19,19,
+iid,3,4,1,845,124,110,oracle,1,14.0,1,130,0.0,True,126.121,0.0026577180000231237,19,19,
+iid,3,5,2,842,147,132,reactive,0,0.0,0,132,15.0,False,,2.4009000014757476e-05,0,21,Insufficient vehicle capacity for all orders.
+iid,3,5,2,842,147,132,point,1,9.0,1,142,5.0,False,,1.89190000128292e-05,0,21,Insufficient vehicle capacity for all orders.
+iid,3,5,2,842,147,132,buffer,1,14.0,1,152,0.0,True,145.513,0.006633718999978555,21,21,
+iid,3,5,2,842,147,132,pooled,1,14.0,1,152,0.0,True,145.513,0.006633718999978555,21,21,
+iid,3,5,2,842,147,132,hspec,1,14.0,1,152,0.0,True,145.513,0.006633718999978555,21,21,
+iid,3,5,2,842,147,132,robust,2,23.0,1,152,0.0,True,145.513,0.006633718999978555,21,21,
+iid,3,5,2,842,147,132,oracle,1,14.0,1,152,0.0,True,145.513,0.006633718999978555,21,21,
+iid,4,0,0,864,92,88,reactive,0,0.0,0,88,4.0,False,,2.8303000021878688e-05,0,13,Insufficient vehicle capacity for all orders.
+iid,4,0,0,864,92,88,point,0,0.0,0,88,4.0,False,,2.8303000021878688e-05,0,13,Insufficient vehicle capacity for all orders.
+iid,4,0,0,864,92,88,buffer,0,0.0,0,88,4.0,False,,2.8303000021878688e-05,0,13,Insufficient vehicle capacity for all orders.
+iid,4,0,0,864,92,88,pooled,0,0.0,0,88,4.0,False,,2.8303000021878688e-05,0,13,Insufficient vehicle capacity for all orders.
+iid,4,0,0,864,92,88,hspec,0,0.0,0,88,4.0,False,,2.8303000021878688e-05,0,13,Insufficient vehicle capacity for all orders.
+iid,4,0,0,864,92,88,robust,1,9.0,1,98,0.0,True,97.293,0.0025894470000480396,13,13,
+iid,4,0,0,864,92,88,oracle,0,0.0,0,88,4.0,False,,2.8303000021878688e-05,0,13,Insufficient vehicle capacity for all orders.
+iid,4,1,2,925,117,132,reactive,0,0.0,0,132,0.0,True,150.922,0.002748526999994283,19,19,
+iid,4,1,2,925,117,132,point,0,0.0,0,132,0.0,True,150.922,0.002748526999994283,19,19,
+iid,4,1,2,925,117,132,buffer,0,0.0,0,132,0.0,True,150.922,0.002748526999994283,19,19,
+iid,4,1,2,925,117,132,pooled,0,0.0,0,132,0.0,True,150.922,0.002748526999994283,19,19,
+iid,4,1,2,925,117,132,hspec,0,0.0,0,132,0.0,True,150.922,0.002748526999994283,19,19,
+iid,4,1,2,925,117,132,robust,1,9.0,0,132,0.0,True,150.922,0.002748526999994283,19,19,
+iid,4,1,2,925,117,132,oracle,0,0.0,0,132,0.0,True,150.922,0.002748526999994283,19,19,
+iid,4,2,1,988,123,110,reactive,0,0.0,0,110,13.0,False,,2.515799997127033e-05,0,22,Insufficient vehicle capacity for all orders.
+iid,4,2,1,988,123,110,point,1,9.0,1,120,3.0,False,,1.76909999822783e-05,0,22,Insufficient vehicle capacity for all orders.
+iid,4,2,1,988,123,110,buffer,1,14.0,1,130,0.0,True,144.615,0.0028507469999681234,22,22,
+iid,4,2,1,988,123,110,pooled,1,9.0,1,120,3.0,False,,1.76909999822783e-05,0,22,Insufficient vehicle capacity for all orders.
+iid,4,2,1,988,123,110,hspec,1,9.0,1,120,3.0,False,,1.76909999822783e-05,0,22,Insufficient vehicle capacity for all orders.
+iid,4,2,1,988,123,110,robust,1,14.0,1,130,0.0,True,144.615,0.0028507469999681234,22,22,
+iid,4,2,1,988,123,110,oracle,1,14.0,1,130,0.0,True,144.615,0.0028507469999681234,22,22,
+iid,4,3,0,929,82,88,reactive,0,0.0,0,88,0.0,True,70.014,0.0020184539999945628,9,9,
+iid,4,3,0,929,82,88,point,0,0.0,0,88,0.0,True,70.014,0.0020184539999945628,9,9,
+iid,4,3,0,929,82,88,buffer,0,0.0,0,88,0.0,True,70.014,0.0020184539999945628,9,9,
+iid,4,3,0,929,82,88,pooled,0,0.0,0,88,0.0,True,70.014,0.0020184539999945628,9,9,
+iid,4,3,0,929,82,88,hspec,0,0.0,0,88,0.0,True,70.014,0.0020184539999945628,9,9,
+iid,4,3,0,929,82,88,robust,1,9.0,0,88,0.0,True,70.014,0.0020184539999945628,9,9,
+iid,4,3,0,929,82,88,oracle,0,0.0,0,88,0.0,True,70.014,0.0020184539999945628,9,9,
+iid,4,4,0,919,101,88,reactive,0,0.0,0,88,13.0,False,,2.1367999977428553e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,4,4,0,919,101,88,point,1,9.0,1,98,3.0,False,,1.6376000019135972e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,4,4,0,919,101,88,buffer,1,14.0,1,108,0.0,True,95.823,0.0019427780000000894,15,15,
+iid,4,4,0,919,101,88,pooled,1,9.0,1,98,3.0,False,,1.6376000019135972e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,4,4,0,919,101,88,hspec,1,9.0,1,98,3.0,False,,1.6376000019135972e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,4,4,0,919,101,88,robust,1,14.0,1,108,0.0,True,95.823,0.0019427780000000894,15,15,
+iid,4,4,0,919,101,88,oracle,1,14.0,1,108,0.0,True,95.823,0.0019427780000000894,15,15,
+iid,4,5,0,1030,125,88,reactive,0,0.0,0,88,37.0,False,,2.0473999995829217e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,4,5,0,1030,125,88,point,2,23.0,2,118,7.0,False,,1.7148999972960155e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,4,5,0,1030,125,88,buffer,2,23.0,2,118,7.0,False,,1.7148999972960155e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,4,5,0,1030,125,88,pooled,2,23.0,2,118,7.0,False,,1.7148999972960155e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,4,5,0,1030,125,88,hspec,2,23.0,2,118,7.0,False,,1.7148999972960155e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,4,5,0,1030,125,88,robust,1,24.0,1,128,0.0,True,115.501,0.08560837999999649,18,18,
+iid,4,5,0,1030,125,88,oracle,1,24.0,1,128,0.0,True,115.501,0.08560837999999649,18,18,
+iid,5,0,1,929,105,110,reactive,0,0.0,0,110,0.0,True,106.731,0.002941752000026554,17,17,
+iid,5,0,1,929,105,110,point,0,0.0,0,110,0.0,True,106.731,0.002941752000026554,17,17,
+iid,5,0,1,929,105,110,buffer,0,0.0,0,110,0.0,True,106.731,0.002941752000026554,17,17,
+iid,5,0,1,929,105,110,pooled,0,0.0,0,110,0.0,True,106.731,0.002941752000026554,17,17,
+iid,5,0,1,929,105,110,hspec,0,0.0,0,110,0.0,True,106.731,0.002941752000026554,17,17,
+iid,5,0,1,929,105,110,robust,1,9.0,0,110,0.0,True,106.731,0.002941752000026554,17,17,
+iid,5,0,1,929,105,110,oracle,0,0.0,0,110,0.0,True,106.731,0.002941752000026554,17,17,
+iid,5,1,2,806,169,131,reactive,0,0.0,0,131,38.0,False,,2.8820000011364755e-05,0,24,Insufficient vehicle capacity for all orders.
+iid,5,1,2,806,169,131,point,2,23.0,2,161,8.0,False,,3.9806000017961196e-05,0,24,Insufficient vehicle capacity for all orders.
+iid,5,1,2,806,169,131,buffer,2,23.0,2,161,8.0,False,,3.9806000017961196e-05,0,24,Insufficient vehicle capacity for all orders.
+iid,5,1,2,806,169,131,pooled,1,24.0,1,171,0.0,True,151.695,0.00335239300000012,24,24,
+iid,5,1,2,806,169,131,hspec,1,24.0,1,171,0.0,True,151.695,0.00335239300000012,24,24,
+iid,5,1,2,806,169,131,robust,1,24.0,1,171,0.0,True,151.695,0.00335239300000012,24,24,
+iid,5,1,2,806,169,131,oracle,1,24.0,1,171,0.0,True,151.695,0.00335239300000012,24,24,
+iid,5,2,3,891,124,98,reactive,0,0.0,0,98,26.0,False,,2.4558999996315833e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,5,2,3,891,124,98,point,1,14.0,1,118,6.0,False,,1.6771000048265705e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,5,2,3,891,124,98,buffer,2,23.0,2,128,0.0,True,172.797,0.002843254000026718,18,18,
+iid,5,2,3,891,124,98,pooled,1,14.0,1,118,6.0,False,,1.6771000048265705e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,5,2,3,891,124,98,hspec,1,14.0,1,118,6.0,False,,1.6771000048265705e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,5,2,3,891,124,98,robust,1,24.0,1,138,0.0,True,121.511,0.0025361549999729505,18,18,
+iid,5,2,3,891,124,98,oracle,2,23.0,2,128,0.0,True,172.797,0.002843254000026718,18,18,
+iid,5,3,3,1025,123,98,reactive,0,0.0,0,98,25.0,False,,2.3624999982985173e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,5,3,3,1025,123,98,point,1,14.0,1,118,5.0,False,,1.6324999990047218e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,5,3,3,1025,123,98,buffer,2,23.0,2,128,0.0,True,122.862,0.002587640999990981,18,18,
+iid,5,3,3,1025,123,98,pooled,1,14.0,1,118,5.0,False,,1.6324999990047218e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,5,3,3,1025,123,98,hspec,1,14.0,1,118,5.0,False,,1.6324999990047218e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,5,3,3,1025,123,98,robust,2,23.0,2,128,0.0,True,122.862,0.002587640999990981,18,18,
+iid,5,3,3,1025,123,98,oracle,2,23.0,2,128,0.0,True,122.862,0.002587640999990981,18,18,
+iid,5,4,3,845,98,98,reactive,0,0.0,0,98,0.0,False,,1.0035176209999577,0,12,No feasible optimization solution found.
+iid,5,4,3,845,98,98,point,0,0.0,0,98,0.0,False,,1.0035176209999577,0,12,No feasible optimization solution found.
+iid,5,4,3,845,98,98,buffer,0,0.0,0,98,0.0,False,,1.0035176209999577,0,12,No feasible optimization solution found.
+iid,5,4,3,845,98,98,pooled,0,0.0,0,98,0.0,False,,1.0035176209999577,0,12,No feasible optimization solution found.
+iid,5,4,3,845,98,98,hspec,0,0.0,0,98,0.0,False,,1.0035176209999577,0,12,No feasible optimization solution found.
+iid,5,4,3,845,98,98,robust,1,9.0,0,98,0.0,False,,1.0035176209999577,0,12,No feasible optimization solution found.
+iid,5,4,3,845,98,98,oracle,0,0.0,0,98,0.0,False,,1.0035176209999577,0,12,No feasible optimization solution found.
+iid,5,5,3,997,116,98,reactive,0,0.0,0,98,18.0,False,,3.862400001253263e-05,0,16,Insufficient vehicle capacity for all orders.
+iid,5,5,3,997,116,98,point,1,14.0,1,118,0.0,True,134.645,0.005333803000041826,16,16,
+iid,5,5,3,997,116,98,buffer,2,23.0,1,118,0.0,True,134.645,0.005333803000041826,16,16,
+iid,5,5,3,997,116,98,pooled,1,14.0,1,118,0.0,True,134.645,0.005333803000041826,16,16,
+iid,5,5,3,997,116,98,hspec,1,14.0,1,118,0.0,True,134.645,0.005333803000041826,16,16,
+iid,5,5,3,997,116,98,robust,1,24.0,1,138,0.0,True,124.544,0.002491336999980831,16,16,
+iid,5,5,3,997,116,98,oracle,1,14.0,1,118,0.0,True,134.645,0.005333803000041826,16,16,
+iid,6,0,0,824,101,87,reactive,0,0.0,0,87,14.0,False,,3.4235999976317544e-05,0,14,Insufficient vehicle capacity for all orders.
+iid,6,0,0,824,101,87,point,1,9.0,1,97,4.0,False,,1.6875000028448994e-05,0,14,Insufficient vehicle capacity for all orders.
+iid,6,0,0,824,101,87,buffer,1,9.0,1,97,4.0,False,,1.6875000028448994e-05,0,14,Insufficient vehicle capacity for all orders.
+iid,6,0,0,824,101,87,pooled,1,9.0,1,97,4.0,False,,1.6875000028448994e-05,0,14,Insufficient vehicle capacity for all orders.
+iid,6,0,0,824,101,87,hspec,1,9.0,1,97,4.0,False,,1.6875000028448994e-05,0,14,Insufficient vehicle capacity for all orders.
+iid,6,0,0,824,101,87,robust,1,14.0,1,107,0.0,True,105.887,0.002892094999992878,14,14,
+iid,6,0,0,824,101,87,oracle,1,14.0,1,107,0.0,True,105.887,0.002892094999992878,14,14,
+iid,6,1,1,1016,135,110,reactive,0,0.0,0,110,25.0,False,,3.250800000387244e-05,0,20,Insufficient vehicle capacity for all orders.
+iid,6,1,1,1016,135,110,point,2,23.0,2,140,0.0,True,192.521,0.39337045700000317,20,20,
+iid,6,1,1,1016,135,110,buffer,2,23.0,2,140,0.0,True,192.521,0.39337045700000317,20,20,
+iid,6,1,1,1016,135,110,pooled,2,23.0,2,140,0.0,True,192.521,0.39337045700000317,20,20,
+iid,6,1,1,1016,135,110,hspec,2,23.0,2,140,0.0,True,192.521,0.39337045700000317,20,20,
+iid,6,1,1,1016,135,110,robust,1,24.0,1,150,0.0,True,137.055,0.0032949920000078237,20,20,
+iid,6,1,1,1016,135,110,oracle,2,23.0,2,140,0.0,True,192.521,0.39337045700000317,20,20,
+iid,6,2,0,852,90,87,reactive,0,0.0,0,87,3.0,False,,2.3112999997465522e-05,0,9,Insufficient vehicle capacity for all orders.
+iid,6,2,0,852,90,87,point,1,9.0,1,97,0.0,False,,1.0021617849999984,0,9,No feasible optimization solution found.
+iid,6,2,0,852,90,87,buffer,1,9.0,1,97,0.0,False,,1.0021617849999984,0,9,No feasible optimization solution found.
+iid,6,2,0,852,90,87,pooled,1,9.0,1,97,0.0,False,,1.0021617849999984,0,9,No feasible optimization solution found.
+iid,6,2,0,852,90,87,hspec,1,9.0,1,97,0.0,False,,1.0021617849999984,0,9,No feasible optimization solution found.
+iid,6,2,0,852,90,87,robust,1,14.0,1,107,0.0,True,95.818,0.00197027399997296,9,9,
+iid,6,2,0,852,90,87,oracle,0,0.0,0,87,3.0,False,,2.3112999997465522e-05,0,9,Insufficient vehicle capacity for all orders.
+iid,6,3,0,913,84,87,reactive,0,0.0,0,87,0.0,False,,1.0016061949999653,0,13,No feasible optimization solution found.
+iid,6,3,0,913,84,87,point,1,9.0,0,87,0.0,False,,1.0016061949999653,0,13,No feasible optimization solution found.
+iid,6,3,0,913,84,87,buffer,1,9.0,0,87,0.0,False,,1.0016061949999653,0,13,No feasible optimization solution found.
+iid,6,3,0,913,84,87,pooled,1,9.0,0,87,0.0,False,,1.0016061949999653,0,13,No feasible optimization solution found.
+iid,6,3,0,913,84,87,hspec,1,9.0,0,87,0.0,False,,1.0016061949999653,0,13,No feasible optimization solution found.
+iid,6,3,0,913,84,87,robust,1,14.0,0,87,0.0,False,,1.0016061949999653,0,13,No feasible optimization solution found.
+iid,6,3,0,913,84,87,oracle,0,0.0,0,87,0.0,False,,1.0016061949999653,0,13,No feasible optimization solution found.
+iid,6,4,2,1069,163,132,reactive,0,0.0,0,132,31.0,False,,3.2468000028984534e-05,0,23,Insufficient vehicle capacity for all orders.
+iid,6,4,2,1069,163,132,point,1,14.0,1,152,11.0,False,,2.2073000025102374e-05,0,23,Insufficient vehicle capacity for all orders.
+iid,6,4,2,1069,163,132,buffer,2,23.0,2,162,1.0,False,,1.824700001407109e-05,0,23,Insufficient vehicle capacity for all orders.
+iid,6,4,2,1069,163,132,pooled,1,14.0,1,152,11.0,False,,2.2073000025102374e-05,0,23,Insufficient vehicle capacity for all orders.
+iid,6,4,2,1069,163,132,hspec,1,14.0,1,152,11.0,False,,2.2073000025102374e-05,0,23,Insufficient vehicle capacity for all orders.
+iid,6,4,2,1069,163,132,robust,1,24.0,1,172,0.0,True,139.667,0.0033961129999511286,23,23,
+iid,6,4,2,1069,163,132,oracle,1,24.0,1,172,0.0,True,139.667,0.0033961129999511286,23,23,
+iid,6,5,0,985,106,87,reactive,0,0.0,0,87,19.0,False,,2.2294000018519e-05,0,13,Insufficient vehicle capacity for all orders.
+iid,6,5,0,985,106,87,point,1,14.0,1,107,0.0,False,,1.0028346480000323,0,13,No feasible optimization solution found.
+iid,6,5,0,985,106,87,buffer,2,23.0,1,107,0.0,False,,1.0028346480000323,0,13,No feasible optimization solution found.
+iid,6,5,0,985,106,87,pooled,1,14.0,1,107,0.0,False,,1.0028346480000323,0,13,No feasible optimization solution found.
+iid,6,5,0,985,106,87,hspec,1,14.0,1,107,0.0,False,,1.0028346480000323,0,13,No feasible optimization solution found.
+iid,6,5,0,985,106,87,robust,2,23.0,1,107,0.0,False,,1.0028346480000323,0,13,No feasible optimization solution found.
+iid,6,5,0,985,106,87,oracle,1,14.0,1,107,0.0,False,,1.0028346480000323,0,13,No feasible optimization solution found.
+iid,7,0,2,958,133,132,reactive,0,0.0,0,132,1.0,False,,7.555800004865887e-05,0,20,Insufficient vehicle capacity for all orders.
+iid,7,0,2,958,133,132,point,0,0.0,0,132,1.0,False,,7.555800004865887e-05,0,20,Insufficient vehicle capacity for all orders.
+iid,7,0,2,958,133,132,buffer,1,9.0,1,142,0.0,True,159.545,0.0035534590000452226,20,20,
+iid,7,0,2,958,133,132,pooled,0,0.0,0,132,1.0,False,,7.555800004865887e-05,0,20,Insufficient vehicle capacity for all orders.
+iid,7,0,2,958,133,132,hspec,0,0.0,0,132,1.0,False,,7.555800004865887e-05,0,20,Insufficient vehicle capacity for all orders.
+iid,7,0,2,958,133,132,robust,1,14.0,1,152,0.0,True,137.61,0.0028689360000271336,20,20,
+iid,7,0,2,958,133,132,oracle,0,0.0,0,132,1.0,False,,7.555800004865887e-05,0,20,Insufficient vehicle capacity for all orders.
+iid,7,1,1,958,128,109,reactive,0,0.0,0,109,19.0,False,,3.3528000017213344e-05,0,19,Insufficient vehicle capacity for all orders.
+iid,7,1,1,958,128,109,point,1,9.0,1,119,9.0,False,,1.6884000046957226e-05,0,19,Insufficient vehicle capacity for all orders.
+iid,7,1,1,958,128,109,buffer,1,14.0,1,129,0.0,True,160.158,0.21257141500007037,19,19,
+iid,7,1,1,958,128,109,pooled,1,14.0,1,129,0.0,True,160.158,0.21257141500007037,19,19,
+iid,7,1,1,958,128,109,hspec,1,14.0,1,129,0.0,True,160.158,0.21257141500007037,19,19,
+iid,7,1,1,958,128,109,robust,2,23.0,1,129,0.0,True,160.158,0.21257141500007037,19,19,
+iid,7,1,1,958,128,109,oracle,1,14.0,1,129,0.0,True,160.158,0.21257141500007037,19,19,
+iid,7,2,1,1026,137,109,reactive,0,0.0,0,109,28.0,False,,2.7364999937162793e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,7,2,1,1026,137,109,point,1,24.0,1,149,0.0,True,134.041,0.002842065999971055,18,18,
+iid,7,2,1,1026,137,109,buffer,1,24.0,1,149,0.0,True,134.041,0.002842065999971055,18,18,
+iid,7,2,1,1026,137,109,pooled,1,24.0,1,149,0.0,True,134.041,0.002842065999971055,18,18,
+iid,7,2,1,1026,137,109,hspec,1,24.0,1,149,0.0,True,134.041,0.002842065999971055,18,18,
+iid,7,2,1,1026,137,109,robust,2,33.0,1,149,0.0,True,134.041,0.002842065999971055,18,18,
+iid,7,2,1,1026,137,109,oracle,2,23.0,2,139,0.0,True,146.057,0.008865033000006406,18,18,
+iid,7,3,1,931,107,109,reactive,0,0.0,0,109,0.0,True,105.319,0.0035882589999118863,14,14,
+iid,7,3,1,931,107,109,point,0,0.0,0,109,0.0,True,105.319,0.0035882589999118863,14,14,
+iid,7,3,1,931,107,109,buffer,1,9.0,0,109,0.0,True,105.319,0.0035882589999118863,14,14,
+iid,7,3,1,931,107,109,pooled,0,0.0,0,109,0.0,True,105.319,0.0035882589999118863,14,14,
+iid,7,3,1,931,107,109,hspec,0,0.0,0,109,0.0,True,105.319,0.0035882589999118863,14,14,
+iid,7,3,1,931,107,109,robust,1,14.0,0,109,0.0,True,105.319,0.0035882589999118863,14,14,
+iid,7,3,1,931,107,109,oracle,0,0.0,0,109,0.0,True,105.319,0.0035882589999118863,14,14,
+iid,7,4,0,826,96,87,reactive,0,0.0,0,87,9.0,False,,2.494099999239552e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,7,4,0,826,96,87,point,1,9.0,1,97,0.0,False,,1.003403586000104,0,15,No feasible optimization solution found.
+iid,7,4,0,826,96,87,buffer,1,14.0,1,107,0.0,True,114.633,0.0024384939999890776,15,15,
+iid,7,4,0,826,96,87,pooled,1,9.0,1,97,0.0,False,,1.003403586000104,0,15,No feasible optimization solution found.
+iid,7,4,0,826,96,87,hspec,1,9.0,1,97,0.0,False,,1.003403586000104,0,15,No feasible optimization solution found.
+iid,7,4,0,826,96,87,robust,1,14.0,1,107,0.0,True,114.633,0.0024384939999890776,15,15,
+iid,7,4,0,826,96,87,oracle,1,9.0,1,97,0.0,False,,1.003403586000104,0,15,No feasible optimization solution found.
+iid,7,5,1,996,125,109,reactive,0,0.0,0,109,16.0,False,,2.6952000098390272e-05,0,18,Insufficient vehicle capacity for all orders.
+iid,7,5,1,996,125,109,point,1,14.0,1,129,0.0,True,140.955,0.19244846600008714,18,18,
+iid,7,5,1,996,125,109,buffer,1,14.0,1,129,0.0,True,140.955,0.19244846600008714,18,18,
+iid,7,5,1,996,125,109,pooled,1,14.0,1,129,0.0,True,140.955,0.19244846600008714,18,18,
+iid,7,5,1,996,125,109,hspec,1,14.0,1,129,0.0,True,140.955,0.19244846600008714,18,18,
+iid,7,5,1,996,125,109,robust,2,23.0,1,129,0.0,True,140.955,0.19244846600008714,18,18,
+iid,7,5,1,996,125,109,oracle,1,14.0,1,129,0.0,True,140.955,0.19244846600008714,18,18,
+iid,8,0,3,995,93,99,reactive,0,0.0,0,99,0.0,True,129.261,0.00263846799998646,15,15,
+iid,8,0,3,995,93,99,point,0,0.0,0,99,0.0,True,129.261,0.00263846799998646,15,15,
+iid,8,0,3,995,93,99,buffer,1,9.0,0,99,0.0,True,129.261,0.00263846799998646,15,15,
+iid,8,0,3,995,93,99,pooled,0,0.0,0,99,0.0,True,129.261,0.00263846799998646,15,15,
+iid,8,0,3,995,93,99,hspec,0,0.0,0,99,0.0,True,129.261,0.00263846799998646,15,15,
+iid,8,0,3,995,93,99,robust,1,9.0,0,99,0.0,True,129.261,0.00263846799998646,15,15,
+iid,8,0,3,995,93,99,oracle,0,0.0,0,99,0.0,True,129.261,0.00263846799998646,15,15,
+iid,8,1,3,1013,108,99,reactive,0,0.0,0,99,9.0,False,,2.712699995299772e-05,0,16,Insufficient vehicle capacity for all orders.
+iid,8,1,3,1013,108,99,point,1,9.0,1,109,0.0,False,,1.0012945969999691,0,16,No feasible optimization solution found.
+iid,8,1,3,1013,108,99,buffer,1,9.0,1,109,0.0,False,,1.0012945969999691,0,16,No feasible optimization solution found.
+iid,8,1,3,1013,108,99,pooled,1,9.0,1,109,0.0,False,,1.0012945969999691,0,16,No feasible optimization solution found.
+iid,8,1,3,1013,108,99,hspec,1,9.0,1,109,0.0,False,,1.0012945969999691,0,16,No feasible optimization solution found.
+iid,8,1,3,1013,108,99,robust,1,14.0,1,119,0.0,True,105.508,0.002597725999976319,16,16,
+iid,8,1,3,1013,108,99,oracle,1,9.0,1,109,0.0,False,,1.0012945969999691,0,16,No feasible optimization solution found.
+iid,8,2,1,960,102,109,reactive,0,0.0,0,109,0.0,True,126.208,0.0019649619999881907,14,14,
+iid,8,2,1,960,102,109,point,0,0.0,0,109,0.0,True,126.208,0.0019649619999881907,14,14,
+iid,8,2,1,960,102,109,buffer,0,0.0,0,109,0.0,True,126.208,0.0019649619999881907,14,14,
+iid,8,2,1,960,102,109,pooled,0,0.0,0,109,0.0,True,126.208,0.0019649619999881907,14,14,
+iid,8,2,1,960,102,109,hspec,0,0.0,0,109,0.0,True,126.208,0.0019649619999881907,14,14,
+iid,8,2,1,960,102,109,robust,1,9.0,0,109,0.0,True,126.208,0.0019649619999881907,14,14,
+iid,8,2,1,960,102,109,oracle,0,0.0,0,109,0.0,True,126.208,0.0019649619999881907,14,14,
+iid,8,3,3,856,101,99,reactive,0,0.0,0,99,2.0,False,,2.271899995776039e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,8,3,3,856,101,99,point,0,0.0,0,99,2.0,False,,2.271899995776039e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,8,3,3,856,101,99,buffer,1,9.0,1,109,0.0,True,113.766,0.002124073999993925,15,15,
+iid,8,3,3,856,101,99,pooled,0,0.0,0,99,2.0,False,,2.271899995776039e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,8,3,3,856,101,99,hspec,0,0.0,0,99,2.0,False,,2.271899995776039e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,8,3,3,856,101,99,robust,1,9.0,1,109,0.0,True,113.766,0.002124073999993925,15,15,
+iid,8,3,3,856,101,99,oracle,0,0.0,0,99,2.0,False,,2.271899995776039e-05,0,15,Insufficient vehicle capacity for all orders.
+iid,8,4,1,922,139,109,reactive,0,0.0,0,109,30.0,False,,2.287400002387585e-05,0,19,Insufficient vehicle capacity for all orders.
+iid,8,4,1,922,139,109,point,1,14.0,1,129,10.0,False,,1.7070000012608944e-05,0,19,Insufficient vehicle capacity for all orders.
+iid,8,4,1,922,139,109,buffer,2,23.0,2,139,0.0,False,,1.0011691729999939,0,19,No feasible optimization solution found.
+iid,8,4,1,922,139,109,pooled,2,23.0,2,139,0.0,False,,1.0011691729999939,0,19,No feasible optimization solution found.
+iid,8,4,1,922,139,109,hspec,2,23.0,2,139,0.0,False,,1.0011691729999939,0,19,No feasible optimization solution found.
+iid,8,4,1,922,139,109,robust,1,24.0,1,149,0.0,True,121.77,0.0028657159999738724,19,19,
+iid,8,4,1,922,139,109,oracle,2,23.0,2,139,0.0,False,,1.0011691729999939,0,19,No feasible optimization solution found.
+iid,8,5,2,1054,145,130,reactive,0,0.0,0,130,15.0,False,,3.113700006451836e-05,0,22,Insufficient vehicle capacity for all orders.
+iid,8,5,2,1054,145,130,point,1,14.0,1,150,0.0,True,152.203,0.003037765000044601,22,22,
+iid,8,5,2,1054,145,130,buffer,1,14.0,1,150,0.0,True,152.203,0.003037765000044601,22,22,
+iid,8,5,2,1054,145,130,pooled,1,14.0,1,150,0.0,True,152.203,0.003037765000044601,22,22,
+iid,8,5,2,1054,145,130,hspec,1,14.0,1,150,0.0,True,152.203,0.003037765000044601,22,22,
+iid,8,5,2,1054,145,130,robust,2,23.0,1,150,0.0,True,152.203,0.003037765000044601,22,22,
+iid,8,5,2,1054,145,130,oracle,1,14.0,1,150,0.0,True,152.203,0.003037765000044601,22,22,
+iid,9,0,0,835,90,87,reactive,0,0.0,0,87,3.0,False,,4.3808999976135965e-05,0,12,Insufficient vehicle capacity for all orders.
+iid,9,0,0,835,90,87,point,1,14.0,1,107,0.0,True,89.943,0.0034598549999600436,12,12,
+iid,9,0,0,835,90,87,buffer,1,14.0,1,107,0.0,True,89.943,0.0034598549999600436,12,12,
+iid,9,0,0,835,90,87,pooled,1,14.0,1,107,0.0,True,89.943,0.0034598549999600436,12,12,
+iid,9,0,0,835,90,87,hspec,1,14.0,1,107,0.0,True,89.943,0.0034598549999600436,12,12,
+iid,9,0,0,835,90,87,robust,1,14.0,1,107,0.0,True,89.943,0.0034598549999600436,12,12,
+iid,9,0,0,835,90,87,oracle,0,0.0,0,87,3.0,False,,4.3808999976135965e-05,0,12,Insufficient vehicle capacity for all orders.
+iid,9,1,3,982,104,99,reactive,0,0.0,0,99,5.0,False,,3.54010001046845e-05,0,16,Insufficient vehicle capacity for all orders.
+iid,9,1,3,982,104,99,point,1,9.0,1,109,0.0,True,117.652,0.0037216660000467527,16,16,
+iid,9,1,3,982,104,99,buffer,1,9.0,1,109,0.0,True,117.652,0.0037216660000467527,16,16,
+iid,9,1,3,982,104,99,pooled,1,9.0,1,109,0.0,True,117.652,0.0037216660000467527,16,16,
+iid,9,1,3,982,104,99,hspec,1,9.0,1,109,0.0,True,117.652,0.0037216660000467527,16,16,
+iid,9,1,3,982,104,99,robust,1,14.0,1,119,0.0,True,122.978,0.0034300789999406334,16,16,
+iid,9,1,3,982,104,99,oracle,1,9.0,1,109,0.0,True,117.652,0.0037216660000467527,16,16,
+iid,9,2,1,864,98,109,reactive,0,0.0,0,109,0.0,True,66.587,0.0025561910000533317,12,12,
+iid,9,2,1,864,98,109,point,0,0.0,0,109,0.0,True,66.587,0.0025561910000533317,12,12,
+iid,9,2,1,864,98,109,buffer,0,0.0,0,109,0.0,True,66.587,0.0025561910000533317,12,12,
+iid,9,2,1,864,98,109,pooled,0,0.0,0,109,0.0,True,66.587,0.0025561910000533317,12,12,
+iid,9,2,1,864,98,109,hspec,0,0.0,0,109,0.0,True,66.587,0.0025561910000533317,12,12,
+iid,9,2,1,864,98,109,robust,1,9.0,0,109,0.0,True,66.587,0.0025561910000533317,12,12,
+iid,9,2,1,864,98,109,oracle,0,0.0,0,109,0.0,True,66.587,0.0025561910000533317,12,12,
+iid,9,3,0,862,110,87,reactive,0,0.0,0,87,23.0,False,,3.105700000105571e-05,0,16,Insufficient vehicle capacity for all orders.
+iid,9,3,0,862,110,87,point,1,14.0,1,107,3.0,False,,2.557699997396412e-05,0,16,Insufficient vehicle capacity for all orders.
+iid,9,3,0,862,110,87,buffer,2,23.0,2,117,0.0,True,113.398,0.0033745540000609253,16,16,
+iid,9,3,0,862,110,87,pooled,1,14.0,1,107,3.0,False,,2.557699997396412e-05,0,16,Insufficient vehicle capacity for all orders.
+iid,9,3,0,862,110,87,hspec,1,14.0,1,107,3.0,False,,2.557699997396412e-05,0,16,Insufficient vehicle capacity for all orders.
+iid,9,3,0,862,110,87,robust,2,23.0,2,117,0.0,True,113.398,0.0033745540000609253,16,16,
+iid,9,3,0,862,110,87,oracle,1,14.0,1,107,3.0,False,,2.557699997396412e-05,0,16,Insufficient vehicle capacity for all orders.
+iid,9,4,0,1018,94,87,reactive,0,0.0,0,87,7.0,False,,3.078800000366755e-05,0,14,Insufficient vehicle capacity for all orders.
+iid,9,4,0,1018,94,87,point,0,0.0,0,87,7.0,False,,3.078800000366755e-05,0,14,Insufficient vehicle capacity for all orders.
+iid,9,4,0,1018,94,87,buffer,0,0.0,0,87,7.0,False,,3.078800000366755e-05,0,14,Insufficient vehicle capacity for all orders.
+iid,9,4,0,1018,94,87,pooled,0,0.0,0,87,7.0,False,,3.078800000366755e-05,0,14,Insufficient vehicle capacity for all orders.
+iid,9,4,0,1018,94,87,hspec,0,0.0,0,87,7.0,False,,3.078800000366755e-05,0,14,Insufficient vehicle capacity for all orders.
+iid,9,4,0,1018,94,87,robust,1,9.0,1,97,0.0,True,84.183,0.002968968999994104,14,14,
+iid,9,4,0,1018,94,87,oracle,1,9.0,1,97,0.0,True,84.183,0.002968968999994104,14,14,
+iid,9,5,1,935,108,109,reactive,0,0.0,0,109,0.0,True,110.768,0.002431272999956491,15,15,
+iid,9,5,1,935,108,109,point,1,9.0,0,109,0.0,True,110.768,0.002431272999956491,15,15,
+iid,9,5,1,935,108,109,buffer,1,9.0,0,109,0.0,True,110.768,0.002431272999956491,15,15,
+iid,9,5,1,935,108,109,pooled,1,9.0,0,109,0.0,True,110.768,0.002431272999956491,15,15,
+iid,9,5,1,935,108,109,hspec,1,9.0,0,109,0.0,True,110.768,0.002431272999956491,15,15,
+iid,9,5,1,935,108,109,robust,1,14.0,0,109,0.0,True,110.768,0.002431272999956491,15,15,
+iid,9,5,1,935,108,109,oracle,0,0.0,0,109,0.0,True,110.768,0.002431272999956491,15,15,
+ar,0,0,0,1042,93,88,reactive,0,0.0,0,88,5.0,False,,2.988400001413538e-05,0,12,Insufficient vehicle capacity for all orders.
+ar,0,0,0,1042,93,88,point,0,0.0,0,88,5.0,False,,2.988400001413538e-05,0,12,Insufficient vehicle capacity for all orders.
+ar,0,0,0,1042,93,88,buffer,1,9.0,1,98,0.0,True,89.764,0.002779289999921275,12,12,
+ar,0,0,0,1042,93,88,pooled,0,0.0,0,88,5.0,False,,2.988400001413538e-05,0,12,Insufficient vehicle capacity for all orders.
+ar,0,0,0,1042,93,88,hspec,0,0.0,0,88,5.0,False,,2.988400001413538e-05,0,12,Insufficient vehicle capacity for all orders.
+ar,0,0,0,1042,93,88,robust,1,14.0,1,108,0.0,True,101.042,0.0020762670000067374,12,12,
+ar,0,0,0,1042,93,88,oracle,1,9.0,1,98,0.0,True,89.764,0.002779289999921275,12,12,
+ar,0,1,1,872,145,104,reactive,0,0.0,0,104,41.0,False,,2.402699999493052e-05,0,19,Insufficient vehicle capacity for all orders.
+ar,0,1,1,872,145,104,point,1,24.0,1,144,1.0,False,,1.679800004694698e-05,0,19,Insufficient vehicle capacity for all orders.
+ar,0,1,1,872,145,104,buffer,1,24.0,1,144,1.0,False,,1.679800004694698e-05,0,19,Insufficient vehicle capacity for all orders.
+ar,0,1,1,872,145,104,pooled,1,24.0,1,144,1.0,False,,1.679800004694698e-05,0,19,Insufficient vehicle capacity for all orders.
+ar,0,1,1,872,145,104,hspec,1,24.0,1,144,1.0,False,,1.679800004694698e-05,0,19,Insufficient vehicle capacity for all orders.
+ar,0,1,1,872,145,104,robust,2,33.0,2,154,0.0,True,174.496,0.012357321999957094,19,19,
+ar,0,1,1,872,145,104,oracle,1,24.0,1,144,1.0,False,,1.679800004694698e-05,0,19,Insufficient vehicle capacity for all orders.
+ar,0,2,1,1024,130,104,reactive,0,0.0,0,104,26.0,False,,2.7062000071964576e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,0,2,1,1024,130,104,point,2,23.0,2,134,0.0,True,169.524,0.0031070630000158417,18,18,
+ar,0,2,1,1024,130,104,buffer,1,24.0,1,144,0.0,True,147.458,0.0027463659999966694,18,18,
+ar,0,2,1,1024,130,104,pooled,1,24.0,1,144,0.0,True,147.458,0.0027463659999966694,18,18,
+ar,0,2,1,1024,130,104,hspec,1,24.0,1,144,0.0,True,147.458,0.0027463659999966694,18,18,
+ar,0,2,1,1024,130,104,robust,2,33.0,1,144,0.0,True,147.458,0.0027463659999966694,18,18,
+ar,0,2,1,1024,130,104,oracle,2,23.0,2,134,0.0,True,169.524,0.0031070630000158417,18,18,
+ar,0,3,3,994,107,96,reactive,0,0.0,0,96,11.0,False,,2.397000002929417e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,0,3,3,994,107,96,point,0,0.0,0,96,11.0,False,,2.397000002929417e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,0,3,3,994,107,96,buffer,1,9.0,1,106,1.0,False,,1.7264000007344293e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,0,3,3,994,107,96,pooled,0,0.0,0,96,11.0,False,,2.397000002929417e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,0,3,3,994,107,96,hspec,0,0.0,0,96,11.0,False,,2.397000002929417e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,0,3,3,994,107,96,robust,1,14.0,1,116,0.0,True,142.517,0.0021858999999722073,16,16,
+ar,0,3,3,994,107,96,oracle,1,9.0,1,106,1.0,False,,1.7264000007344293e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,0,4,2,875,152,130,reactive,0,0.0,0,130,22.0,False,,2.3666000060984516e-05,0,19,Insufficient vehicle capacity for all orders.
+ar,0,4,2,875,152,130,point,1,14.0,1,150,2.0,False,,1.7446000015297614e-05,0,19,Insufficient vehicle capacity for all orders.
+ar,0,4,2,875,152,130,buffer,2,23.0,2,160,0.0,False,,1.0012752740000224,0,19,No feasible optimization solution found.
+ar,0,4,2,875,152,130,pooled,1,24.0,1,170,0.0,True,134.547,0.003097020999916822,19,19,
+ar,0,4,2,875,152,130,hspec,1,24.0,1,170,0.0,True,134.547,0.003097020999916822,19,19,
+ar,0,4,2,875,152,130,robust,1,24.0,1,170,0.0,True,134.547,0.003097020999916822,19,19,
+ar,0,4,2,875,152,130,oracle,1,14.0,1,150,2.0,False,,1.7446000015297614e-05,0,19,Insufficient vehicle capacity for all orders.
+ar,0,5,3,846,102,96,reactive,0,0.0,0,96,6.0,False,,2.4628000005577633e-05,0,14,Insufficient vehicle capacity for all orders.
+ar,0,5,3,846,102,96,point,0,0.0,0,96,6.0,False,,2.4628000005577633e-05,0,14,Insufficient vehicle capacity for all orders.
+ar,0,5,3,846,102,96,buffer,1,9.0,1,106,0.0,True,139.111,0.06111783200003629,14,14,
+ar,0,5,3,846,102,96,pooled,0,0.0,0,96,6.0,False,,2.4628000005577633e-05,0,14,Insufficient vehicle capacity for all orders.
+ar,0,5,3,846,102,96,hspec,0,0.0,0,96,6.0,False,,2.4628000005577633e-05,0,14,Insufficient vehicle capacity for all orders.
+ar,0,5,3,846,102,96,robust,2,23.0,1,106,0.0,True,139.111,0.06111783200003629,14,14,
+ar,0,5,3,846,102,96,oracle,1,9.0,1,106,0.0,True,139.111,0.06111783200003629,14,14,
+ar,1,0,0,851,81,87,reactive,0,0.0,0,87,0.0,True,109.492,0.0025156609999612556,15,15,
+ar,1,0,0,851,81,87,point,0,0.0,0,87,0.0,True,109.492,0.0025156609999612556,15,15,
+ar,1,0,0,851,81,87,buffer,0,0.0,0,87,0.0,True,109.492,0.0025156609999612556,15,15,
+ar,1,0,0,851,81,87,pooled,0,0.0,0,87,0.0,True,109.492,0.0025156609999612556,15,15,
+ar,1,0,0,851,81,87,hspec,0,0.0,0,87,0.0,True,109.492,0.0025156609999612556,15,15,
+ar,1,0,0,851,81,87,robust,1,14.0,0,87,0.0,True,109.492,0.0025156609999612556,15,15,
+ar,1,0,0,851,81,87,oracle,0,0.0,0,87,0.0,True,109.492,0.0025156609999612556,15,15,
+ar,1,1,1,922,137,108,reactive,0,0.0,0,108,29.0,False,,2.650199996878655e-05,0,21,Insufficient vehicle capacity for all orders.
+ar,1,1,1,922,137,108,point,2,23.0,2,138,0.0,True,150.987,0.003048638999985087,21,21,
+ar,1,1,1,922,137,108,buffer,2,23.0,2,138,0.0,True,150.987,0.003048638999985087,21,21,
+ar,1,1,1,922,137,108,pooled,1,24.0,1,148,0.0,True,127.693,0.00273658699995849,21,21,
+ar,1,1,1,922,137,108,hspec,1,24.0,1,148,0.0,True,127.693,0.00273658699995849,21,21,
+ar,1,1,1,922,137,108,robust,2,33.0,1,148,0.0,True,127.693,0.00273658699995849,21,21,
+ar,1,1,1,922,137,108,oracle,2,23.0,2,138,0.0,True,150.987,0.003048638999985087,21,21,
+ar,1,2,0,1003,100,87,reactive,0,0.0,0,87,13.0,False,,2.3245999955179286e-05,0,14,Insufficient vehicle capacity for all orders.
+ar,1,2,0,1003,100,87,point,1,14.0,1,107,0.0,True,119.903,0.035804788999939774,14,14,
+ar,1,2,0,1003,100,87,buffer,1,14.0,1,107,0.0,True,119.903,0.035804788999939774,14,14,
+ar,1,2,0,1003,100,87,pooled,1,14.0,1,107,0.0,True,119.903,0.035804788999939774,14,14,
+ar,1,2,0,1003,100,87,hspec,1,14.0,1,107,0.0,True,119.903,0.035804788999939774,14,14,
+ar,1,2,0,1003,100,87,robust,2,23.0,1,107,0.0,True,119.903,0.035804788999939774,14,14,
+ar,1,2,0,1003,100,87,oracle,1,14.0,1,107,0.0,True,119.903,0.035804788999939774,14,14,
+ar,1,3,2,821,134,127,reactive,0,0.0,0,127,7.0,False,,2.900899994529027e-05,0,17,Insufficient vehicle capacity for all orders.
+ar,1,3,2,821,134,127,point,1,9.0,1,137,0.0,True,122.764,0.8696007999999438,17,17,
+ar,1,3,2,821,134,127,buffer,1,14.0,1,147,0.0,True,127.43,0.003021700000090277,17,17,
+ar,1,3,2,821,134,127,pooled,1,14.0,1,147,0.0,True,127.43,0.003021700000090277,17,17,
+ar,1,3,2,821,134,127,hspec,1,14.0,1,147,0.0,True,127.43,0.003021700000090277,17,17,
+ar,1,3,2,821,134,127,robust,2,23.0,1,137,0.0,True,122.764,0.8696007999999438,17,17,
+ar,1,3,2,821,134,127,oracle,1,9.0,1,137,0.0,True,122.764,0.8696007999999438,17,17,
+ar,1,4,0,936,94,87,reactive,0,0.0,0,87,7.0,False,,2.5043000050573028e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,1,4,0,936,94,87,point,1,14.0,1,107,0.0,True,112.388,0.0023588379999637255,15,15,
+ar,1,4,0,936,94,87,buffer,1,14.0,1,107,0.0,True,112.388,0.0023588379999637255,15,15,
+ar,1,4,0,936,94,87,pooled,1,14.0,1,107,0.0,True,112.388,0.0023588379999637255,15,15,
+ar,1,4,0,936,94,87,hspec,1,14.0,1,107,0.0,True,112.388,0.0023588379999637255,15,15,
+ar,1,4,0,936,94,87,robust,2,23.0,1,97,0.0,False,,1.005105331999971,0,15,No feasible optimization solution found.
+ar,1,4,0,936,94,87,oracle,1,9.0,1,97,0.0,False,,1.005105331999971,0,15,No feasible optimization solution found.
+ar,1,5,3,854,126,99,reactive,0,0.0,0,99,27.0,False,,3.9775000004738104e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,1,5,3,854,126,99,point,1,9.0,1,109,17.0,False,,7.531699998253316e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,1,5,3,854,126,99,buffer,1,14.0,1,119,7.0,False,,2.5913999934346066e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,1,5,3,854,126,99,pooled,1,14.0,1,119,7.0,False,,2.5913999934346066e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,1,5,3,854,126,99,hspec,1,14.0,1,119,7.0,False,,2.5913999934346066e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,1,5,3,854,126,99,robust,2,23.0,2,129,0.0,False,,1.0008866770000395,0,16,No feasible optimization solution found.
+ar,1,5,3,854,126,99,oracle,2,23.0,2,129,0.0,False,,1.0008866770000395,0,16,No feasible optimization solution found.
+ar,2,0,2,1051,133,132,reactive,0,0.0,0,132,1.0,False,,3.6660999967352836e-05,0,20,Insufficient vehicle capacity for all orders.
+ar,2,0,2,1051,133,132,point,0,0.0,0,132,1.0,False,,3.6660999967352836e-05,0,20,Insufficient vehicle capacity for all orders.
+ar,2,0,2,1051,133,132,buffer,0,0.0,0,132,1.0,False,,3.6660999967352836e-05,0,20,Insufficient vehicle capacity for all orders.
+ar,2,0,2,1051,133,132,pooled,0,0.0,0,132,1.0,False,,3.6660999967352836e-05,0,20,Insufficient vehicle capacity for all orders.
+ar,2,0,2,1051,133,132,hspec,0,0.0,0,132,1.0,False,,3.6660999967352836e-05,0,20,Insufficient vehicle capacity for all orders.
+ar,2,0,2,1051,133,132,robust,0,0.0,0,132,1.0,False,,3.6660999967352836e-05,0,20,Insufficient vehicle capacity for all orders.
+ar,2,0,2,1051,133,132,oracle,0,0.0,0,132,1.0,False,,3.6660999967352836e-05,0,20,Insufficient vehicle capacity for all orders.
+ar,2,1,3,874,123,103,reactive,0,0.0,0,103,20.0,False,,2.402799998435512e-05,0,21,Insufficient vehicle capacity for all orders.
+ar,2,1,3,874,123,103,point,1,14.0,1,123,0.0,False,,1.0007228810000015,0,21,No feasible optimization solution found.
+ar,2,1,3,874,123,103,buffer,2,23.0,1,123,0.0,False,,1.0007228810000015,0,21,No feasible optimization solution found.
+ar,2,1,3,874,123,103,pooled,1,24.0,1,143,0.0,True,118.112,0.0031963690000793576,21,21,
+ar,2,1,3,874,123,103,hspec,1,14.0,1,123,0.0,False,,1.0007228810000015,0,21,No feasible optimization solution found.
+ar,2,1,3,874,123,103,robust,0,0.0,0,103,20.0,False,,2.402799998435512e-05,0,21,Insufficient vehicle capacity for all orders.
+ar,2,1,3,874,123,103,oracle,1,14.0,1,123,0.0,False,,1.0007228810000015,0,21,No feasible optimization solution found.
+ar,2,2,0,1011,85,81,reactive,0,0.0,0,81,4.0,False,,2.6886000000558852e-05,0,12,Insufficient vehicle capacity for all orders.
+ar,2,2,0,1011,85,81,point,2,23.0,1,91,0.0,True,107.156,0.0021521569999549683,12,12,
+ar,2,2,0,1011,85,81,buffer,2,23.0,1,91,0.0,True,107.156,0.0021521569999549683,12,12,
+ar,2,2,0,1011,85,81,pooled,1,14.0,1,101,0.0,True,94.233,0.0019447880000598161,12,12,
+ar,2,2,0,1011,85,81,hspec,1,14.0,1,101,0.0,True,94.233,0.0019447880000598161,12,12,
+ar,2,2,0,1011,85,81,robust,0,0.0,0,81,4.0,False,,2.6886000000558852e-05,0,12,Insufficient vehicle capacity for all orders.
+ar,2,2,0,1011,85,81,oracle,0,0.0,0,81,4.0,False,,2.6886000000558852e-05,0,12,Insufficient vehicle capacity for all orders.
+ar,2,3,1,900,99,115,reactive,0,0.0,0,115,0.0,True,106.66,0.0021047129999942626,15,15,
+ar,2,3,1,900,99,115,point,0,0.0,0,115,0.0,True,106.66,0.0021047129999942626,15,15,
+ar,2,3,1,900,99,115,buffer,0,0.0,0,115,0.0,True,106.66,0.0021047129999942626,15,15,
+ar,2,3,1,900,99,115,pooled,0,0.0,0,115,0.0,True,106.66,0.0021047129999942626,15,15,
+ar,2,3,1,900,99,115,hspec,0,0.0,0,115,0.0,True,106.66,0.0021047129999942626,15,15,
+ar,2,3,1,900,99,115,robust,0,0.0,0,115,0.0,True,106.66,0.0021047129999942626,15,15,
+ar,2,3,1,900,99,115,oracle,0,0.0,0,115,0.0,True,106.66,0.0021047129999942626,15,15,
+ar,2,4,3,974,96,103,reactive,0,0.0,0,103,0.0,True,105.924,0.0021163060000617406,15,15,
+ar,2,4,3,974,96,103,point,0,0.0,0,103,0.0,True,105.924,0.0021163060000617406,15,15,
+ar,2,4,3,974,96,103,buffer,0,0.0,0,103,0.0,True,105.924,0.0021163060000617406,15,15,
+ar,2,4,3,974,96,103,pooled,0,0.0,0,103,0.0,True,105.924,0.0021163060000617406,15,15,
+ar,2,4,3,974,96,103,hspec,0,0.0,0,103,0.0,True,105.924,0.0021163060000617406,15,15,
+ar,2,4,3,974,96,103,robust,0,0.0,0,103,0.0,True,105.924,0.0021163060000617406,15,15,
+ar,2,4,3,974,96,103,oracle,0,0.0,0,103,0.0,True,105.924,0.0021163060000617406,15,15,
+ar,2,5,0,848,93,81,reactive,0,0.0,0,81,12.0,False,,2.3494999936701788e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,2,5,0,848,93,81,point,1,9.0,1,91,2.0,False,,1.5156000017668703e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,2,5,0,848,93,81,buffer,1,14.0,1,101,0.0,True,104.894,0.0022455539999555185,16,16,
+ar,2,5,0,848,93,81,pooled,1,9.0,1,91,2.0,False,,1.5156000017668703e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,2,5,0,848,93,81,hspec,1,9.0,1,91,2.0,False,,1.5156000017668703e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,2,5,0,848,93,81,robust,0,0.0,0,81,12.0,False,,2.3494999936701788e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,2,5,0,848,93,81,oracle,1,9.0,1,91,2.0,False,,1.5156000017668703e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,3,0,0,1047,83,91,reactive,0,0.0,0,91,0.0,True,102.582,0.0024228570000559557,12,12,
+ar,3,0,0,1047,83,91,point,1,9.0,0,91,0.0,True,102.582,0.0024228570000559557,12,12,
+ar,3,0,0,1047,83,91,buffer,1,9.0,0,91,0.0,True,102.582,0.0024228570000559557,12,12,
+ar,3,0,0,1047,83,91,pooled,1,9.0,0,91,0.0,True,102.582,0.0024228570000559557,12,12,
+ar,3,0,0,1047,83,91,hspec,1,9.0,0,91,0.0,True,102.582,0.0024228570000559557,12,12,
+ar,3,0,0,1047,83,91,robust,0,0.0,0,91,0.0,True,102.582,0.0024228570000559557,12,12,
+ar,3,0,0,1047,83,91,oracle,0,0.0,0,91,0.0,True,102.582,0.0024228570000559557,12,12,
+ar,3,1,2,937,161,125,reactive,0,0.0,0,125,36.0,False,,3.086899994286796e-05,0,21,Insufficient vehicle capacity for all orders.
+ar,3,1,2,937,161,125,point,1,14.0,1,145,16.0,False,,1.897899994673935e-05,0,21,Insufficient vehicle capacity for all orders.
+ar,3,1,2,937,161,125,buffer,1,14.0,1,145,16.0,False,,1.897899994673935e-05,0,21,Insufficient vehicle capacity for all orders.
+ar,3,1,2,937,161,125,pooled,1,14.0,1,145,16.0,False,,1.897899994673935e-05,0,21,Insufficient vehicle capacity for all orders.
+ar,3,1,2,937,161,125,hspec,1,14.0,1,145,16.0,False,,1.897899994673935e-05,0,21,Insufficient vehicle capacity for all orders.
+ar,3,1,2,937,161,125,robust,0,0.0,0,125,36.0,False,,3.086899994286796e-05,0,21,Insufficient vehicle capacity for all orders.
+ar,3,1,2,937,161,125,oracle,1,24.0,1,165,0.0,False,,1.0005957130000525,0,21,No feasible optimization solution found.
+ar,3,2,1,997,109,106,reactive,0,0.0,0,106,3.0,False,,3.1442000022252614e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,3,2,1,997,109,106,point,1,14.0,1,126,0.0,True,118.549,0.002559270999995533,15,15,
+ar,3,2,1,997,109,106,buffer,1,14.0,1,126,0.0,True,118.549,0.002559270999995533,15,15,
+ar,3,2,1,997,109,106,pooled,1,14.0,1,126,0.0,True,118.549,0.002559270999995533,15,15,
+ar,3,2,1,997,109,106,hspec,1,14.0,1,126,0.0,True,118.549,0.002559270999995533,15,15,
+ar,3,2,1,997,109,106,robust,0,0.0,0,106,3.0,False,,3.1442000022252614e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,3,2,1,997,109,106,oracle,0,0.0,0,106,3.0,False,,3.1442000022252614e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,3,3,1,845,141,106,reactive,0,0.0,0,106,35.0,False,,2.4935000055847922e-05,0,19,Insufficient vehicle capacity for all orders.
+ar,3,3,1,845,141,106,point,1,24.0,1,146,0.0,True,156.908,0.043068978999940555,19,19,
+ar,3,3,1,845,141,106,buffer,1,24.0,1,146,0.0,True,156.908,0.043068978999940555,19,19,
+ar,3,3,1,845,141,106,pooled,1,24.0,1,146,0.0,True,156.908,0.043068978999940555,19,19,
+ar,3,3,1,845,141,106,hspec,1,24.0,1,146,0.0,True,156.908,0.043068978999940555,19,19,
+ar,3,3,1,845,141,106,robust,0,0.0,0,106,35.0,False,,2.4935000055847922e-05,0,19,Insufficient vehicle capacity for all orders.
+ar,3,3,1,845,141,106,oracle,1,24.0,1,146,0.0,True,156.908,0.043068978999940555,19,19,
+ar,3,4,2,829,156,125,reactive,0,0.0,0,125,31.0,False,,3.229300000384683e-05,0,23,Insufficient vehicle capacity for all orders.
+ar,3,4,2,829,156,125,point,1,14.0,1,145,11.0,False,,2.3911999960546382e-05,0,23,Insufficient vehicle capacity for all orders.
+ar,3,4,2,829,156,125,buffer,2,23.0,2,155,1.0,False,,1.8921999981103e-05,0,23,Insufficient vehicle capacity for all orders.
+ar,3,4,2,829,156,125,pooled,1,24.0,1,165,0.0,True,144.612,0.003350105999970765,23,23,
+ar,3,4,2,829,156,125,hspec,1,24.0,1,165,0.0,True,144.612,0.003350105999970765,23,23,
+ar,3,4,2,829,156,125,robust,0,0.0,0,125,31.0,False,,3.229300000384683e-05,0,23,Insufficient vehicle capacity for all orders.
+ar,3,4,2,829,156,125,oracle,1,24.0,1,165,0.0,True,144.612,0.003350105999970765,23,23,
+ar,3,5,0,965,117,91,reactive,0,0.0,0,91,26.0,False,,2.5409999921066628e-05,0,17,Insufficient vehicle capacity for all orders.
+ar,3,5,0,965,117,91,point,1,14.0,1,111,6.0,False,,2.6905000026999915e-05,0,17,Insufficient vehicle capacity for all orders.
+ar,3,5,0,965,117,91,buffer,2,23.0,2,121,0.0,True,149.452,0.03652209500000936,17,17,
+ar,3,5,0,965,117,91,pooled,1,14.0,1,111,6.0,False,,2.6905000026999915e-05,0,17,Insufficient vehicle capacity for all orders.
+ar,3,5,0,965,117,91,hspec,1,14.0,1,111,6.0,False,,2.6905000026999915e-05,0,17,Insufficient vehicle capacity for all orders.
+ar,3,5,0,965,117,91,robust,0,0.0,0,91,26.0,False,,2.5409999921066628e-05,0,17,Insufficient vehicle capacity for all orders.
+ar,3,5,0,965,117,91,oracle,2,23.0,2,121,0.0,True,149.452,0.03652209500000936,17,17,
+ar,4,0,3,1020,115,94,reactive,0,0.0,0,94,21.0,False,,2.923700003520935e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,4,0,3,1020,115,94,point,1,9.0,1,104,11.0,False,,1.6657999935887347e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,4,0,3,1020,115,94,buffer,1,14.0,1,114,1.0,False,,1.412100004927197e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,4,0,3,1020,115,94,pooled,1,14.0,1,114,1.0,False,,1.412100004927197e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,4,0,3,1020,115,94,hspec,1,14.0,1,114,1.0,False,,1.412100004927197e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,4,0,3,1020,115,94,robust,2,23.0,2,124,0.0,True,131.735,0.00271848099998806,15,15,
+ar,4,0,3,1020,115,94,oracle,1,14.0,1,114,1.0,False,,1.412100004927197e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,4,1,0,820,102,88,reactive,0,0.0,0,88,14.0,False,,3.3560000019861036e-05,0,17,Insufficient vehicle capacity for all orders.
+ar,4,1,0,820,102,88,point,1,14.0,1,108,0.0,True,109.395,0.00230609999994158,17,17,
+ar,4,1,0,820,102,88,buffer,1,14.0,1,108,0.0,True,109.395,0.00230609999994158,17,17,
+ar,4,1,0,820,102,88,pooled,1,14.0,1,108,0.0,True,109.395,0.00230609999994158,17,17,
+ar,4,1,0,820,102,88,hspec,1,14.0,1,108,0.0,True,109.395,0.00230609999994158,17,17,
+ar,4,1,0,820,102,88,robust,2,23.0,1,108,0.0,True,109.395,0.00230609999994158,17,17,
+ar,4,1,0,820,102,88,oracle,1,14.0,1,108,0.0,True,109.395,0.00230609999994158,17,17,
+ar,4,2,0,1046,122,88,reactive,0,0.0,0,88,34.0,False,,2.3022999926070042e-05,0,22,Insufficient vehicle capacity for all orders.
+ar,4,2,0,1046,122,88,point,1,24.0,1,128,0.0,True,109.088,0.0026125030000230254,22,22,
+ar,4,2,0,1046,122,88,buffer,1,24.0,1,128,0.0,True,109.088,0.0026125030000230254,22,22,
+ar,4,2,0,1046,122,88,pooled,1,24.0,1,128,0.0,True,109.088,0.0026125030000230254,22,22,
+ar,4,2,0,1046,122,88,hspec,1,24.0,1,128,0.0,True,109.088,0.0026125030000230254,22,22,
+ar,4,2,0,1046,122,88,robust,2,33.0,1,128,0.0,True,109.088,0.0026125030000230254,22,22,
+ar,4,2,0,1046,122,88,oracle,1,24.0,1,128,0.0,True,109.088,0.0026125030000230254,22,22,
+ar,4,3,1,1031,135,108,reactive,0,0.0,0,108,27.0,False,,2.655800005868514e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,4,3,1,1031,135,108,point,1,24.0,1,148,0.0,True,132.584,0.010215525999910824,18,18,
+ar,4,3,1,1031,135,108,buffer,1,24.0,1,148,0.0,True,132.584,0.010215525999910824,18,18,
+ar,4,3,1,1031,135,108,pooled,1,24.0,1,148,0.0,True,132.584,0.010215525999910824,18,18,
+ar,4,3,1,1031,135,108,hspec,1,24.0,1,148,0.0,True,132.584,0.010215525999910824,18,18,
+ar,4,3,1,1031,135,108,robust,2,33.0,1,148,0.0,True,132.584,0.010215525999910824,18,18,
+ar,4,3,1,1031,135,108,oracle,2,23.0,2,138,0.0,True,162.402,0.008687354000016967,18,18,
+ar,4,4,0,907,93,88,reactive,0,0.0,0,88,5.0,False,,2.4488999997629435e-05,0,14,Insufficient vehicle capacity for all orders.
+ar,4,4,0,907,93,88,point,0,0.0,0,88,5.0,False,,2.4488999997629435e-05,0,14,Insufficient vehicle capacity for all orders.
+ar,4,4,0,907,93,88,buffer,1,9.0,1,98,0.0,True,102.802,0.0023311550000926218,14,14,
+ar,4,4,0,907,93,88,pooled,0,0.0,0,88,5.0,False,,2.4488999997629435e-05,0,14,Insufficient vehicle capacity for all orders.
+ar,4,4,0,907,93,88,hspec,0,0.0,0,88,5.0,False,,2.4488999997629435e-05,0,14,Insufficient vehicle capacity for all orders.
+ar,4,4,0,907,93,88,robust,1,14.0,1,108,0.0,True,101.114,0.00191862700000911,14,14,
+ar,4,4,0,907,93,88,oracle,1,9.0,1,98,0.0,True,102.802,0.0023311550000926218,14,14,
+ar,4,5,1,1054,124,108,reactive,0,0.0,0,108,16.0,False,,2.2132000026431342e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,4,5,1,1054,124,108,point,1,9.0,1,118,6.0,False,,1.8835999981092755e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,4,5,1,1054,124,108,buffer,1,9.0,1,118,6.0,False,,1.8835999981092755e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,4,5,1,1054,124,108,pooled,1,14.0,1,128,0.0,True,124.948,0.0023468159999993077,18,18,
+ar,4,5,1,1054,124,108,hspec,1,9.0,1,118,6.0,False,,1.8835999981092755e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,4,5,1,1054,124,108,robust,2,23.0,1,128,0.0,True,124.948,0.0023468159999993077,18,18,
+ar,4,5,1,1054,124,108,oracle,1,14.0,1,128,0.0,True,124.948,0.0023468159999993077,18,18,
+ar,5,0,3,908,97,95,reactive,0,0.0,0,95,2.0,False,,3.3471000051576993e-05,0,14,Insufficient vehicle capacity for all orders.
+ar,5,0,3,908,97,95,point,1,9.0,1,105,0.0,True,117.192,0.002877315000091585,14,14,
+ar,5,0,3,908,97,95,buffer,1,14.0,1,115,0.0,True,108.54,0.002614128000004712,14,14,
+ar,5,0,3,908,97,95,pooled,1,9.0,1,105,0.0,True,117.192,0.002877315000091585,14,14,
+ar,5,0,3,908,97,95,hspec,1,9.0,1,105,0.0,True,117.192,0.002877315000091585,14,14,
+ar,5,0,3,908,97,95,robust,2,23.0,1,105,0.0,True,117.192,0.002877315000091585,14,14,
+ar,5,0,3,908,97,95,oracle,0,0.0,0,95,2.0,False,,3.3471000051576993e-05,0,14,Insufficient vehicle capacity for all orders.
+ar,5,1,1,934,97,105,reactive,0,0.0,0,105,0.0,True,112.995,0.0023872609999671113,14,14,
+ar,5,1,1,934,97,105,point,1,9.0,0,105,0.0,True,112.995,0.0023872609999671113,14,14,
+ar,5,1,1,934,97,105,buffer,1,14.0,0,105,0.0,True,112.995,0.0023872609999671113,14,14,
+ar,5,1,1,934,97,105,pooled,1,14.0,0,105,0.0,True,112.995,0.0023872609999671113,14,14,
+ar,5,1,1,934,97,105,hspec,1,14.0,0,105,0.0,True,112.995,0.0023872609999671113,14,14,
+ar,5,1,1,934,97,105,robust,2,23.0,0,105,0.0,True,112.995,0.0023872609999671113,14,14,
+ar,5,1,1,934,97,105,oracle,0,0.0,0,105,0.0,True,112.995,0.0023872609999671113,14,14,
+ar,5,2,1,1001,96,105,reactive,0,0.0,0,105,0.0,True,114.409,0.002157775999990008,13,13,
+ar,5,2,1,1001,96,105,point,0,0.0,0,105,0.0,True,114.409,0.002157775999990008,13,13,
+ar,5,2,1,1001,96,105,buffer,0,0.0,0,105,0.0,True,114.409,0.002157775999990008,13,13,
+ar,5,2,1,1001,96,105,pooled,0,0.0,0,105,0.0,True,114.409,0.002157775999990008,13,13,
+ar,5,2,1,1001,96,105,hspec,0,0.0,0,105,0.0,True,114.409,0.002157775999990008,13,13,
+ar,5,2,1,1001,96,105,robust,1,9.0,0,105,0.0,True,114.409,0.002157775999990008,13,13,
+ar,5,2,1,1001,96,105,oracle,0,0.0,0,105,0.0,True,114.409,0.002157775999990008,13,13,
+ar,5,3,3,1051,117,95,reactive,0,0.0,0,95,22.0,False,,2.7005999982065987e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,5,3,3,1051,117,95,point,2,23.0,2,125,0.0,True,110.281,0.0027436269999725482,18,18,
+ar,5,3,3,1051,117,95,buffer,2,23.0,2,125,0.0,True,110.281,0.0027436269999725482,18,18,
+ar,5,3,3,1051,117,95,pooled,1,14.0,1,115,2.0,False,,2.5973999981943052e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,5,3,3,1051,117,95,hspec,1,14.0,1,115,2.0,False,,2.5973999981943052e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,5,3,3,1051,117,95,robust,1,24.0,1,135,0.0,True,102.748,0.0025345980000111012,18,18,
+ar,5,3,3,1051,117,95,oracle,1,14.0,1,115,2.0,False,,2.5973999981943052e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,5,4,2,810,133,131,reactive,0,0.0,0,131,2.0,False,,2.6801999979397806e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,5,4,2,810,133,131,point,0,0.0,0,131,2.0,False,,2.6801999979397806e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,5,4,2,810,133,131,buffer,0,0.0,0,131,2.0,False,,2.6801999979397806e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,5,4,2,810,133,131,pooled,0,0.0,0,131,2.0,False,,2.6801999979397806e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,5,4,2,810,133,131,hspec,0,0.0,0,131,2.0,False,,2.6801999979397806e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,5,4,2,810,133,131,robust,1,14.0,1,151,0.0,True,136.725,0.0025454329999092806,16,16,
+ar,5,4,2,810,133,131,oracle,0,0.0,0,131,2.0,False,,2.6801999979397806e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,5,5,2,908,88,131,reactive,0,0.0,0,131,0.0,True,95.176,0.0020499999999401552,13,13,
+ar,5,5,2,908,88,131,point,0,0.0,0,131,0.0,True,95.176,0.0020499999999401552,13,13,
+ar,5,5,2,908,88,131,buffer,0,0.0,0,131,0.0,True,95.176,0.0020499999999401552,13,13,
+ar,5,5,2,908,88,131,pooled,0,0.0,0,131,0.0,True,95.176,0.0020499999999401552,13,13,
+ar,5,5,2,908,88,131,hspec,0,0.0,0,131,0.0,True,95.176,0.0020499999999401552,13,13,
+ar,5,5,2,908,88,131,robust,1,14.0,0,131,0.0,True,95.176,0.0020499999999401552,13,13,
+ar,5,5,2,908,88,131,oracle,0,0.0,0,131,0.0,True,95.176,0.0020499999999401552,13,13,
+ar,6,0,3,809,109,98,reactive,0,0.0,0,98,11.0,False,,3.133400002752751e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,6,0,3,809,109,98,point,1,9.0,1,108,1.0,False,,1.6672000015205413e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,6,0,3,809,109,98,buffer,1,9.0,1,108,1.0,False,,1.6672000015205413e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,6,0,3,809,109,98,pooled,1,14.0,1,118,0.0,True,114.205,0.0029078310000159036,15,15,
+ar,6,0,3,809,109,98,hspec,1,14.0,1,118,0.0,True,114.205,0.0029078310000159036,15,15,
+ar,6,0,3,809,109,98,robust,0,0.0,0,98,11.0,False,,3.133400002752751e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,6,0,3,809,109,98,oracle,1,9.0,1,108,1.0,False,,1.6672000015205413e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,6,1,2,813,107,126,reactive,0,0.0,0,126,0.0,True,111.722,0.003066930999921169,17,17,
+ar,6,1,2,813,107,126,point,0,0.0,0,126,0.0,True,111.722,0.003066930999921169,17,17,
+ar,6,1,2,813,107,126,buffer,0,0.0,0,126,0.0,True,111.722,0.003066930999921169,17,17,
+ar,6,1,2,813,107,126,pooled,0,0.0,0,126,0.0,True,111.722,0.003066930999921169,17,17,
+ar,6,1,2,813,107,126,hspec,0,0.0,0,126,0.0,True,111.722,0.003066930999921169,17,17,
+ar,6,1,2,813,107,126,robust,0,0.0,0,126,0.0,True,111.722,0.003066930999921169,17,17,
+ar,6,1,2,813,107,126,oracle,0,0.0,0,126,0.0,True,111.722,0.003066930999921169,17,17,
+ar,6,2,1,902,148,107,reactive,0,0.0,0,107,41.0,False,,2.8259000032448967e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,6,2,1,902,148,107,point,1,24.0,1,147,1.0,False,,1.6372999994018755e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,6,2,1,902,148,107,buffer,1,24.0,1,147,1.0,False,,1.6372999994018755e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,6,2,1,902,148,107,pooled,1,24.0,1,147,1.0,False,,1.6372999994018755e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,6,2,1,902,148,107,hspec,1,24.0,1,147,1.0,False,,1.6372999994018755e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,6,2,1,902,148,107,robust,0,0.0,0,107,41.0,False,,2.8259000032448967e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,6,2,1,902,148,107,oracle,1,24.0,1,147,1.0,False,,1.6372999994018755e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,6,3,0,1009,101,83,reactive,0,0.0,0,83,18.0,False,,1.56849999939368e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,6,3,0,1009,101,83,point,1,9.0,1,93,8.0,False,,1.3656999954037019e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,6,3,0,1009,101,83,buffer,1,9.0,1,93,8.0,False,,1.3656999954037019e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,6,3,0,1009,101,83,pooled,1,9.0,1,93,8.0,False,,1.3656999954037019e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,6,3,0,1009,101,83,hspec,1,9.0,1,93,8.0,False,,1.3656999954037019e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,6,3,0,1009,101,83,robust,0,0.0,0,83,18.0,False,,1.56849999939368e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,6,3,0,1009,101,83,oracle,1,14.0,1,103,0.0,True,120.551,0.24067764599999464,15,15,
+ar,6,4,1,893,132,107,reactive,0,0.0,0,107,25.0,False,,2.855200000340119e-05,0,19,Insufficient vehicle capacity for all orders.
+ar,6,4,1,893,132,107,point,2,23.0,2,137,0.0,True,160.682,0.12792884199996024,19,19,
+ar,6,4,1,893,132,107,buffer,2,23.0,2,137,0.0,True,160.682,0.12792884199996024,19,19,
+ar,6,4,1,893,132,107,pooled,1,24.0,1,147,0.0,True,127.98,0.0032881769999448807,19,19,
+ar,6,4,1,893,132,107,hspec,1,24.0,1,147,0.0,True,127.98,0.0032881769999448807,19,19,
+ar,6,4,1,893,132,107,robust,0,0.0,0,107,25.0,False,,2.855200000340119e-05,0,19,Insufficient vehicle capacity for all orders.
+ar,6,4,1,893,132,107,oracle,2,23.0,2,137,0.0,True,160.682,0.12792884199996024,19,19,
+ar,6,5,1,931,122,107,reactive,0,0.0,0,107,15.0,False,,2.749299994775356e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,6,5,1,931,122,107,point,1,9.0,1,117,5.0,False,,1.5781000001879875e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,6,5,1,931,122,107,buffer,1,14.0,1,127,0.0,True,75.918,0.006810209999912331,15,15,
+ar,6,5,1,931,122,107,pooled,1,14.0,1,127,0.0,True,75.918,0.006810209999912331,15,15,
+ar,6,5,1,931,122,107,hspec,1,14.0,1,127,0.0,True,75.918,0.006810209999912331,15,15,
+ar,6,5,1,931,122,107,robust,0,0.0,0,107,15.0,False,,2.749299994775356e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,6,5,1,931,122,107,oracle,1,14.0,1,127,0.0,True,75.918,0.006810209999912331,15,15,
+ar,7,0,3,962,85,99,reactive,0,0.0,0,99,0.0,True,117.257,0.0025259310000365076,14,14,
+ar,7,0,3,962,85,99,point,0,0.0,0,99,0.0,True,117.257,0.0025259310000365076,14,14,
+ar,7,0,3,962,85,99,buffer,1,9.0,0,99,0.0,True,117.257,0.0025259310000365076,14,14,
+ar,7,0,3,962,85,99,pooled,0,0.0,0,99,0.0,True,117.257,0.0025259310000365076,14,14,
+ar,7,0,3,962,85,99,hspec,0,0.0,0,99,0.0,True,117.257,0.0025259310000365076,14,14,
+ar,7,0,3,962,85,99,robust,1,14.0,0,99,0.0,True,117.257,0.0025259310000365076,14,14,
+ar,7,0,3,962,85,99,oracle,0,0.0,0,99,0.0,True,117.257,0.0025259310000365076,14,14,
+ar,7,1,3,956,94,99,reactive,0,0.0,0,99,0.0,True,138.167,0.0023431020000543867,15,15,
+ar,7,1,3,956,94,99,point,0,0.0,0,99,0.0,True,138.167,0.0023431020000543867,15,15,
+ar,7,1,3,956,94,99,buffer,0,0.0,0,99,0.0,True,138.167,0.0023431020000543867,15,15,
+ar,7,1,3,956,94,99,pooled,0,0.0,0,99,0.0,True,138.167,0.0023431020000543867,15,15,
+ar,7,1,3,956,94,99,hspec,0,0.0,0,99,0.0,True,138.167,0.0023431020000543867,15,15,
+ar,7,1,3,956,94,99,robust,1,9.0,0,99,0.0,True,138.167,0.0023431020000543867,15,15,
+ar,7,1,3,956,94,99,oracle,0,0.0,0,99,0.0,True,138.167,0.0023431020000543867,15,15,
+ar,7,2,2,948,158,127,reactive,0,0.0,0,127,31.0,False,,4.368999998405343e-05,0,21,Insufficient vehicle capacity for all orders.
+ar,7,2,2,948,158,127,point,1,24.0,1,167,0.0,True,156.111,0.0030933870000353636,21,21,
+ar,7,2,2,948,158,127,buffer,1,24.0,1,167,0.0,True,156.111,0.0030933870000353636,21,21,
+ar,7,2,2,948,158,127,pooled,1,24.0,1,167,0.0,True,156.111,0.0030933870000353636,21,21,
+ar,7,2,2,948,158,127,hspec,1,24.0,1,167,0.0,True,156.111,0.0030933870000353636,21,21,
+ar,7,2,2,948,158,127,robust,2,38.0,1,167,0.0,True,156.111,0.0030933870000353636,21,21,
+ar,7,2,2,948,158,127,oracle,1,24.0,1,167,0.0,True,156.111,0.0030933870000353636,21,21,
+ar,7,3,0,811,82,89,reactive,0,0.0,0,89,0.0,True,88.792,0.0017860950000567755,11,11,
+ar,7,3,0,811,82,89,point,0,0.0,0,89,0.0,True,88.792,0.0017860950000567755,11,11,
+ar,7,3,0,811,82,89,buffer,0,0.0,0,89,0.0,True,88.792,0.0017860950000567755,11,11,
+ar,7,3,0,811,82,89,pooled,0,0.0,0,89,0.0,True,88.792,0.0017860950000567755,11,11,
+ar,7,3,0,811,82,89,hspec,0,0.0,0,89,0.0,True,88.792,0.0017860950000567755,11,11,
+ar,7,3,0,811,82,89,robust,1,9.0,0,89,0.0,True,88.792,0.0017860950000567755,11,11,
+ar,7,3,0,811,82,89,oracle,0,0.0,0,89,0.0,True,88.792,0.0017860950000567755,11,11,
+ar,7,4,1,825,125,109,reactive,0,0.0,0,109,16.0,False,,2.4989999928948237e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,7,4,1,825,125,109,point,0,0.0,0,109,16.0,False,,2.4989999928948237e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,7,4,1,825,125,109,buffer,1,9.0,1,119,6.0,False,,1.6718999972908932e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,7,4,1,825,125,109,pooled,1,9.0,1,119,6.0,False,,1.6718999972908932e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,7,4,1,825,125,109,hspec,1,9.0,1,119,6.0,False,,1.6718999972908932e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,7,4,1,825,125,109,robust,1,14.0,1,129,0.0,True,143.037,0.21606360599992058,18,18,
+ar,7,4,1,825,125,109,oracle,1,14.0,1,129,0.0,True,143.037,0.21606360599992058,18,18,
+ar,7,5,0,981,116,89,reactive,0,0.0,0,89,27.0,False,,2.572799996869435e-05,0,17,Insufficient vehicle capacity for all orders.
+ar,7,5,0,981,116,89,point,1,14.0,1,109,7.0,False,,1.5271999927790603e-05,0,17,Insufficient vehicle capacity for all orders.
+ar,7,5,0,981,116,89,buffer,1,14.0,1,109,7.0,False,,1.5271999927790603e-05,0,17,Insufficient vehicle capacity for all orders.
+ar,7,5,0,981,116,89,pooled,1,14.0,1,109,7.0,False,,1.5271999927790603e-05,0,17,Insufficient vehicle capacity for all orders.
+ar,7,5,0,981,116,89,hspec,1,14.0,1,109,7.0,False,,1.5271999927790603e-05,0,17,Insufficient vehicle capacity for all orders.
+ar,7,5,0,981,116,89,robust,2,23.0,2,119,0.0,True,144.632,0.01216937600008805,17,17,
+ar,7,5,0,981,116,89,oracle,2,23.0,2,119,0.0,True,144.632,0.01216937600008805,17,17,
+ar,8,0,0,1038,103,91,reactive,0,0.0,0,91,12.0,False,,2.923500005636015e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,8,0,0,1038,103,91,point,0,0.0,0,91,12.0,False,,2.923500005636015e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,8,0,0,1038,103,91,buffer,1,9.0,1,101,2.0,False,,1.759999997830164e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,8,0,0,1038,103,91,pooled,1,9.0,1,101,2.0,False,,1.759999997830164e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,8,0,0,1038,103,91,hspec,1,9.0,1,101,2.0,False,,1.759999997830164e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,8,0,0,1038,103,91,robust,0,0.0,0,91,12.0,False,,2.923500005636015e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,8,0,0,1038,103,91,oracle,1,9.0,1,101,2.0,False,,1.759999997830164e-05,0,16,Insufficient vehicle capacity for all orders.
+ar,8,1,1,1050,118,105,reactive,0,0.0,0,105,13.0,False,,1.7902999957186694e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,8,1,1,1050,118,105,point,1,9.0,1,115,3.0,False,,1.591000000189524e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,8,1,1,1050,118,105,buffer,1,9.0,1,115,3.0,False,,1.591000000189524e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,8,1,1,1050,118,105,pooled,1,9.0,1,115,3.0,False,,1.591000000189524e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,8,1,1,1050,118,105,hspec,1,9.0,1,115,3.0,False,,1.591000000189524e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,8,1,1,1050,118,105,robust,0,0.0,0,105,13.0,False,,1.7902999957186694e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,8,1,1,1050,118,105,oracle,1,14.0,1,125,0.0,True,105.116,0.002877692000083698,18,18,
+ar,8,2,0,912,106,91,reactive,0,0.0,0,91,15.0,False,,2.925900002992421e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,8,2,0,912,106,91,point,1,14.0,1,111,0.0,True,119.027,0.002391124999917338,15,15,
+ar,8,2,0,912,106,91,buffer,1,14.0,1,111,0.0,True,119.027,0.002391124999917338,15,15,
+ar,8,2,0,912,106,91,pooled,1,14.0,1,111,0.0,True,119.027,0.002391124999917338,15,15,
+ar,8,2,0,912,106,91,hspec,1,14.0,1,111,0.0,True,119.027,0.002391124999917338,15,15,
+ar,8,2,0,912,106,91,robust,0,0.0,0,91,15.0,False,,2.925900002992421e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,8,2,0,912,106,91,oracle,1,14.0,1,111,0.0,True,119.027,0.002391124999917338,15,15,
+ar,8,3,2,863,161,135,reactive,0,0.0,0,135,26.0,False,,2.6813999966179836e-05,0,24,Insufficient vehicle capacity for all orders.
+ar,8,3,2,863,161,135,point,1,9.0,1,145,16.0,False,,1.875999998901534e-05,0,24,Insufficient vehicle capacity for all orders.
+ar,8,3,2,863,161,135,buffer,1,9.0,1,145,16.0,False,,1.875999998901534e-05,0,24,Insufficient vehicle capacity for all orders.
+ar,8,3,2,863,161,135,pooled,1,14.0,1,155,6.0,False,,1.7241000023204833e-05,0,24,Insufficient vehicle capacity for all orders.
+ar,8,3,2,863,161,135,hspec,1,14.0,1,155,6.0,False,,1.7241000023204833e-05,0,24,Insufficient vehicle capacity for all orders.
+ar,8,3,2,863,161,135,robust,0,0.0,0,135,26.0,False,,2.6813999966179836e-05,0,24,Insufficient vehicle capacity for all orders.
+ar,8,3,2,863,161,135,oracle,2,23.0,2,165,0.0,True,192.014,0.003697923999993691,24,24,
+ar,8,4,1,807,142,105,reactive,0,0.0,0,105,37.0,False,,2.5171999936901557e-05,0,20,Insufficient vehicle capacity for all orders.
+ar,8,4,1,807,142,105,point,1,24.0,1,145,0.0,True,130.948,0.5275393990000339,20,20,
+ar,8,4,1,807,142,105,buffer,1,24.0,1,145,0.0,True,130.948,0.5275393990000339,20,20,
+ar,8,4,1,807,142,105,pooled,1,24.0,1,145,0.0,True,130.948,0.5275393990000339,20,20,
+ar,8,4,1,807,142,105,hspec,1,24.0,1,145,0.0,True,130.948,0.5275393990000339,20,20,
+ar,8,4,1,807,142,105,robust,0,0.0,0,105,37.0,False,,2.5171999936901557e-05,0,20,Insufficient vehicle capacity for all orders.
+ar,8,4,1,807,142,105,oracle,1,24.0,1,145,0.0,True,130.948,0.5275393990000339,20,20,
+ar,8,5,0,1042,98,91,reactive,0,0.0,0,91,7.0,False,,2.6029999958154804e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,8,5,0,1042,98,91,point,0,0.0,0,91,7.0,False,,2.6029999958154804e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,8,5,0,1042,98,91,buffer,1,9.0,1,101,0.0,True,131.114,0.4418842120001045,15,15,
+ar,8,5,0,1042,98,91,pooled,1,9.0,1,101,0.0,True,131.114,0.4418842120001045,15,15,
+ar,8,5,0,1042,98,91,hspec,1,9.0,1,101,0.0,True,131.114,0.4418842120001045,15,15,
+ar,8,5,0,1042,98,91,robust,0,0.0,0,91,7.0,False,,2.6029999958154804e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,8,5,0,1042,98,91,oracle,1,9.0,1,101,0.0,True,131.114,0.4418842120001045,15,15,
+ar,9,0,3,998,86,104,reactive,0,0.0,0,104,0.0,True,97.689,0.002338872999985142,11,11,
+ar,9,0,3,998,86,104,point,0,0.0,0,104,0.0,True,97.689,0.002338872999985142,11,11,
+ar,9,0,3,998,86,104,buffer,0,0.0,0,104,0.0,True,97.689,0.002338872999985142,11,11,
+ar,9,0,3,998,86,104,pooled,0,0.0,0,104,0.0,True,97.689,0.002338872999985142,11,11,
+ar,9,0,3,998,86,104,hspec,0,0.0,0,104,0.0,True,97.689,0.002338872999985142,11,11,
+ar,9,0,3,998,86,104,robust,1,9.0,0,104,0.0,True,97.689,0.002338872999985142,11,11,
+ar,9,0,3,998,86,104,oracle,0,0.0,0,104,0.0,True,97.689,0.002338872999985142,11,11,
+ar,9,1,0,843,92,90,reactive,0,0.0,0,90,2.0,False,,6.0137999980725e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,9,1,0,843,92,90,point,0,0.0,0,90,2.0,False,,6.0137999980725e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,9,1,0,843,92,90,buffer,1,9.0,1,100,0.0,True,105.495,0.002421973999958027,15,15,
+ar,9,1,0,843,92,90,pooled,0,0.0,0,90,2.0,False,,6.0137999980725e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,9,1,0,843,92,90,hspec,0,0.0,0,90,2.0,False,,6.0137999980725e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,9,1,0,843,92,90,robust,1,14.0,1,110,0.0,True,103.398,0.0021619860000328117,15,15,
+ar,9,1,0,843,92,90,oracle,0,0.0,0,90,2.0,False,,6.0137999980725e-05,0,15,Insufficient vehicle capacity for all orders.
+ar,9,2,2,945,134,124,reactive,0,0.0,0,124,10.0,False,,2.65810000428246e-05,0,18,Insufficient vehicle capacity for all orders.
+ar,9,2,2,945,134,124,point,1,14.0,1,144,0.0,True,110.497,0.01485267999998996,18,18,
+ar,9,2,2,945,134,124,buffer,2,23.0,1,134,0.0,False,,1.0007069780000393,0,18,No feasible optimization solution found.
+ar,9,2,2,945,134,124,pooled,1,14.0,1,144,0.0,True,110.497,0.01485267999998996,18,18,
+ar,9,2,2,945,134,124,hspec,1,14.0,1,144,0.0,True,110.497,0.01485267999998996,18,18,
+ar,9,2,2,945,134,124,robust,2,33.0,1,134,0.0,False,,1.0007069780000393,0,18,No feasible optimization solution found.
+ar,9,2,2,945,134,124,oracle,1,9.0,1,134,0.0,False,,1.0007069780000393,0,18,No feasible optimization solution found.
+ar,9,3,3,997,96,104,reactive,0,0.0,0,104,0.0,True,115.342,0.0024173589999918477,15,15,
+ar,9,3,3,997,96,104,point,1,9.0,0,104,0.0,True,115.342,0.0024173589999918477,15,15,
+ar,9,3,3,997,96,104,buffer,1,9.0,0,104,0.0,True,115.342,0.0024173589999918477,15,15,
+ar,9,3,3,997,96,104,pooled,1,9.0,0,104,0.0,True,115.342,0.0024173589999918477,15,15,
+ar,9,3,3,997,96,104,hspec,1,9.0,0,104,0.0,True,115.342,0.0024173589999918477,15,15,
+ar,9,3,3,997,96,104,robust,1,14.0,0,104,0.0,True,115.342,0.0024173589999918477,15,15,
+ar,9,3,3,997,96,104,oracle,0,0.0,0,104,0.0,True,115.342,0.0024173589999918477,15,15,
+ar,9,4,1,875,128,108,reactive,0,0.0,0,108,20.0,False,,2.649999998993735e-05,0,20,Insufficient vehicle capacity for all orders.
+ar,9,4,1,875,128,108,point,1,9.0,1,118,10.0,False,,1.7926999930750753e-05,0,20,Insufficient vehicle capacity for all orders.
+ar,9,4,1,875,128,108,buffer,1,14.0,1,128,0.0,False,,1.0014832580000075,0,20,No feasible optimization solution found.
+ar,9,4,1,875,128,108,pooled,1,14.0,1,128,0.0,False,,1.0014832580000075,0,20,No feasible optimization solution found.
+ar,9,4,1,875,128,108,hspec,1,14.0,1,128,0.0,False,,1.0014832580000075,0,20,No feasible optimization solution found.
+ar,9,4,1,875,128,108,robust,2,23.0,1,128,0.0,False,,1.0014832580000075,0,20,No feasible optimization solution found.
+ar,9,4,1,875,128,108,oracle,1,14.0,1,128,0.0,False,,1.0014832580000075,0,20,No feasible optimization solution found.
+ar,9,5,2,872,154,124,reactive,0,0.0,0,124,30.0,False,,3.4074999916811066e-05,0,22,Insufficient vehicle capacity for all orders.
+ar,9,5,2,872,154,124,point,2,23.0,2,154,0.0,False,,1.0009377399999266,0,22,No feasible optimization solution found.
+ar,9,5,2,872,154,124,buffer,2,23.0,2,154,0.0,False,,1.0009377399999266,0,22,No feasible optimization solution found.
+ar,9,5,2,872,154,124,pooled,1,24.0,1,164,0.0,True,163.458,0.003217512999981409,22,22,
+ar,9,5,2,872,154,124,hspec,1,24.0,1,164,0.0,True,163.458,0.003217512999981409,22,22,
+ar,9,5,2,872,154,124,robust,2,33.0,1,164,0.0,True,163.458,0.003217512999981409,22,22,
+ar,9,5,2,872,154,124,oracle,2,23.0,2,154,0.0,False,,1.0009377399999266,0,22,No feasible optimization solution found.
+surge,0,0,3,801,115,98,reactive,0,0.0,0,98,17.0,False,,3.2237000027635077e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,0,0,3,801,115,98,point,2,23.0,1,118,0.0,False,,1.000805645000014,0,16,No feasible optimization solution found.
+surge,0,0,3,801,115,98,buffer,2,23.0,1,118,0.0,False,,1.000805645000014,0,16,No feasible optimization solution found.
+surge,0,0,3,801,115,98,pooled,1,24.0,1,138,0.0,True,126.276,0.0025880009999355025,16,16,
+surge,0,0,3,801,115,98,hspec,1,24.0,1,138,0.0,True,126.276,0.0025880009999355025,16,16,
+surge,0,0,3,801,115,98,robust,0,0.0,0,98,17.0,False,,3.2237000027635077e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,0,0,3,801,115,98,oracle,1,14.0,1,118,0.0,False,,1.000805645000014,0,16,No feasible optimization solution found.
+surge,0,1,3,845,113,98,reactive,0,0.0,0,98,15.0,False,,2.6373999958195782e-05,0,15,Insufficient vehicle capacity for all orders.
+surge,0,1,3,845,113,98,point,1,14.0,1,118,0.0,True,144.086,0.009977248000041072,15,15,
+surge,0,1,3,845,113,98,buffer,2,23.0,1,118,0.0,True,144.086,0.009977248000041072,15,15,
+surge,0,1,3,845,113,98,pooled,1,14.0,1,118,0.0,True,144.086,0.009977248000041072,15,15,
+surge,0,1,3,845,113,98,hspec,1,14.0,1,118,0.0,True,144.086,0.009977248000041072,15,15,
+surge,0,1,3,845,113,98,robust,0,0.0,0,98,15.0,False,,2.6373999958195782e-05,0,15,Insufficient vehicle capacity for all orders.
+surge,0,1,3,845,113,98,oracle,1,14.0,1,118,0.0,True,144.086,0.009977248000041072,15,15,
+surge,0,2,2,825,159,131,reactive,0,0.0,0,131,28.0,False,,3.457399998296751e-05,0,23,Insufficient vehicle capacity for all orders.
+surge,0,2,2,825,159,131,point,1,14.0,1,151,8.0,False,,5.505199999333854e-05,0,23,Insufficient vehicle capacity for all orders.
+surge,0,2,2,825,159,131,buffer,2,23.0,2,161,0.0,False,,1.0009357200000295,0,23,No feasible optimization solution found.
+surge,0,2,2,825,159,131,pooled,1,14.0,1,151,8.0,False,,5.505199999333854e-05,0,23,Insufficient vehicle capacity for all orders.
+surge,0,2,2,825,159,131,hspec,1,14.0,1,151,8.0,False,,5.505199999333854e-05,0,23,Insufficient vehicle capacity for all orders.
+surge,0,2,2,825,159,131,robust,0,0.0,0,131,28.0,False,,3.457399998296751e-05,0,23,Insufficient vehicle capacity for all orders.
+surge,0,2,2,825,159,131,oracle,2,23.0,2,161,0.0,False,,1.0009357200000295,0,23,No feasible optimization solution found.
+surge,0,3,3,931,96,98,reactive,0,0.0,0,98,0.0,True,102.275,0.04113731999996162,14,14,
+surge,0,3,3,931,96,98,point,1,9.0,0,98,0.0,True,102.275,0.04113731999996162,14,14,
+surge,0,3,3,931,96,98,buffer,1,9.0,0,98,0.0,True,102.275,0.04113731999996162,14,14,
+surge,0,3,3,931,96,98,pooled,0,0.0,0,98,0.0,True,102.275,0.04113731999996162,14,14,
+surge,0,3,3,931,96,98,hspec,0,0.0,0,98,0.0,True,102.275,0.04113731999996162,14,14,
+surge,0,3,3,931,96,98,robust,0,0.0,0,98,0.0,True,102.275,0.04113731999996162,14,14,
+surge,0,3,3,931,96,98,oracle,0,0.0,0,98,0.0,True,102.275,0.04113731999996162,14,14,
+surge,0,4,2,889,161,131,reactive,0,0.0,0,131,30.0,False,,4.985299995041714e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,0,4,2,889,161,131,point,1,24.0,1,171,0.0,False,,1.0015309990000105,0,20,No feasible optimization solution found.
+surge,0,4,2,889,161,131,buffer,1,24.0,1,171,0.0,False,,1.0015309990000105,0,20,No feasible optimization solution found.
+surge,0,4,2,889,161,131,pooled,1,24.0,1,171,0.0,False,,1.0015309990000105,0,20,No feasible optimization solution found.
+surge,0,4,2,889,161,131,hspec,1,24.0,1,171,0.0,False,,1.0015309990000105,0,20,No feasible optimization solution found.
+surge,0,4,2,889,161,131,robust,0,0.0,0,131,30.0,False,,4.985299995041714e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,0,4,2,889,161,131,oracle,2,23.0,2,161,0.0,False,,1.000531451000029,0,20,No feasible optimization solution found.
+surge,0,5,1,1012,121,110,reactive,0,0.0,0,110,11.0,False,,2.782499996101251e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,0,5,1,1012,121,110,point,1,14.0,1,130,0.0,True,153.515,0.007087307000006149,16,16,
+surge,0,5,1,1012,121,110,buffer,2,23.0,1,130,0.0,True,153.515,0.007087307000006149,16,16,
+surge,0,5,1,1012,121,110,pooled,1,14.0,1,130,0.0,True,153.515,0.007087307000006149,16,16,
+surge,0,5,1,1012,121,110,hspec,1,14.0,1,130,0.0,True,153.515,0.007087307000006149,16,16,
+surge,0,5,1,1012,121,110,robust,0,0.0,0,110,11.0,False,,2.782499996101251e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,0,5,1,1012,121,110,oracle,1,9.0,1,120,1.0,False,,2.6668000032259442e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,1,0,0,1039,100,89,reactive,0,0.0,0,89,11.0,False,,3.254900002502836e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,1,0,0,1039,100,89,point,1,9.0,1,99,1.0,False,,1.6142000049512717e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,1,0,0,1039,100,89,buffer,1,14.0,1,109,0.0,True,129.593,0.003657226999962404,18,18,
+surge,1,0,0,1039,100,89,pooled,1,9.0,1,99,1.0,False,,1.6142000049512717e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,1,0,0,1039,100,89,hspec,1,9.0,1,99,1.0,False,,1.6142000049512717e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,1,0,0,1039,100,89,robust,0,0.0,0,89,11.0,False,,3.254900002502836e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,1,0,0,1039,100,89,oracle,1,9.0,1,99,1.0,False,,1.6142000049512717e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,1,1,2,919,123,134,reactive,0,0.0,0,134,0.0,True,137.558,0.0027045890000181316,18,18,
+surge,1,1,2,919,123,134,point,0,0.0,0,134,0.0,True,137.558,0.0027045890000181316,18,18,
+surge,1,1,2,919,123,134,buffer,0,0.0,0,134,0.0,True,137.558,0.0027045890000181316,18,18,
+surge,1,1,2,919,123,134,pooled,0,0.0,0,134,0.0,True,137.558,0.0027045890000181316,18,18,
+surge,1,1,2,919,123,134,hspec,0,0.0,0,134,0.0,True,137.558,0.0027045890000181316,18,18,
+surge,1,1,2,919,123,134,robust,0,0.0,0,134,0.0,True,137.558,0.0027045890000181316,18,18,
+surge,1,1,2,919,123,134,oracle,0,0.0,0,134,0.0,True,137.558,0.0027045890000181316,18,18,
+surge,1,2,2,1020,151,134,reactive,0,0.0,0,134,17.0,False,,3.149199994822993e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,1,2,2,1020,151,134,point,1,14.0,1,154,0.0,True,161.604,0.07220710199999303,21,21,
+surge,1,2,2,1020,151,134,buffer,1,14.0,1,154,0.0,True,161.604,0.07220710199999303,21,21,
+surge,1,2,2,1020,151,134,pooled,1,14.0,1,154,0.0,True,161.604,0.07220710199999303,21,21,
+surge,1,2,2,1020,151,134,hspec,1,14.0,1,154,0.0,True,161.604,0.07220710199999303,21,21,
+surge,1,2,2,1020,151,134,robust,0,0.0,0,134,17.0,False,,3.149199994822993e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,1,2,2,1020,151,134,oracle,1,14.0,1,154,0.0,True,161.604,0.07220710199999303,21,21,
+surge,1,3,2,1058,138,134,reactive,0,0.0,0,134,4.0,False,,3.0282000011538912e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,1,3,2,1058,138,134,point,1,9.0,1,144,0.0,True,118.791,0.008796939000035309,18,18,
+surge,1,3,2,1058,138,134,buffer,1,9.0,1,144,0.0,True,118.791,0.008796939000035309,18,18,
+surge,1,3,2,1058,138,134,pooled,1,9.0,1,144,0.0,True,118.791,0.008796939000035309,18,18,
+surge,1,3,2,1058,138,134,hspec,1,9.0,1,144,0.0,True,118.791,0.008796939000035309,18,18,
+surge,1,3,2,1058,138,134,robust,0,0.0,0,134,4.0,False,,3.0282000011538912e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,1,3,2,1058,138,134,oracle,0,0.0,0,134,4.0,False,,3.0282000011538912e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,1,4,0,1000,126,89,reactive,0,0.0,0,89,37.0,False,,3.867100008392299e-05,0,19,Insufficient vehicle capacity for all orders.
+surge,1,4,0,1000,126,89,point,0,0.0,0,89,37.0,False,,3.867100008392299e-05,0,19,Insufficient vehicle capacity for all orders.
+surge,1,4,0,1000,126,89,buffer,0,0.0,0,89,37.0,False,,3.867100008392299e-05,0,19,Insufficient vehicle capacity for all orders.
+surge,1,4,0,1000,126,89,pooled,0,0.0,0,89,37.0,False,,3.867100008392299e-05,0,19,Insufficient vehicle capacity for all orders.
+surge,1,4,0,1000,126,89,hspec,0,0.0,0,89,37.0,False,,3.867100008392299e-05,0,19,Insufficient vehicle capacity for all orders.
+surge,1,4,0,1000,126,89,robust,0,0.0,0,89,37.0,False,,3.867100008392299e-05,0,19,Insufficient vehicle capacity for all orders.
+surge,1,4,0,1000,126,89,oracle,1,24.0,1,129,0.0,True,125.941,0.0042691449999665565,19,19,
+surge,1,5,1,878,133,110,reactive,0,0.0,0,110,23.0,False,,4.723699998976372e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,1,5,1,878,133,110,point,1,14.0,1,130,3.0,False,,3.6056999988431926e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,1,5,1,878,133,110,buffer,2,23.0,2,140,0.0,True,140.096,0.7949670440000318,18,18,
+surge,1,5,1,878,133,110,pooled,1,14.0,1,130,3.0,False,,3.6056999988431926e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,1,5,1,878,133,110,hspec,1,14.0,1,130,3.0,False,,3.6056999988431926e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,1,5,1,878,133,110,robust,0,0.0,0,110,23.0,False,,4.723699998976372e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,1,5,1,878,133,110,oracle,1,14.0,1,130,3.0,False,,3.6056999988431926e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,2,0,1,905,124,109,reactive,0,0.0,0,109,15.0,False,,4.0343000023312925e-05,0,19,Insufficient vehicle capacity for all orders.
+surge,2,0,1,905,124,109,point,1,14.0,1,129,0.0,True,130.545,0.00916183699996509,19,19,
+surge,2,0,1,905,124,109,buffer,1,14.0,1,129,0.0,True,130.545,0.00916183699996509,19,19,
+surge,2,0,1,905,124,109,pooled,1,14.0,1,129,0.0,True,130.545,0.00916183699996509,19,19,
+surge,2,0,1,905,124,109,hspec,1,14.0,1,129,0.0,True,130.545,0.00916183699996509,19,19,
+surge,2,0,1,905,124,109,robust,0,0.0,0,109,15.0,False,,4.0343000023312925e-05,0,19,Insufficient vehicle capacity for all orders.
+surge,2,0,1,905,124,109,oracle,1,14.0,1,129,0.0,True,130.545,0.00916183699996509,19,19,
+surge,2,1,2,813,166,134,reactive,0,0.0,0,134,32.0,False,,3.0473000038000464e-05,0,26,Insufficient vehicle capacity for all orders.
+surge,2,1,2,813,166,134,point,1,14.0,1,154,12.0,False,,2.2026000010555435e-05,0,26,Insufficient vehicle capacity for all orders.
+surge,2,1,2,813,166,134,buffer,2,23.0,2,164,2.0,False,,2.627100002428051e-05,0,26,Insufficient vehicle capacity for all orders.
+surge,2,1,2,813,166,134,pooled,1,24.0,1,174,0.0,True,158.665,0.0038436240000692123,26,26,
+surge,2,1,2,813,166,134,hspec,1,14.0,1,154,12.0,False,,2.2026000010555435e-05,0,26,Insufficient vehicle capacity for all orders.
+surge,2,1,2,813,166,134,robust,0,0.0,0,134,32.0,False,,3.0473000038000464e-05,0,26,Insufficient vehicle capacity for all orders.
+surge,2,1,2,813,166,134,oracle,1,24.0,1,174,0.0,True,158.665,0.0038436240000692123,26,26,
+surge,2,2,3,867,151,99,reactive,0,0.0,0,99,52.0,False,,2.5059999984478054e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,2,2,3,867,151,99,point,1,14.0,1,119,32.0,False,,2.1117999949638033e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,2,2,3,867,151,99,buffer,1,14.0,1,119,32.0,False,,2.1117999949638033e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,2,2,3,867,151,99,pooled,1,14.0,1,119,32.0,False,,2.1117999949638033e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,2,2,3,867,151,99,hspec,1,14.0,1,119,32.0,False,,2.1117999949638033e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,2,2,3,867,151,99,robust,0,0.0,0,99,52.0,False,,2.5059999984478054e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,2,2,3,867,151,99,oracle,2,33.0,2,149,2.0,False,,1.807999990433018e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,2,3,3,1068,106,99,reactive,0,0.0,0,99,7.0,False,,1.5265000001818407e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,2,3,3,1068,106,99,point,1,14.0,1,119,0.0,True,128.433,0.0025581249999504507,16,16,
+surge,2,3,3,1068,106,99,buffer,1,14.0,1,119,0.0,True,128.433,0.0025581249999504507,16,16,
+surge,2,3,3,1068,106,99,pooled,1,14.0,1,119,0.0,True,128.433,0.0025581249999504507,16,16,
+surge,2,3,3,1068,106,99,hspec,1,14.0,1,119,0.0,True,128.433,0.0025581249999504507,16,16,
+surge,2,3,3,1068,106,99,robust,0,0.0,0,99,7.0,False,,1.5265000001818407e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,2,3,3,1068,106,99,oracle,1,9.0,1,109,0.0,True,127.673,0.03769081199993707,16,16,
+surge,2,4,1,984,132,109,reactive,0,0.0,0,109,23.0,False,,3.176799998527713e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,2,4,1,984,132,109,point,2,23.0,2,139,0.0,True,168.666,0.003342396999983066,21,21,
+surge,2,4,1,984,132,109,buffer,2,23.0,2,139,0.0,True,168.666,0.003342396999983066,21,21,
+surge,2,4,1,984,132,109,pooled,1,14.0,1,129,3.0,False,,2.5911999955496867e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,2,4,1,984,132,109,hspec,1,14.0,1,129,3.0,False,,2.5911999955496867e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,2,4,1,984,132,109,robust,0,0.0,0,109,23.0,False,,3.176799998527713e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,2,4,1,984,132,109,oracle,1,14.0,1,129,3.0,False,,2.5911999955496867e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,2,5,1,895,133,109,reactive,0,0.0,0,109,24.0,False,,2.093500006594695e-05,0,23,Insufficient vehicle capacity for all orders.
+surge,2,5,1,895,133,109,point,2,23.0,2,139,0.0,True,121.635,0.003140550000011899,23,23,
+surge,2,5,1,895,133,109,buffer,2,23.0,2,139,0.0,True,121.635,0.003140550000011899,23,23,
+surge,2,5,1,895,133,109,pooled,1,24.0,1,149,0.0,True,126.464,0.0030504779999773746,23,23,
+surge,2,5,1,895,133,109,hspec,1,24.0,1,149,0.0,True,126.464,0.0030504779999773746,23,23,
+surge,2,5,1,895,133,109,robust,0,0.0,0,109,24.0,False,,2.093500006594695e-05,0,23,Insufficient vehicle capacity for all orders.
+surge,2,5,1,895,133,109,oracle,1,14.0,1,129,4.0,False,,5.72870000041803e-05,0,23,Insufficient vehicle capacity for all orders.
+surge,3,0,1,1015,117,111,reactive,0,0.0,0,111,6.0,False,,3.061399991111102e-05,0,17,Insufficient vehicle capacity for all orders.
+surge,3,0,1,1015,117,111,point,1,14.0,1,131,0.0,True,121.679,0.0027718729999151037,17,17,
+surge,3,0,1,1015,117,111,buffer,1,14.0,1,131,0.0,True,121.679,0.0027718729999151037,17,17,
+surge,3,0,1,1015,117,111,pooled,1,14.0,1,131,0.0,True,121.679,0.0027718729999151037,17,17,
+surge,3,0,1,1015,117,111,hspec,1,14.0,1,131,0.0,True,121.679,0.0027718729999151037,17,17,
+surge,3,0,1,1015,117,111,robust,0,0.0,0,111,6.0,False,,3.061399991111102e-05,0,17,Insufficient vehicle capacity for all orders.
+surge,3,0,1,1015,117,111,oracle,1,9.0,1,121,0.0,True,146.482,0.002467464000005748,17,17,
+surge,3,1,1,1029,122,111,reactive,0,0.0,0,111,11.0,False,,2.183700007662992e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,3,1,1,1029,122,111,point,1,14.0,1,131,0.0,True,97.755,0.002226594999910958,16,16,
+surge,3,1,1,1029,122,111,buffer,1,14.0,1,131,0.0,True,97.755,0.002226594999910958,16,16,
+surge,3,1,1,1029,122,111,pooled,1,14.0,1,131,0.0,True,97.755,0.002226594999910958,16,16,
+surge,3,1,1,1029,122,111,hspec,1,14.0,1,131,0.0,True,97.755,0.002226594999910958,16,16,
+surge,3,1,1,1029,122,111,robust,0,0.0,0,111,11.0,False,,2.183700007662992e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,3,1,1,1029,122,111,oracle,1,9.0,1,121,1.0,False,,2.32070000265594e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,3,2,2,870,117,134,reactive,0,0.0,0,134,0.0,True,104.409,0.0020914430000402717,16,16,
+surge,3,2,2,870,117,134,point,0,0.0,0,134,0.0,True,104.409,0.0020914430000402717,16,16,
+surge,3,2,2,870,117,134,buffer,0,0.0,0,134,0.0,True,104.409,0.0020914430000402717,16,16,
+surge,3,2,2,870,117,134,pooled,0,0.0,0,134,0.0,True,104.409,0.0020914430000402717,16,16,
+surge,3,2,2,870,117,134,hspec,0,0.0,0,134,0.0,True,104.409,0.0020914430000402717,16,16,
+surge,3,2,2,870,117,134,robust,0,0.0,0,134,0.0,True,104.409,0.0020914430000402717,16,16,
+surge,3,2,2,870,117,134,oracle,0,0.0,0,134,0.0,True,104.409,0.0020914430000402717,16,16,
+surge,3,3,1,861,138,111,reactive,0,0.0,0,111,27.0,False,,2.289999997628911e-05,0,19,Insufficient vehicle capacity for all orders.
+surge,3,3,1,861,138,111,point,1,24.0,1,151,0.0,True,149.754,0.0023010659999727068,19,19,
+surge,3,3,1,861,138,111,buffer,1,24.0,1,151,0.0,True,149.754,0.0023010659999727068,19,19,
+surge,3,3,1,861,138,111,pooled,1,24.0,1,151,0.0,True,149.754,0.0023010659999727068,19,19,
+surge,3,3,1,861,138,111,hspec,1,24.0,1,151,0.0,True,149.754,0.0023010659999727068,19,19,
+surge,3,3,1,861,138,111,robust,0,0.0,0,111,27.0,False,,2.289999997628911e-05,0,19,Insufficient vehicle capacity for all orders.
+surge,3,3,1,861,138,111,oracle,2,23.0,2,141,0.0,False,,1.0011340359999394,0,19,No feasible optimization solution found.
+surge,3,4,1,1012,102,111,reactive,0,0.0,0,111,0.0,True,125.433,0.0025719019999996817,16,16,
+surge,3,4,1,1012,102,111,point,0,0.0,0,111,0.0,True,125.433,0.0025719019999996817,16,16,
+surge,3,4,1,1012,102,111,buffer,0,0.0,0,111,0.0,True,125.433,0.0025719019999996817,16,16,
+surge,3,4,1,1012,102,111,pooled,0,0.0,0,111,0.0,True,125.433,0.0025719019999996817,16,16,
+surge,3,4,1,1012,102,111,hspec,0,0.0,0,111,0.0,True,125.433,0.0025719019999996817,16,16,
+surge,3,4,1,1012,102,111,robust,0,0.0,0,111,0.0,True,125.433,0.0025719019999996817,16,16,
+surge,3,4,1,1012,102,111,oracle,0,0.0,0,111,0.0,True,125.433,0.0025719019999996817,16,16,
+surge,3,5,1,1020,104,111,reactive,0,0.0,0,111,0.0,True,113.004,0.0026956799999879877,14,14,
+surge,3,5,1,1020,104,111,point,0,0.0,0,111,0.0,True,113.004,0.0026956799999879877,14,14,
+surge,3,5,1,1020,104,111,buffer,0,0.0,0,111,0.0,True,113.004,0.0026956799999879877,14,14,
+surge,3,5,1,1020,104,111,pooled,0,0.0,0,111,0.0,True,113.004,0.0026956799999879877,14,14,
+surge,3,5,1,1020,104,111,hspec,0,0.0,0,111,0.0,True,113.004,0.0026956799999879877,14,14,
+surge,3,5,1,1020,104,111,robust,0,0.0,0,111,0.0,True,113.004,0.0026956799999879877,14,14,
+surge,3,5,1,1020,104,111,oracle,0,0.0,0,111,0.0,True,113.004,0.0026956799999879877,14,14,
+surge,4,0,2,828,164,134,reactive,0,0.0,0,134,30.0,False,,3.68190000017421e-05,0,23,Insufficient vehicle capacity for all orders.
+surge,4,0,2,828,164,134,point,2,23.0,2,164,0.0,False,,1.0009133820000216,0,23,No feasible optimization solution found.
+surge,4,0,2,828,164,134,buffer,2,23.0,2,164,0.0,False,,1.0009133820000216,0,23,No feasible optimization solution found.
+surge,4,0,2,828,164,134,pooled,1,24.0,1,174,0.0,True,162.106,0.003324860000020635,23,23,
+surge,4,0,2,828,164,134,hspec,1,24.0,1,174,0.0,True,162.106,0.003324860000020635,23,23,
+surge,4,0,2,828,164,134,robust,0,0.0,0,134,30.0,False,,3.68190000017421e-05,0,23,Insufficient vehicle capacity for all orders.
+surge,4,0,2,828,164,134,oracle,2,23.0,2,164,0.0,False,,1.0009133820000216,0,23,No feasible optimization solution found.
+surge,4,1,1,854,131,110,reactive,0,0.0,0,110,21.0,False,,2.648999998200452e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,4,1,1,854,131,110,point,1,14.0,1,130,1.0,False,,1.9178000002284534e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,4,1,1,854,131,110,buffer,1,14.0,1,130,1.0,False,,1.9178000002284534e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,4,1,1,854,131,110,pooled,1,14.0,1,130,1.0,False,,1.9178000002284534e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,4,1,1,854,131,110,hspec,1,14.0,1,130,1.0,False,,1.9178000002284534e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,4,1,1,854,131,110,robust,0,0.0,0,110,21.0,False,,2.648999998200452e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,4,1,1,854,131,110,oracle,1,14.0,1,130,1.0,False,,1.9178000002284534e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,4,2,2,941,149,134,reactive,0,0.0,0,134,15.0,False,,2.0882000058008998e-05,0,26,Insufficient vehicle capacity for all orders.
+surge,4,2,2,941,149,134,point,1,14.0,1,154,0.0,True,166.334,0.0035307279999869934,26,26,
+surge,4,2,2,941,149,134,buffer,1,14.0,1,154,0.0,True,166.334,0.0035307279999869934,26,26,
+surge,4,2,2,941,149,134,pooled,1,14.0,1,154,0.0,True,166.334,0.0035307279999869934,26,26,
+surge,4,2,2,941,149,134,hspec,1,14.0,1,154,0.0,True,166.334,0.0035307279999869934,26,26,
+surge,4,2,2,941,149,134,robust,0,0.0,0,134,15.0,False,,2.0882000058008998e-05,0,26,Insufficient vehicle capacity for all orders.
+surge,4,2,2,941,149,134,oracle,1,14.0,1,154,0.0,True,166.334,0.0035307279999869934,26,26,
+surge,4,3,3,803,96,99,reactive,0,0.0,0,99,0.0,False,,1.0026790990000336,0,12,No feasible optimization solution found.
+surge,4,3,3,803,96,99,point,0,0.0,0,99,0.0,False,,1.0026790990000336,0,12,No feasible optimization solution found.
+surge,4,3,3,803,96,99,buffer,0,0.0,0,99,0.0,False,,1.0026790990000336,0,12,No feasible optimization solution found.
+surge,4,3,3,803,96,99,pooled,0,0.0,0,99,0.0,False,,1.0026790990000336,0,12,No feasible optimization solution found.
+surge,4,3,3,803,96,99,hspec,0,0.0,0,99,0.0,False,,1.0026790990000336,0,12,No feasible optimization solution found.
+surge,4,3,3,803,96,99,robust,0,0.0,0,99,0.0,False,,1.0026790990000336,0,12,No feasible optimization solution found.
+surge,4,3,3,803,96,99,oracle,0,0.0,0,99,0.0,False,,1.0026790990000336,0,12,No feasible optimization solution found.
+surge,4,4,1,993,110,110,reactive,0,0.0,0,110,0.0,False,,1.0005524709999918,0,18,No feasible optimization solution found.
+surge,4,4,1,993,110,110,point,0,0.0,0,110,0.0,False,,1.0005524709999918,0,18,No feasible optimization solution found.
+surge,4,4,1,993,110,110,buffer,0,0.0,0,110,0.0,False,,1.0005524709999918,0,18,No feasible optimization solution found.
+surge,4,4,1,993,110,110,pooled,0,0.0,0,110,0.0,False,,1.0005524709999918,0,18,No feasible optimization solution found.
+surge,4,4,1,993,110,110,hspec,0,0.0,0,110,0.0,False,,1.0005524709999918,0,18,No feasible optimization solution found.
+surge,4,4,1,993,110,110,robust,0,0.0,0,110,0.0,False,,1.0005524709999918,0,18,No feasible optimization solution found.
+surge,4,4,1,993,110,110,oracle,0,0.0,0,110,0.0,False,,1.0005524709999918,0,18,No feasible optimization solution found.
+surge,4,5,0,831,76,89,reactive,0,0.0,0,89,0.0,True,88.34,0.002178971000034835,12,12,
+surge,4,5,0,831,76,89,point,0,0.0,0,89,0.0,True,88.34,0.002178971000034835,12,12,
+surge,4,5,0,831,76,89,buffer,0,0.0,0,89,0.0,True,88.34,0.002178971000034835,12,12,
+surge,4,5,0,831,76,89,pooled,0,0.0,0,89,0.0,True,88.34,0.002178971000034835,12,12,
+surge,4,5,0,831,76,89,hspec,0,0.0,0,89,0.0,True,88.34,0.002178971000034835,12,12,
+surge,4,5,0,831,76,89,robust,0,0.0,0,89,0.0,True,88.34,0.002178971000034835,12,12,
+surge,4,5,0,831,76,89,oracle,0,0.0,0,89,0.0,True,88.34,0.002178971000034835,12,12,
+surge,5,0,3,839,124,100,reactive,0,0.0,0,100,24.0,False,,3.17589999667689e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,5,0,3,839,124,100,point,2,23.0,2,130,0.0,True,142.207,0.0035370610000882152,21,21,
+surge,5,0,3,839,124,100,buffer,2,23.0,2,130,0.0,True,142.207,0.0035370610000882152,21,21,
+surge,5,0,3,839,124,100,pooled,1,24.0,1,140,0.0,True,132.303,0.0029910949999703007,21,21,
+surge,5,0,3,839,124,100,hspec,1,24.0,1,140,0.0,True,132.303,0.0029910949999703007,21,21,
+surge,5,0,3,839,124,100,robust,0,0.0,0,100,24.0,False,,3.17589999667689e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,5,0,3,839,124,100,oracle,1,14.0,1,120,4.0,False,,2.72170000243932e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,5,1,0,921,103,89,reactive,0,0.0,0,89,14.0,False,,4.695199993420829e-05,0,14,Insufficient vehicle capacity for all orders.
+surge,5,1,0,921,103,89,point,1,14.0,1,109,0.0,True,101.863,0.0021738399999549074,14,14,
+surge,5,1,0,921,103,89,buffer,1,14.0,1,109,0.0,True,101.863,0.0021738399999549074,14,14,
+surge,5,1,0,921,103,89,pooled,1,14.0,1,109,0.0,True,101.863,0.0021738399999549074,14,14,
+surge,5,1,0,921,103,89,hspec,1,14.0,1,109,0.0,True,101.863,0.0021738399999549074,14,14,
+surge,5,1,0,921,103,89,robust,0,0.0,0,89,14.0,False,,4.695199993420829e-05,0,14,Insufficient vehicle capacity for all orders.
+surge,5,1,0,921,103,89,oracle,1,14.0,1,109,0.0,True,101.863,0.0021738399999549074,14,14,
+surge,5,2,2,882,139,132,reactive,0,0.0,0,132,7.0,False,,2.391699990766938e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,5,2,2,882,139,132,point,0,0.0,0,132,7.0,False,,2.391699990766938e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,5,2,2,882,139,132,buffer,1,9.0,1,142,0.0,True,175.394,0.009211733000029199,20,20,
+surge,5,2,2,882,139,132,pooled,0,0.0,0,132,7.0,False,,2.391699990766938e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,5,2,2,882,139,132,hspec,0,0.0,0,132,7.0,False,,2.391699990766938e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,5,2,2,882,139,132,robust,0,0.0,0,132,7.0,False,,2.391699990766938e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,5,2,2,882,139,132,oracle,1,9.0,1,142,0.0,True,175.394,0.009211733000029199,20,20,
+surge,5,3,1,876,121,111,reactive,0,0.0,0,111,10.0,False,,2.5854000000435917e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,5,3,1,876,121,111,point,1,9.0,1,121,0.0,False,,1.0014516580000645,0,18,No feasible optimization solution found.
+surge,5,3,1,876,121,111,buffer,1,9.0,1,121,0.0,False,,1.0014516580000645,0,18,No feasible optimization solution found.
+surge,5,3,1,876,121,111,pooled,1,9.0,1,121,0.0,False,,1.0014516580000645,0,18,No feasible optimization solution found.
+surge,5,3,1,876,121,111,hspec,1,9.0,1,121,0.0,False,,1.0014516580000645,0,18,No feasible optimization solution found.
+surge,5,3,1,876,121,111,robust,0,0.0,0,111,10.0,False,,2.5854000000435917e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,5,3,1,876,121,111,oracle,1,9.0,1,121,0.0,False,,1.0014516580000645,0,18,No feasible optimization solution found.
+surge,5,4,0,849,94,89,reactive,0,0.0,0,89,5.0,False,,2.4844999984452443e-05,0,11,Insufficient vehicle capacity for all orders.
+surge,5,4,0,849,94,89,point,1,9.0,1,99,0.0,True,74.332,0.002115304000085416,11,11,
+surge,5,4,0,849,94,89,buffer,1,9.0,1,99,0.0,True,74.332,0.002115304000085416,11,11,
+surge,5,4,0,849,94,89,pooled,1,9.0,1,99,0.0,True,74.332,0.002115304000085416,11,11,
+surge,5,4,0,849,94,89,hspec,1,9.0,1,99,0.0,True,74.332,0.002115304000085416,11,11,
+surge,5,4,0,849,94,89,robust,0,0.0,0,89,5.0,False,,2.4844999984452443e-05,0,11,Insufficient vehicle capacity for all orders.
+surge,5,4,0,849,94,89,oracle,1,9.0,1,99,0.0,True,74.332,0.002115304000085416,11,11,
+surge,5,5,3,905,102,100,reactive,0,0.0,0,100,2.0,False,,6.745400003183022e-05,0,14,Insufficient vehicle capacity for all orders.
+surge,5,5,3,905,102,100,point,0,0.0,0,100,2.0,False,,6.745400003183022e-05,0,14,Insufficient vehicle capacity for all orders.
+surge,5,5,3,905,102,100,buffer,0,0.0,0,100,2.0,False,,6.745400003183022e-05,0,14,Insufficient vehicle capacity for all orders.
+surge,5,5,3,905,102,100,pooled,0,0.0,0,100,2.0,False,,6.745400003183022e-05,0,14,Insufficient vehicle capacity for all orders.
+surge,5,5,3,905,102,100,hspec,0,0.0,0,100,2.0,False,,6.745400003183022e-05,0,14,Insufficient vehicle capacity for all orders.
+surge,5,5,3,905,102,100,robust,0,0.0,0,100,2.0,False,,6.745400003183022e-05,0,14,Insufficient vehicle capacity for all orders.
+surge,5,5,3,905,102,100,oracle,0,0.0,0,100,2.0,False,,6.745400003183022e-05,0,14,Insufficient vehicle capacity for all orders.
+surge,6,0,1,1001,104,112,reactive,0,0.0,0,112,0.0,True,123.019,0.0026988739999751488,15,15,
+surge,6,0,1,1001,104,112,point,0,0.0,0,112,0.0,True,123.019,0.0026988739999751488,15,15,
+surge,6,0,1,1001,104,112,buffer,0,0.0,0,112,0.0,True,123.019,0.0026988739999751488,15,15,
+surge,6,0,1,1001,104,112,pooled,0,0.0,0,112,0.0,True,123.019,0.0026988739999751488,15,15,
+surge,6,0,1,1001,104,112,hspec,0,0.0,0,112,0.0,True,123.019,0.0026988739999751488,15,15,
+surge,6,0,1,1001,104,112,robust,0,0.0,0,112,0.0,True,123.019,0.0026988739999751488,15,15,
+surge,6,0,1,1001,104,112,oracle,0,0.0,0,112,0.0,True,123.019,0.0026988739999751488,15,15,
+surge,6,1,0,924,108,88,reactive,0,0.0,0,88,20.0,False,,2.487800009021157e-05,0,17,Insufficient vehicle capacity for all orders.
+surge,6,1,0,924,108,88,point,1,14.0,1,108,0.0,False,,1.001340138000046,0,17,No feasible optimization solution found.
+surge,6,1,0,924,108,88,buffer,2,23.0,1,108,0.0,False,,1.001340138000046,0,17,No feasible optimization solution found.
+surge,6,1,0,924,108,88,pooled,1,14.0,1,108,0.0,False,,1.001340138000046,0,17,No feasible optimization solution found.
+surge,6,1,0,924,108,88,hspec,1,14.0,1,108,0.0,False,,1.001340138000046,0,17,No feasible optimization solution found.
+surge,6,1,0,924,108,88,robust,0,0.0,0,88,20.0,False,,2.487800009021157e-05,0,17,Insufficient vehicle capacity for all orders.
+surge,6,1,0,924,108,88,oracle,1,14.0,1,108,0.0,False,,1.001340138000046,0,17,No feasible optimization solution found.
+surge,6,2,1,977,118,112,reactive,0,0.0,0,112,6.0,False,,2.8590999932021077e-05,0,13,Insufficient vehicle capacity for all orders.
+surge,6,2,1,977,118,112,point,1,14.0,1,132,0.0,True,116.492,0.0026235000000269793,13,13,
+surge,6,2,1,977,118,112,buffer,1,14.0,1,132,0.0,True,116.492,0.0026235000000269793,13,13,
+surge,6,2,1,977,118,112,pooled,1,14.0,1,132,0.0,True,116.492,0.0026235000000269793,13,13,
+surge,6,2,1,977,118,112,hspec,1,14.0,1,132,0.0,True,116.492,0.0026235000000269793,13,13,
+surge,6,2,1,977,118,112,robust,0,0.0,0,112,6.0,False,,2.8590999932021077e-05,0,13,Insufficient vehicle capacity for all orders.
+surge,6,2,1,977,118,112,oracle,1,9.0,1,122,0.0,False,,1.0032176929998968,0,13,No feasible optimization solution found.
+surge,6,3,1,832,115,112,reactive,0,0.0,0,112,3.0,False,,2.879099997699086e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,6,3,1,832,115,112,point,1,9.0,1,122,0.0,True,106.16,0.014975974999970276,16,16,
+surge,6,3,1,832,115,112,buffer,1,9.0,1,122,0.0,True,106.16,0.014975974999970276,16,16,
+surge,6,3,1,832,115,112,pooled,1,9.0,1,122,0.0,True,106.16,0.014975974999970276,16,16,
+surge,6,3,1,832,115,112,hspec,1,9.0,1,122,0.0,True,106.16,0.014975974999970276,16,16,
+surge,6,3,1,832,115,112,robust,0,0.0,0,112,3.0,False,,2.879099997699086e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,6,3,1,832,115,112,oracle,0,0.0,0,112,3.0,False,,2.879099997699086e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,6,4,3,836,94,100,reactive,0,0.0,0,100,0.0,True,126.481,0.003972782999994706,15,15,
+surge,6,4,3,836,94,100,point,0,0.0,0,100,0.0,True,126.481,0.003972782999994706,15,15,
+surge,6,4,3,836,94,100,buffer,0,0.0,0,100,0.0,True,126.481,0.003972782999994706,15,15,
+surge,6,4,3,836,94,100,pooled,0,0.0,0,100,0.0,True,126.481,0.003972782999994706,15,15,
+surge,6,4,3,836,94,100,hspec,0,0.0,0,100,0.0,True,126.481,0.003972782999994706,15,15,
+surge,6,4,3,836,94,100,robust,0,0.0,0,100,0.0,True,126.481,0.003972782999994706,15,15,
+surge,6,4,3,836,94,100,oracle,0,0.0,0,100,0.0,True,126.481,0.003972782999994706,15,15,
+surge,6,5,0,1026,95,88,reactive,0,0.0,0,88,7.0,False,,2.2838000063529762e-05,0,12,Insufficient vehicle capacity for all orders.
+surge,6,5,0,1026,95,88,point,1,9.0,1,98,0.0,True,97.842,0.005279529999938859,12,12,
+surge,6,5,0,1026,95,88,buffer,1,9.0,1,98,0.0,True,97.842,0.005279529999938859,12,12,
+surge,6,5,0,1026,95,88,pooled,1,9.0,1,98,0.0,True,97.842,0.005279529999938859,12,12,
+surge,6,5,0,1026,95,88,hspec,1,9.0,1,98,0.0,True,97.842,0.005279529999938859,12,12,
+surge,6,5,0,1026,95,88,robust,0,0.0,0,88,7.0,False,,2.2838000063529762e-05,0,12,Insufficient vehicle capacity for all orders.
+surge,6,5,0,1026,95,88,oracle,1,9.0,1,98,0.0,True,97.842,0.005279529999938859,12,12,
+surge,7,0,3,897,102,102,reactive,0,0.0,0,102,0.0,False,,1.002921074000028,0,16,No feasible optimization solution found.
+surge,7,0,3,897,102,102,point,0,0.0,0,102,0.0,False,,1.002921074000028,0,16,No feasible optimization solution found.
+surge,7,0,3,897,102,102,buffer,1,9.0,0,102,0.0,False,,1.002921074000028,0,16,No feasible optimization solution found.
+surge,7,0,3,897,102,102,pooled,0,0.0,0,102,0.0,False,,1.002921074000028,0,16,No feasible optimization solution found.
+surge,7,0,3,897,102,102,hspec,0,0.0,0,102,0.0,False,,1.002921074000028,0,16,No feasible optimization solution found.
+surge,7,0,3,897,102,102,robust,0,0.0,0,102,0.0,False,,1.002921074000028,0,16,No feasible optimization solution found.
+surge,7,0,3,897,102,102,oracle,0,0.0,0,102,0.0,False,,1.002921074000028,0,16,No feasible optimization solution found.
+surge,7,1,3,813,97,102,reactive,0,0.0,0,102,0.0,True,123.417,0.0023565980000057607,15,15,
+surge,7,1,3,813,97,102,point,0,0.0,0,102,0.0,True,123.417,0.0023565980000057607,15,15,
+surge,7,1,3,813,97,102,buffer,0,0.0,0,102,0.0,True,123.417,0.0023565980000057607,15,15,
+surge,7,1,3,813,97,102,pooled,0,0.0,0,102,0.0,True,123.417,0.0023565980000057607,15,15,
+surge,7,1,3,813,97,102,hspec,0,0.0,0,102,0.0,True,123.417,0.0023565980000057607,15,15,
+surge,7,1,3,813,97,102,robust,0,0.0,0,102,0.0,True,123.417,0.0023565980000057607,15,15,
+surge,7,1,3,813,97,102,oracle,0,0.0,0,102,0.0,True,123.417,0.0023565980000057607,15,15,
+surge,7,2,0,885,98,88,reactive,0,0.0,0,88,10.0,False,,2.2104999970906647e-05,0,13,Insufficient vehicle capacity for all orders.
+surge,7,2,0,885,98,88,point,1,14.0,1,108,0.0,True,87.083,0.0018814840000231925,13,13,
+surge,7,2,0,885,98,88,buffer,1,14.0,1,108,0.0,True,87.083,0.0018814840000231925,13,13,
+surge,7,2,0,885,98,88,pooled,1,14.0,1,108,0.0,True,87.083,0.0018814840000231925,13,13,
+surge,7,2,0,885,98,88,hspec,1,9.0,1,98,0.0,True,113.859,0.004128727999955117,13,13,
+surge,7,2,0,885,98,88,robust,0,0.0,0,88,10.0,False,,2.2104999970906647e-05,0,13,Insufficient vehicle capacity for all orders.
+surge,7,2,0,885,98,88,oracle,1,9.0,1,98,0.0,True,113.859,0.004128727999955117,13,13,
+surge,7,3,3,1050,100,102,reactive,0,0.0,0,102,0.0,True,116.865,0.03703997100001288,14,14,
+surge,7,3,3,1050,100,102,point,0,0.0,0,102,0.0,True,116.865,0.03703997100001288,14,14,
+surge,7,3,3,1050,100,102,buffer,0,0.0,0,102,0.0,True,116.865,0.03703997100001288,14,14,
+surge,7,3,3,1050,100,102,pooled,0,0.0,0,102,0.0,True,116.865,0.03703997100001288,14,14,
+surge,7,3,3,1050,100,102,hspec,0,0.0,0,102,0.0,True,116.865,0.03703997100001288,14,14,
+surge,7,3,3,1050,100,102,robust,0,0.0,0,102,0.0,True,116.865,0.03703997100001288,14,14,
+surge,7,3,3,1050,100,102,oracle,0,0.0,0,102,0.0,True,116.865,0.03703997100001288,14,14,
+surge,7,4,3,991,108,102,reactive,0,0.0,0,102,6.0,False,,2.5103999973907776e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,7,4,3,991,108,102,point,1,9.0,1,112,0.0,True,116.58,0.0025942040000472844,16,16,
+surge,7,4,3,991,108,102,buffer,1,14.0,1,122,0.0,True,148.875,0.002245298000048024,16,16,
+surge,7,4,3,991,108,102,pooled,1,9.0,1,112,0.0,True,116.58,0.0025942040000472844,16,16,
+surge,7,4,3,991,108,102,hspec,1,9.0,1,112,0.0,True,116.58,0.0025942040000472844,16,16,
+surge,7,4,3,991,108,102,robust,0,0.0,0,102,6.0,False,,2.5103999973907776e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,7,4,3,991,108,102,oracle,1,9.0,1,112,0.0,True,116.58,0.0025942040000472844,16,16,
+surge,7,5,3,1009,95,102,reactive,0,0.0,0,102,0.0,True,122.542,0.0019283049999785362,14,14,
+surge,7,5,3,1009,95,102,point,0,0.0,0,102,0.0,True,122.542,0.0019283049999785362,14,14,
+surge,7,5,3,1009,95,102,buffer,0,0.0,0,102,0.0,True,122.542,0.0019283049999785362,14,14,
+surge,7,5,3,1009,95,102,pooled,0,0.0,0,102,0.0,True,122.542,0.0019283049999785362,14,14,
+surge,7,5,3,1009,95,102,hspec,0,0.0,0,102,0.0,True,122.542,0.0019283049999785362,14,14,
+surge,7,5,3,1009,95,102,robust,0,0.0,0,102,0.0,True,122.542,0.0019283049999785362,14,14,
+surge,7,5,3,1009,95,102,oracle,0,0.0,0,102,0.0,True,122.542,0.0019283049999785362,14,14,
+surge,8,0,3,1045,114,100,reactive,0,0.0,0,100,14.0,False,,3.453699991950998e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,8,0,3,1045,114,100,point,1,14.0,1,120,0.0,True,136.532,0.005848029000048882,18,18,
+surge,8,0,3,1045,114,100,buffer,2,23.0,1,120,0.0,True,136.532,0.005848029000048882,18,18,
+surge,8,0,3,1045,114,100,pooled,1,14.0,1,120,0.0,True,136.532,0.005848029000048882,18,18,
+surge,8,0,3,1045,114,100,hspec,1,14.0,1,120,0.0,True,136.532,0.005848029000048882,18,18,
+surge,8,0,3,1045,114,100,robust,0,0.0,0,100,14.0,False,,3.453699991950998e-05,0,18,Insufficient vehicle capacity for all orders.
+surge,8,0,3,1045,114,100,oracle,1,14.0,1,120,0.0,True,136.532,0.005848029000048882,18,18,
+surge,8,1,0,850,93,88,reactive,0,0.0,0,88,5.0,False,,4.165199993622082e-05,0,14,Insufficient vehicle capacity for all orders.
+surge,8,1,0,850,93,88,point,1,9.0,1,98,0.0,True,89.788,0.003492279000056442,14,14,
+surge,8,1,0,850,93,88,buffer,1,14.0,1,108,0.0,True,84.288,0.0028656289999844375,14,14,
+surge,8,1,0,850,93,88,pooled,1,9.0,1,98,0.0,True,89.788,0.003492279000056442,14,14,
+surge,8,1,0,850,93,88,hspec,1,9.0,1,98,0.0,True,89.788,0.003492279000056442,14,14,
+surge,8,1,0,850,93,88,robust,0,0.0,0,88,5.0,False,,4.165199993622082e-05,0,14,Insufficient vehicle capacity for all orders.
+surge,8,1,0,850,93,88,oracle,1,9.0,1,98,0.0,True,89.788,0.003492279000056442,14,14,
+surge,8,2,0,831,81,88,reactive,0,0.0,0,88,0.0,True,92.459,0.0018924039999319575,11,11,
+surge,8,2,0,831,81,88,point,0,0.0,0,88,0.0,True,92.459,0.0018924039999319575,11,11,
+surge,8,2,0,831,81,88,buffer,1,9.0,0,88,0.0,True,92.459,0.0018924039999319575,11,11,
+surge,8,2,0,831,81,88,pooled,0,0.0,0,88,0.0,True,92.459,0.0018924039999319575,11,11,
+surge,8,2,0,831,81,88,hspec,0,0.0,0,88,0.0,True,92.459,0.0018924039999319575,11,11,
+surge,8,2,0,831,81,88,robust,0,0.0,0,88,0.0,True,92.459,0.0018924039999319575,11,11,
+surge,8,2,0,831,81,88,oracle,0,0.0,0,88,0.0,True,92.459,0.0018924039999319575,11,11,
+surge,8,3,3,849,97,100,reactive,0,0.0,0,100,0.0,True,89.395,0.001911807999931625,14,14,
+surge,8,3,3,849,97,100,point,0,0.0,0,100,0.0,True,89.395,0.001911807999931625,14,14,
+surge,8,3,3,849,97,100,buffer,0,0.0,0,100,0.0,True,89.395,0.001911807999931625,14,14,
+surge,8,3,3,849,97,100,pooled,0,0.0,0,100,0.0,True,89.395,0.001911807999931625,14,14,
+surge,8,3,3,849,97,100,hspec,0,0.0,0,100,0.0,True,89.395,0.001911807999931625,14,14,
+surge,8,3,3,849,97,100,robust,0,0.0,0,100,0.0,True,89.395,0.001911807999931625,14,14,
+surge,8,3,3,849,97,100,oracle,0,0.0,0,100,0.0,True,89.395,0.001911807999931625,14,14,
+surge,8,4,2,1011,147,134,reactive,0,0.0,0,134,13.0,False,,2.5878999963424576e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,8,4,2,1011,147,134,point,1,9.0,1,144,3.0,False,,5.034200000864075e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,8,4,2,1011,147,134,buffer,1,9.0,1,144,3.0,False,,5.034200000864075e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,8,4,2,1011,147,134,pooled,1,9.0,1,144,3.0,False,,5.034200000864075e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,8,4,2,1011,147,134,hspec,1,9.0,1,144,3.0,False,,5.034200000864075e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,8,4,2,1011,147,134,robust,0,0.0,0,134,13.0,False,,2.5878999963424576e-05,0,20,Insufficient vehicle capacity for all orders.
+surge,8,4,2,1011,147,134,oracle,1,14.0,1,154,0.0,True,150.512,0.0027232470000626563,20,20,
+surge,8,5,2,802,119,134,reactive,0,0.0,0,134,0.0,True,105.732,0.0033081330000186426,16,16,
+surge,8,5,2,802,119,134,point,0,0.0,0,134,0.0,True,105.732,0.0033081330000186426,16,16,
+surge,8,5,2,802,119,134,buffer,0,0.0,0,134,0.0,True,105.732,0.0033081330000186426,16,16,
+surge,8,5,2,802,119,134,pooled,0,0.0,0,134,0.0,True,105.732,0.0033081330000186426,16,16,
+surge,8,5,2,802,119,134,hspec,0,0.0,0,134,0.0,True,105.732,0.0033081330000186426,16,16,
+surge,8,5,2,802,119,134,robust,0,0.0,0,134,0.0,True,105.732,0.0033081330000186426,16,16,
+surge,8,5,2,802,119,134,oracle,0,0.0,0,134,0.0,True,105.732,0.0033081330000186426,16,16,
+surge,9,0,3,1005,125,99,reactive,0,0.0,0,99,26.0,False,,2.8900000074827403e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,9,0,3,1005,125,99,point,2,23.0,2,129,0.0,True,142.346,0.2772246010000572,16,16,
+surge,9,0,3,1005,125,99,buffer,2,23.0,2,129,0.0,True,142.346,0.2772246010000572,16,16,
+surge,9,0,3,1005,125,99,pooled,1,24.0,1,139,0.0,True,122.56,0.003308216000050379,16,16,
+surge,9,0,3,1005,125,99,hspec,1,24.0,1,139,0.0,True,122.56,0.003308216000050379,16,16,
+surge,9,0,3,1005,125,99,robust,0,0.0,0,99,26.0,False,,2.8900000074827403e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,9,0,3,1005,125,99,oracle,2,23.0,2,129,0.0,True,142.346,0.2772246010000572,16,16,
+surge,9,1,0,873,82,87,reactive,0,0.0,0,87,0.0,True,84.246,0.00216449399999874,13,13,
+surge,9,1,0,873,82,87,point,0,0.0,0,87,0.0,True,84.246,0.00216449399999874,13,13,
+surge,9,1,0,873,82,87,buffer,0,0.0,0,87,0.0,True,84.246,0.00216449399999874,13,13,
+surge,9,1,0,873,82,87,pooled,0,0.0,0,87,0.0,True,84.246,0.00216449399999874,13,13,
+surge,9,1,0,873,82,87,hspec,0,0.0,0,87,0.0,True,84.246,0.00216449399999874,13,13,
+surge,9,1,0,873,82,87,robust,0,0.0,0,87,0.0,True,84.246,0.00216449399999874,13,13,
+surge,9,1,0,873,82,87,oracle,0,0.0,0,87,0.0,True,84.246,0.00216449399999874,13,13,
+surge,9,2,2,897,144,131,reactive,0,0.0,0,131,13.0,False,,2.855299999282579e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,9,2,2,897,144,131,point,1,9.0,1,141,3.0,False,,1.8832000023394357e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,9,2,2,897,144,131,buffer,1,14.0,1,151,0.0,True,117.783,0.0030779580000626083,21,21,
+surge,9,2,2,897,144,131,pooled,1,9.0,1,141,3.0,False,,1.8832000023394357e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,9,2,2,897,144,131,hspec,1,9.0,1,141,3.0,False,,1.8832000023394357e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,9,2,2,897,144,131,robust,0,0.0,0,131,13.0,False,,2.855299999282579e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,9,2,2,897,144,131,oracle,1,14.0,1,151,0.0,True,117.783,0.0030779580000626083,21,21,
+surge,9,3,1,807,95,111,reactive,0,0.0,0,111,0.0,True,119.195,0.002290378999987297,15,15,
+surge,9,3,1,807,95,111,point,0,0.0,0,111,0.0,True,119.195,0.002290378999987297,15,15,
+surge,9,3,1,807,95,111,buffer,0,0.0,0,111,0.0,True,119.195,0.002290378999987297,15,15,
+surge,9,3,1,807,95,111,pooled,0,0.0,0,111,0.0,True,119.195,0.002290378999987297,15,15,
+surge,9,3,1,807,95,111,hspec,0,0.0,0,111,0.0,True,119.195,0.002290378999987297,15,15,
+surge,9,3,1,807,95,111,robust,0,0.0,0,111,0.0,True,119.195,0.002290378999987297,15,15,
+surge,9,3,1,807,95,111,oracle,0,0.0,0,111,0.0,True,119.195,0.002290378999987297,15,15,
+surge,9,4,2,888,134,131,reactive,0,0.0,0,131,3.0,False,,2.6800000000548607e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,9,4,2,888,134,131,point,1,14.0,1,151,0.0,True,149.497,0.002895053999964148,21,21,
+surge,9,4,2,888,134,131,buffer,1,14.0,1,151,0.0,True,149.497,0.002895053999964148,21,21,
+surge,9,4,2,888,134,131,pooled,1,14.0,1,151,0.0,True,149.497,0.002895053999964148,21,21,
+surge,9,4,2,888,134,131,hspec,1,14.0,1,151,0.0,True,149.497,0.002895053999964148,21,21,
+surge,9,4,2,888,134,131,robust,0,0.0,0,131,3.0,False,,2.6800000000548607e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,9,4,2,888,134,131,oracle,0,0.0,0,131,3.0,False,,2.6800000000548607e-05,0,21,Insufficient vehicle capacity for all orders.
+surge,9,5,1,817,117,111,reactive,0,0.0,0,111,6.0,False,,2.1887000002607238e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,9,5,1,817,117,111,point,1,14.0,1,131,0.0,True,123.239,0.003130520000013348,16,16,
+surge,9,5,1,817,117,111,buffer,1,14.0,1,131,0.0,True,123.239,0.003130520000013348,16,16,
+surge,9,5,1,817,117,111,pooled,1,14.0,1,131,0.0,True,123.239,0.003130520000013348,16,16,
+surge,9,5,1,817,117,111,hspec,1,14.0,1,131,0.0,True,123.239,0.003130520000013348,16,16,
+surge,9,5,1,817,117,111,robust,0,0.0,0,111,6.0,False,,2.1887000002607238e-05,0,16,Insufficient vehicle capacity for all orders.
+surge,9,5,1,817,117,111,oracle,1,9.0,1,121,0.0,True,114.944,0.0023046630000180812,16,16,
+drift,0,0,1,981,98,98,reactive,0,0.0,0,98,0.0,False,,1.0024183300000686,0,13,No feasible optimization solution found.
+drift,0,0,1,981,98,98,point,0,0.0,0,98,0.0,False,,1.0024183300000686,0,13,No feasible optimization solution found.
+drift,0,0,1,981,98,98,buffer,1,9.0,0,98,0.0,False,,1.0024183300000686,0,13,No feasible optimization solution found.
+drift,0,0,1,981,98,98,pooled,0,0.0,0,98,0.0,False,,1.0024183300000686,0,13,No feasible optimization solution found.
+drift,0,0,1,981,98,98,hspec,0,0.0,0,98,0.0,False,,1.0024183300000686,0,13,No feasible optimization solution found.
+drift,0,0,1,981,98,98,robust,1,14.0,0,98,0.0,False,,1.0024183300000686,0,13,No feasible optimization solution found.
+drift,0,0,1,981,98,98,oracle,0,0.0,0,98,0.0,False,,1.0024183300000686,0,13,No feasible optimization solution found.
+drift,0,1,0,1007,109,85,reactive,0,0.0,0,85,24.0,False,,2.7325000019118306e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,0,1,0,1007,109,85,point,1,14.0,1,105,4.0,False,,1.5018999988569703e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,0,1,0,1007,109,85,buffer,2,23.0,2,115,0.0,True,114.746,0.002695691000099032,15,15,
+drift,0,1,0,1007,109,85,pooled,1,14.0,1,105,4.0,False,,1.5018999988569703e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,0,1,0,1007,109,85,hspec,1,14.0,1,105,4.0,False,,1.5018999988569703e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,0,1,0,1007,109,85,robust,1,24.0,1,125,0.0,True,124.371,0.002522634999991169,15,15,
+drift,0,1,0,1007,109,85,oracle,1,14.0,1,105,4.0,False,,1.5018999988569703e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,0,2,2,906,213,151,reactive,0,0.0,0,151,62.0,False,,3.233400002500275e-05,0,29,Insufficient vehicle capacity for all orders.
+drift,0,2,2,906,213,151,point,2,38.0,2,211,2.0,False,,2.1570000058090955e-05,0,29,Insufficient vehicle capacity for all orders.
+drift,0,2,2,906,213,151,buffer,3,47.0,3,221,0.0,False,,1.0006949879999638,0,29,No feasible optimization solution found.
+drift,0,2,2,906,213,151,pooled,2,38.0,2,211,2.0,False,,2.1570000058090955e-05,0,29,Insufficient vehicle capacity for all orders.
+drift,0,2,2,906,213,151,hspec,2,38.0,2,211,2.0,False,,2.1570000058090955e-05,0,29,Insufficient vehicle capacity for all orders.
+drift,0,2,2,906,213,151,robust,3,47.0,3,221,0.0,False,,1.0006949879999638,0,29,No feasible optimization solution found.
+drift,0,2,2,906,213,151,oracle,2,38.0,2,211,2.0,False,,2.1570000058090955e-05,0,29,Insufficient vehicle capacity for all orders.
+drift,0,3,2,900,218,151,reactive,0,0.0,0,151,67.0,False,,3.7587999941024464e-05,0,32,Insufficient vehicle capacity for all orders.
+drift,0,3,2,900,218,151,point,3,47.0,3,221,0.0,False,,1.0011708529999623,0,32,No feasible optimization solution found.
+drift,0,3,2,900,218,151,buffer,3,47.0,3,221,0.0,False,,1.0011708529999623,0,32,No feasible optimization solution found.
+drift,0,3,2,900,218,151,pooled,2,48.0,2,231,0.0,True,197.211,0.004840725000008206,32,32,
+drift,0,3,2,900,218,151,hspec,2,48.0,2,231,0.0,True,197.211,0.004840725000008206,32,32,
+drift,0,3,2,900,218,151,robust,2,48.0,2,231,0.0,True,197.211,0.004840725000008206,32,32,
+drift,0,3,2,900,218,151,oracle,3,47.0,3,221,0.0,False,,1.0011708529999623,0,32,No feasible optimization solution found.
+drift,0,4,3,1020,112,102,reactive,0,0.0,0,102,10.0,False,,2.256899995245476e-05,0,14,Insufficient vehicle capacity for all orders.
+drift,0,4,3,1020,112,102,point,0,0.0,0,102,10.0,False,,2.256899995245476e-05,0,14,Insufficient vehicle capacity for all orders.
+drift,0,4,3,1020,112,102,buffer,0,0.0,0,102,10.0,False,,2.256899995245476e-05,0,14,Insufficient vehicle capacity for all orders.
+drift,0,4,3,1020,112,102,pooled,0,0.0,0,102,10.0,False,,2.256899995245476e-05,0,14,Insufficient vehicle capacity for all orders.
+drift,0,4,3,1020,112,102,hspec,0,0.0,0,102,10.0,False,,2.256899995245476e-05,0,14,Insufficient vehicle capacity for all orders.
+drift,0,4,3,1020,112,102,robust,1,9.0,1,112,0.0,False,,1.003714608999985,0,14,No feasible optimization solution found.
+drift,0,4,3,1020,112,102,oracle,1,9.0,1,112,0.0,False,,1.003714608999985,0,14,No feasible optimization solution found.
+drift,0,5,3,947,88,102,reactive,0,0.0,0,102,0.0,True,113.241,0.0024904989999186,12,12,
+drift,0,5,3,947,88,102,point,0,0.0,0,102,0.0,True,113.241,0.0024904989999186,12,12,
+drift,0,5,3,947,88,102,buffer,0,0.0,0,102,0.0,True,113.241,0.0024904989999186,12,12,
+drift,0,5,3,947,88,102,pooled,0,0.0,0,102,0.0,True,113.241,0.0024904989999186,12,12,
+drift,0,5,3,947,88,102,hspec,0,0.0,0,102,0.0,True,113.241,0.0024904989999186,12,12,
+drift,0,5,3,947,88,102,robust,0,0.0,0,102,0.0,True,113.241,0.0024904989999186,12,12,
+drift,0,5,3,947,88,102,oracle,0,0.0,0,102,0.0,True,113.241,0.0024904989999186,12,12,
+drift,1,0,0,893,116,94,reactive,0,0.0,0,94,22.0,False,,3.9227999991453544e-05,0,21,Insufficient vehicle capacity for all orders.
+drift,1,0,0,893,116,94,point,1,14.0,1,114,2.0,False,,2.079099999718892e-05,0,21,Insufficient vehicle capacity for all orders.
+drift,1,0,0,893,116,94,buffer,1,14.0,1,114,2.0,False,,2.079099999718892e-05,0,21,Insufficient vehicle capacity for all orders.
+drift,1,0,0,893,116,94,pooled,1,14.0,1,114,2.0,False,,2.079099999718892e-05,0,21,Insufficient vehicle capacity for all orders.
+drift,1,0,0,893,116,94,hspec,1,14.0,1,114,2.0,False,,2.079099999718892e-05,0,21,Insufficient vehicle capacity for all orders.
+drift,1,0,0,893,116,94,robust,0,0.0,0,94,22.0,False,,3.9227999991453544e-05,0,21,Insufficient vehicle capacity for all orders.
+drift,1,0,0,893,116,94,oracle,1,14.0,1,114,2.0,False,,2.079099999718892e-05,0,21,Insufficient vehicle capacity for all orders.
+drift,1,1,2,1002,101,137,reactive,0,0.0,0,137,0.0,True,116.379,0.002767167000001791,16,16,
+drift,1,1,2,1002,101,137,point,0,0.0,0,137,0.0,True,116.379,0.002767167000001791,16,16,
+drift,1,1,2,1002,101,137,buffer,0,0.0,0,137,0.0,True,116.379,0.002767167000001791,16,16,
+drift,1,1,2,1002,101,137,pooled,0,0.0,0,137,0.0,True,116.379,0.002767167000001791,16,16,
+drift,1,1,2,1002,101,137,hspec,0,0.0,0,137,0.0,True,116.379,0.002767167000001791,16,16,
+drift,1,1,2,1002,101,137,robust,0,0.0,0,137,0.0,True,116.379,0.002767167000001791,16,16,
+drift,1,1,2,1002,101,137,oracle,0,0.0,0,137,0.0,True,116.379,0.002767167000001791,16,16,
+drift,1,2,1,880,97,103,reactive,0,0.0,0,103,0.0,True,108.946,0.002190278000057333,14,14,
+drift,1,2,1,880,97,103,point,0,0.0,0,103,0.0,True,108.946,0.002190278000057333,14,14,
+drift,1,2,1,880,97,103,buffer,1,9.0,0,103,0.0,True,108.946,0.002190278000057333,14,14,
+drift,1,2,1,880,97,103,pooled,0,0.0,0,103,0.0,True,108.946,0.002190278000057333,14,14,
+drift,1,2,1,880,97,103,hspec,0,0.0,0,103,0.0,True,108.946,0.002190278000057333,14,14,
+drift,1,2,1,880,97,103,robust,0,0.0,0,103,0.0,True,108.946,0.002190278000057333,14,14,
+drift,1,2,1,880,97,103,oracle,0,0.0,0,103,0.0,True,108.946,0.002190278000057333,14,14,
+drift,1,3,2,999,78,137,reactive,0,0.0,0,137,0.0,True,74.987,0.0017325730000266049,11,11,
+drift,1,3,2,999,78,137,point,0,0.0,0,137,0.0,True,74.987,0.0017325730000266049,11,11,
+drift,1,3,2,999,78,137,buffer,0,0.0,0,137,0.0,True,74.987,0.0017325730000266049,11,11,
+drift,1,3,2,999,78,137,pooled,0,0.0,0,137,0.0,True,74.987,0.0017325730000266049,11,11,
+drift,1,3,2,999,78,137,hspec,0,0.0,0,137,0.0,True,74.987,0.0017325730000266049,11,11,
+drift,1,3,2,999,78,137,robust,0,0.0,0,137,0.0,True,74.987,0.0017325730000266049,11,11,
+drift,1,3,2,999,78,137,oracle,0,0.0,0,137,0.0,True,74.987,0.0017325730000266049,11,11,
+drift,1,4,3,882,63,88,reactive,0,0.0,0,88,0.0,True,66.825,0.0018879220000371788,10,10,
+drift,1,4,3,882,63,88,point,0,0.0,0,88,0.0,True,66.825,0.0018879220000371788,10,10,
+drift,1,4,3,882,63,88,buffer,0,0.0,0,88,0.0,True,66.825,0.0018879220000371788,10,10,
+drift,1,4,3,882,63,88,pooled,0,0.0,0,88,0.0,True,66.825,0.0018879220000371788,10,10,
+drift,1,4,3,882,63,88,hspec,0,0.0,0,88,0.0,True,66.825,0.0018879220000371788,10,10,
+drift,1,4,3,882,63,88,robust,0,0.0,0,88,0.0,True,66.825,0.0018879220000371788,10,10,
+drift,1,4,3,882,63,88,oracle,0,0.0,0,88,0.0,True,66.825,0.0018879220000371788,10,10,
+drift,1,5,1,1021,99,103,reactive,0,0.0,0,103,0.0,True,77.095,0.0018560659999593554,13,13,
+drift,1,5,1,1021,99,103,point,0,0.0,0,103,0.0,True,77.095,0.0018560659999593554,13,13,
+drift,1,5,1,1021,99,103,buffer,1,9.0,0,103,0.0,True,77.095,0.0018560659999593554,13,13,
+drift,1,5,1,1021,99,103,pooled,0,0.0,0,103,0.0,True,77.095,0.0018560659999593554,13,13,
+drift,1,5,1,1021,99,103,hspec,0,0.0,0,103,0.0,True,77.095,0.0018560659999593554,13,13,
+drift,1,5,1,1021,99,103,robust,0,0.0,0,103,0.0,True,77.095,0.0018560659999593554,13,13,
+drift,1,5,1,1021,99,103,oracle,0,0.0,0,103,0.0,True,77.095,0.0018560659999593554,13,13,
+drift,2,0,1,956,67,100,reactive,0,0.0,0,100,0.0,True,77.266,0.0021452250000493223,11,11,
+drift,2,0,1,956,67,100,point,0,0.0,0,100,0.0,True,77.266,0.0021452250000493223,11,11,
+drift,2,0,1,956,67,100,buffer,0,0.0,0,100,0.0,True,77.266,0.0021452250000493223,11,11,
+drift,2,0,1,956,67,100,pooled,0,0.0,0,100,0.0,True,77.266,0.0021452250000493223,11,11,
+drift,2,0,1,956,67,100,hspec,0,0.0,0,100,0.0,True,77.266,0.0021452250000493223,11,11,
+drift,2,0,1,956,67,100,robust,0,0.0,0,100,0.0,True,77.266,0.0021452250000493223,11,11,
+drift,2,0,1,956,67,100,oracle,0,0.0,0,100,0.0,True,77.266,0.0021452250000493223,11,11,
+drift,2,1,2,883,132,141,reactive,0,0.0,0,141,0.0,True,127.206,0.0029722400000764537,22,22,
+drift,2,1,2,883,132,141,point,0,0.0,0,141,0.0,True,127.206,0.0029722400000764537,22,22,
+drift,2,1,2,883,132,141,buffer,0,0.0,0,141,0.0,True,127.206,0.0029722400000764537,22,22,
+drift,2,1,2,883,132,141,pooled,0,0.0,0,141,0.0,True,127.206,0.0029722400000764537,22,22,
+drift,2,1,2,883,132,141,hspec,0,0.0,0,141,0.0,True,127.206,0.0029722400000764537,22,22,
+drift,2,1,2,883,132,141,robust,0,0.0,0,141,0.0,True,127.206,0.0029722400000764537,22,22,
+drift,2,1,2,883,132,141,oracle,0,0.0,0,141,0.0,True,127.206,0.0029722400000764537,22,22,
+drift,2,2,2,821,135,141,reactive,0,0.0,0,141,0.0,True,166.31,0.4530283789999885,19,19,
+drift,2,2,2,821,135,141,point,0,0.0,0,141,0.0,True,166.31,0.4530283789999885,19,19,
+drift,2,2,2,821,135,141,buffer,0,0.0,0,141,0.0,True,166.31,0.4530283789999885,19,19,
+drift,2,2,2,821,135,141,pooled,0,0.0,0,141,0.0,True,166.31,0.4530283789999885,19,19,
+drift,2,2,2,821,135,141,hspec,0,0.0,0,141,0.0,True,166.31,0.4530283789999885,19,19,
+drift,2,2,2,821,135,141,robust,1,9.0,0,141,0.0,True,166.31,0.4530283789999885,19,19,
+drift,2,2,2,821,135,141,oracle,0,0.0,0,141,0.0,True,166.31,0.4530283789999885,19,19,
+drift,2,3,1,820,100,100,reactive,0,0.0,0,100,0.0,False,,1.0014582369999516,0,15,No feasible optimization solution found.
+drift,2,3,1,820,100,100,point,1,9.0,0,100,0.0,False,,1.0014582369999516,0,15,No feasible optimization solution found.
+drift,2,3,1,820,100,100,buffer,1,9.0,0,100,0.0,False,,1.0014582369999516,0,15,No feasible optimization solution found.
+drift,2,3,1,820,100,100,pooled,1,14.0,0,100,0.0,False,,1.0014582369999516,0,15,No feasible optimization solution found.
+drift,2,3,1,820,100,100,hspec,1,9.0,0,100,0.0,False,,1.0014582369999516,0,15,No feasible optimization solution found.
+drift,2,3,1,820,100,100,robust,2,23.0,0,100,0.0,False,,1.0014582369999516,0,15,No feasible optimization solution found.
+drift,2,3,1,820,100,100,oracle,0,0.0,0,100,0.0,False,,1.0014582369999516,0,15,No feasible optimization solution found.
+drift,2,4,0,807,99,87,reactive,0,0.0,0,87,12.0,False,,8.268999999927473e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,2,4,0,807,99,87,point,1,9.0,1,97,2.0,False,,2.512100002149964e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,2,4,0,807,99,87,buffer,1,14.0,1,107,0.0,True,120.124,0.0037499569999681626,15,15,
+drift,2,4,0,807,99,87,pooled,1,9.0,1,97,2.0,False,,2.512100002149964e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,2,4,0,807,99,87,hspec,1,9.0,1,97,2.0,False,,2.512100002149964e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,2,4,0,807,99,87,robust,1,14.0,1,107,0.0,True,120.124,0.0037499569999681626,15,15,
+drift,2,4,0,807,99,87,oracle,1,9.0,1,97,2.0,False,,2.512100002149964e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,2,5,1,1004,69,100,reactive,0,0.0,0,100,0.0,True,88.487,0.0029557149999845933,13,13,
+drift,2,5,1,1004,69,100,point,0,0.0,0,100,0.0,True,88.487,0.0029557149999845933,13,13,
+drift,2,5,1,1004,69,100,buffer,0,0.0,0,100,0.0,True,88.487,0.0029557149999845933,13,13,
+drift,2,5,1,1004,69,100,pooled,0,0.0,0,100,0.0,True,88.487,0.0029557149999845933,13,13,
+drift,2,5,1,1004,69,100,hspec,0,0.0,0,100,0.0,True,88.487,0.0029557149999845933,13,13,
+drift,2,5,1,1004,69,100,robust,0,0.0,0,100,0.0,True,88.487,0.0029557149999845933,13,13,
+drift,2,5,1,1004,69,100,oracle,0,0.0,0,100,0.0,True,88.487,0.0029557149999845933,13,13,
+drift,3,0,3,1055,87,100,reactive,0,0.0,0,100,0.0,True,112.715,0.002396670999928574,12,12,
+drift,3,0,3,1055,87,100,point,0,0.0,0,100,0.0,True,112.715,0.002396670999928574,12,12,
+drift,3,0,3,1055,87,100,buffer,0,0.0,0,100,0.0,True,112.715,0.002396670999928574,12,12,
+drift,3,0,3,1055,87,100,pooled,0,0.0,0,100,0.0,True,112.715,0.002396670999928574,12,12,
+drift,3,0,3,1055,87,100,hspec,0,0.0,0,100,0.0,True,112.715,0.002396670999928574,12,12,
+drift,3,0,3,1055,87,100,robust,0,0.0,0,100,0.0,True,112.715,0.002396670999928574,12,12,
+drift,3,0,3,1055,87,100,oracle,0,0.0,0,100,0.0,True,112.715,0.002396670999928574,12,12,
+drift,3,1,2,840,147,140,reactive,0,0.0,0,140,7.0,False,,2.686499999526859e-05,0,19,Insufficient vehicle capacity for all orders.
+drift,3,1,2,840,147,140,point,1,9.0,1,150,0.0,True,104.326,0.03138015600006838,19,19,
+drift,3,1,2,840,147,140,buffer,1,9.0,1,150,0.0,True,104.326,0.03138015600006838,19,19,
+drift,3,1,2,840,147,140,pooled,1,9.0,1,150,0.0,True,104.326,0.03138015600006838,19,19,
+drift,3,1,2,840,147,140,hspec,1,9.0,1,150,0.0,True,104.326,0.03138015600006838,19,19,
+drift,3,1,2,840,147,140,robust,1,14.0,1,160,0.0,True,119.619,0.0028666169999951308,19,19,
+drift,3,1,2,840,147,140,oracle,1,9.0,1,150,0.0,True,104.326,0.03138015600006838,19,19,
+drift,3,2,0,896,113,84,reactive,0,0.0,0,84,29.0,False,,2.4488000008204835e-05,0,16,Insufficient vehicle capacity for all orders.
+drift,3,2,0,896,113,84,point,2,23.0,2,114,0.0,False,,1.001322817000073,0,16,No feasible optimization solution found.
+drift,3,2,0,896,113,84,buffer,2,23.0,2,114,0.0,False,,1.001322817000073,0,16,No feasible optimization solution found.
+drift,3,2,0,896,113,84,pooled,1,24.0,1,124,0.0,True,106.058,0.0026033430000325097,16,16,
+drift,3,2,0,896,113,84,hspec,1,24.0,1,124,0.0,True,106.058,0.0026033430000325097,16,16,
+drift,3,2,0,896,113,84,robust,1,24.0,1,124,0.0,True,106.058,0.0026033430000325097,16,16,
+drift,3,2,0,896,113,84,oracle,2,23.0,2,114,0.0,False,,1.001322817000073,0,16,No feasible optimization solution found.
+drift,3,3,3,1035,82,100,reactive,0,0.0,0,100,0.0,True,96.137,0.0019354760000851456,11,11,
+drift,3,3,3,1035,82,100,point,0,0.0,0,100,0.0,True,96.137,0.0019354760000851456,11,11,
+drift,3,3,3,1035,82,100,buffer,0,0.0,0,100,0.0,True,96.137,0.0019354760000851456,11,11,
+drift,3,3,3,1035,82,100,pooled,0,0.0,0,100,0.0,True,96.137,0.0019354760000851456,11,11,
+drift,3,3,3,1035,82,100,hspec,0,0.0,0,100,0.0,True,96.137,0.0019354760000851456,11,11,
+drift,3,3,3,1035,82,100,robust,0,0.0,0,100,0.0,True,96.137,0.0019354760000851456,11,11,
+drift,3,3,3,1035,82,100,oracle,0,0.0,0,100,0.0,True,96.137,0.0019354760000851456,11,11,
+drift,3,4,2,980,153,140,reactive,0,0.0,0,140,13.0,False,,7.344899995587184e-05,0,22,Insufficient vehicle capacity for all orders.
+drift,3,4,2,980,153,140,point,1,14.0,1,160,0.0,True,164.723,0.00309072400000332,22,22,
+drift,3,4,2,980,153,140,buffer,1,14.0,1,160,0.0,True,164.723,0.00309072400000332,22,22,
+drift,3,4,2,980,153,140,pooled,1,14.0,1,160,0.0,True,164.723,0.00309072400000332,22,22,
+drift,3,4,2,980,153,140,hspec,1,14.0,1,160,0.0,True,164.723,0.00309072400000332,22,22,
+drift,3,4,2,980,153,140,robust,2,23.0,1,160,0.0,True,164.723,0.00309072400000332,22,22,
+drift,3,4,2,980,153,140,oracle,1,14.0,1,160,0.0,True,164.723,0.00309072400000332,22,22,
+drift,3,5,0,906,127,84,reactive,0,0.0,0,84,43.0,False,,2.431200005048595e-05,0,18,Insufficient vehicle capacity for all orders.
+drift,3,5,0,906,127,84,point,2,33.0,2,134,0.0,True,143.222,0.002567554999927779,18,18,
+drift,3,5,0,906,127,84,buffer,2,33.0,2,134,0.0,True,143.222,0.002567554999927779,18,18,
+drift,3,5,0,906,127,84,pooled,2,33.0,2,134,0.0,True,143.222,0.002567554999927779,18,18,
+drift,3,5,0,906,127,84,hspec,2,33.0,2,134,0.0,True,143.222,0.002567554999927779,18,18,
+drift,3,5,0,906,127,84,robust,2,38.0,2,144,0.0,True,126.158,0.0024713779999956387,18,18,
+drift,3,5,0,906,127,84,oracle,1,24.0,1,124,3.0,False,,2.396800005044497e-05,0,18,Insufficient vehicle capacity for all orders.
+drift,4,0,2,870,94,146,reactive,0,0.0,0,146,0.0,True,108.066,0.0027855780000436425,13,13,
+drift,4,0,2,870,94,146,point,0,0.0,0,146,0.0,True,108.066,0.0027855780000436425,13,13,
+drift,4,0,2,870,94,146,buffer,0,0.0,0,146,0.0,True,108.066,0.0027855780000436425,13,13,
+drift,4,0,2,870,94,146,pooled,0,0.0,0,146,0.0,True,108.066,0.0027855780000436425,13,13,
+drift,4,0,2,870,94,146,hspec,0,0.0,0,146,0.0,True,108.066,0.0027855780000436425,13,13,
+drift,4,0,2,870,94,146,robust,0,0.0,0,146,0.0,True,108.066,0.0027855780000436425,13,13,
+drift,4,0,2,870,94,146,oracle,0,0.0,0,146,0.0,True,108.066,0.0027855780000436425,13,13,
+drift,4,1,3,973,128,105,reactive,0,0.0,0,105,23.0,False,,2.7658999897539616e-05,0,20,Insufficient vehicle capacity for all orders.
+drift,4,1,3,973,128,105,point,1,14.0,1,125,3.0,False,,1.7573000036463782e-05,0,20,Insufficient vehicle capacity for all orders.
+drift,4,1,3,973,128,105,buffer,2,23.0,2,135,0.0,True,125.237,0.00307811799996216,20,20,
+drift,4,1,3,973,128,105,pooled,1,14.0,1,125,3.0,False,,1.7573000036463782e-05,0,20,Insufficient vehicle capacity for all orders.
+drift,4,1,3,973,128,105,hspec,1,14.0,1,125,3.0,False,,1.7573000036463782e-05,0,20,Insufficient vehicle capacity for all orders.
+drift,4,1,3,973,128,105,robust,1,24.0,1,145,0.0,True,111.925,0.0027350830000614224,20,20,
+drift,4,1,3,973,128,105,oracle,1,14.0,1,125,3.0,False,,1.7573000036463782e-05,0,20,Insufficient vehicle capacity for all orders.
+drift,4,2,0,997,75,86,reactive,0,0.0,0,86,0.0,True,83.776,0.0019558110000161832,14,14,
+drift,4,2,0,997,75,86,point,0,0.0,0,86,0.0,True,83.776,0.0019558110000161832,14,14,
+drift,4,2,0,997,75,86,buffer,0,0.0,0,86,0.0,True,83.776,0.0019558110000161832,14,14,
+drift,4,2,0,997,75,86,pooled,0,0.0,0,86,0.0,True,83.776,0.0019558110000161832,14,14,
+drift,4,2,0,997,75,86,hspec,0,0.0,0,86,0.0,True,83.776,0.0019558110000161832,14,14,
+drift,4,2,0,997,75,86,robust,0,0.0,0,86,0.0,True,83.776,0.0019558110000161832,14,14,
+drift,4,2,0,997,75,86,oracle,0,0.0,0,86,0.0,True,83.776,0.0019558110000161832,14,14,
+drift,4,3,1,956,145,114,reactive,0,0.0,0,114,31.0,False,,2.8546000066853594e-05,0,21,Insufficient vehicle capacity for all orders.
+drift,4,3,1,956,145,114,point,2,23.0,2,144,1.0,False,,2.2600999955102452e-05,0,21,Insufficient vehicle capacity for all orders.
+drift,4,3,1,956,145,114,buffer,2,23.0,2,144,1.0,False,,2.2600999955102452e-05,0,21,Insufficient vehicle capacity for all orders.
+drift,4,3,1,956,145,114,pooled,1,24.0,1,154,0.0,True,167.9,0.0032104829999752837,21,21,
+drift,4,3,1,956,145,114,hspec,1,24.0,1,154,0.0,True,167.9,0.0032104829999752837,21,21,
+drift,4,3,1,956,145,114,robust,1,24.0,1,154,0.0,True,167.9,0.0032104829999752837,21,21,
+drift,4,3,1,956,145,114,oracle,1,24.0,1,154,0.0,True,167.9,0.0032104829999752837,21,21,
+drift,4,4,3,904,117,105,reactive,0,0.0,0,105,12.0,False,,2.4945000063780753e-05,0,20,Insufficient vehicle capacity for all orders.
+drift,4,4,3,904,117,105,point,0,0.0,0,105,12.0,False,,2.4945000063780753e-05,0,20,Insufficient vehicle capacity for all orders.
+drift,4,4,3,904,117,105,buffer,1,9.0,1,115,2.0,False,,1.731300005758385e-05,0,20,Insufficient vehicle capacity for all orders.
+drift,4,4,3,904,117,105,pooled,0,0.0,0,105,12.0,False,,2.4945000063780753e-05,0,20,Insufficient vehicle capacity for all orders.
+drift,4,4,3,904,117,105,hspec,0,0.0,0,105,12.0,False,,2.4945000063780753e-05,0,20,Insufficient vehicle capacity for all orders.
+drift,4,4,3,904,117,105,robust,1,14.0,1,125,0.0,True,135.763,0.0027024009999649934,20,20,
+drift,4,4,3,904,117,105,oracle,1,9.0,1,115,2.0,False,,1.731300005758385e-05,0,20,Insufficient vehicle capacity for all orders.
+drift,4,5,0,892,62,86,reactive,0,0.0,0,86,0.0,True,75.19,0.0016555519999883472,9,9,
+drift,4,5,0,892,62,86,point,0,0.0,0,86,0.0,True,75.19,0.0016555519999883472,9,9,
+drift,4,5,0,892,62,86,buffer,0,0.0,0,86,0.0,True,75.19,0.0016555519999883472,9,9,
+drift,4,5,0,892,62,86,pooled,0,0.0,0,86,0.0,True,75.19,0.0016555519999883472,9,9,
+drift,4,5,0,892,62,86,hspec,0,0.0,0,86,0.0,True,75.19,0.0016555519999883472,9,9,
+drift,4,5,0,892,62,86,robust,0,0.0,0,86,0.0,True,75.19,0.0016555519999883472,9,9,
+drift,4,5,0,892,62,86,oracle,0,0.0,0,86,0.0,True,75.19,0.0016555519999883472,9,9,
+drift,5,0,0,930,86,97,reactive,0,0.0,0,97,0.0,True,111.341,0.002451591999943048,13,13,
+drift,5,0,0,930,86,97,point,0,0.0,0,97,0.0,True,111.341,0.002451591999943048,13,13,
+drift,5,0,0,930,86,97,buffer,0,0.0,0,97,0.0,True,111.341,0.002451591999943048,13,13,
+drift,5,0,0,930,86,97,pooled,0,0.0,0,97,0.0,True,111.341,0.002451591999943048,13,13,
+drift,5,0,0,930,86,97,hspec,0,0.0,0,97,0.0,True,111.341,0.002451591999943048,13,13,
+drift,5,0,0,930,86,97,robust,0,0.0,0,97,0.0,True,111.341,0.002451591999943048,13,13,
+drift,5,0,0,930,86,97,oracle,0,0.0,0,97,0.0,True,111.341,0.002451591999943048,13,13,
+drift,5,1,3,1013,97,106,reactive,0,0.0,0,106,0.0,True,112.995,0.002300264000041352,14,14,
+drift,5,1,3,1013,97,106,point,0,0.0,0,106,0.0,True,112.995,0.002300264000041352,14,14,
+drift,5,1,3,1013,97,106,buffer,0,0.0,0,106,0.0,True,112.995,0.002300264000041352,14,14,
+drift,5,1,3,1013,97,106,pooled,0,0.0,0,106,0.0,True,112.995,0.002300264000041352,14,14,
+drift,5,1,3,1013,97,106,hspec,0,0.0,0,106,0.0,True,112.995,0.002300264000041352,14,14,
+drift,5,1,3,1013,97,106,robust,1,9.0,0,106,0.0,True,112.995,0.002300264000041352,14,14,
+drift,5,1,3,1013,97,106,oracle,0,0.0,0,106,0.0,True,112.995,0.002300264000041352,14,14,
+drift,5,2,0,966,89,97,reactive,0,0.0,0,97,0.0,True,107.767,0.002603808999992907,13,13,
+drift,5,2,0,966,89,97,point,0,0.0,0,97,0.0,True,107.767,0.002603808999992907,13,13,
+drift,5,2,0,966,89,97,buffer,0,0.0,0,97,0.0,True,107.767,0.002603808999992907,13,13,
+drift,5,2,0,966,89,97,pooled,0,0.0,0,97,0.0,True,107.767,0.002603808999992907,13,13,
+drift,5,2,0,966,89,97,hspec,0,0.0,0,97,0.0,True,107.767,0.002603808999992907,13,13,
+drift,5,2,0,966,89,97,robust,1,9.0,0,97,0.0,True,107.767,0.002603808999992907,13,13,
+drift,5,2,0,966,89,97,oracle,0,0.0,0,97,0.0,True,107.767,0.002603808999992907,13,13,
+drift,5,3,0,1002,101,97,reactive,0,0.0,0,97,4.0,False,,2.7362999958313594e-05,0,16,Insufficient vehicle capacity for all orders.
+drift,5,3,0,1002,101,97,point,1,9.0,1,107,0.0,True,93.921,0.002414419000047019,16,16,
+drift,5,3,0,1002,101,97,buffer,1,9.0,1,107,0.0,True,93.921,0.002414419000047019,16,16,
+drift,5,3,0,1002,101,97,pooled,1,9.0,1,107,0.0,True,93.921,0.002414419000047019,16,16,
+drift,5,3,0,1002,101,97,hspec,1,9.0,1,107,0.0,True,93.921,0.002414419000047019,16,16,
+drift,5,3,0,1002,101,97,robust,1,14.0,1,117,0.0,True,116.28,0.0022039309999399848,16,16,
+drift,5,3,0,1002,101,97,oracle,0,0.0,0,97,4.0,False,,2.7362999958313594e-05,0,16,Insufficient vehicle capacity for all orders.
+drift,5,4,3,1032,114,106,reactive,0,0.0,0,106,8.0,False,,2.2951999994802463e-05,0,13,Insufficient vehicle capacity for all orders.
+drift,5,4,3,1032,114,106,point,1,9.0,1,116,0.0,False,,1.0031795359999478,0,13,No feasible optimization solution found.
+drift,5,4,3,1032,114,106,buffer,1,9.0,1,116,0.0,False,,1.0031795359999478,0,13,No feasible optimization solution found.
+drift,5,4,3,1032,114,106,pooled,1,9.0,1,116,0.0,False,,1.0031795359999478,0,13,No feasible optimization solution found.
+drift,5,4,3,1032,114,106,hspec,1,9.0,1,116,0.0,False,,1.0031795359999478,0,13,No feasible optimization solution found.
+drift,5,4,3,1032,114,106,robust,1,14.0,1,126,0.0,True,105.666,0.0026064079999059686,13,13,
+drift,5,4,3,1032,114,106,oracle,1,9.0,1,116,0.0,False,,1.0031795359999478,0,13,No feasible optimization solution found.
+drift,5,5,0,876,101,97,reactive,0,0.0,0,97,4.0,False,,2.597499997136765e-05,0,14,Insufficient vehicle capacity for all orders.
+drift,5,5,0,876,101,97,point,0,0.0,0,97,4.0,False,,2.597499997136765e-05,0,14,Insufficient vehicle capacity for all orders.
+drift,5,5,0,876,101,97,buffer,1,9.0,1,107,0.0,True,108.109,0.3928961100000379,14,14,
+drift,5,5,0,876,101,97,pooled,1,9.0,1,107,0.0,True,108.109,0.3928961100000379,14,14,
+drift,5,5,0,876,101,97,hspec,0,0.0,0,97,4.0,False,,2.597499997136765e-05,0,14,Insufficient vehicle capacity for all orders.
+drift,5,5,0,876,101,97,robust,1,14.0,1,117,0.0,True,114.53,0.00249043899998469,14,14,
+drift,5,5,0,876,101,97,oracle,0,0.0,0,97,4.0,False,,2.597499997136765e-05,0,14,Insufficient vehicle capacity for all orders.
+drift,6,0,1,941,126,100,reactive,0,0.0,0,100,26.0,False,,3.0304000006253773e-05,0,18,Insufficient vehicle capacity for all orders.
+drift,6,0,1,941,126,100,point,1,24.0,1,140,0.0,True,144.57,0.0029928709999467173,18,18,
+drift,6,0,1,941,126,100,buffer,1,24.0,1,140,0.0,True,144.57,0.0029928709999467173,18,18,
+drift,6,0,1,941,126,100,pooled,1,24.0,1,140,0.0,True,144.57,0.0029928709999467173,18,18,
+drift,6,0,1,941,126,100,hspec,1,24.0,1,140,0.0,True,144.57,0.0029928709999467173,18,18,
+drift,6,0,1,941,126,100,robust,2,38.0,1,140,0.0,True,144.57,0.0029928709999467173,18,18,
+drift,6,0,1,941,126,100,oracle,2,23.0,2,130,0.0,True,157.175,0.002769916000033845,18,18,
+drift,6,1,3,942,141,115,reactive,0,0.0,0,115,26.0,False,,2.652499995292601e-05,0,22,Insufficient vehicle capacity for all orders.
+drift,6,1,3,942,141,115,point,1,14.0,1,135,6.0,False,,1.9984999994449026e-05,0,22,Insufficient vehicle capacity for all orders.
+drift,6,1,3,942,141,115,buffer,2,23.0,2,145,0.0,True,180.931,0.0771043859999736,22,22,
+drift,6,1,3,942,141,115,pooled,1,14.0,1,135,6.0,False,,1.9984999994449026e-05,0,22,Insufficient vehicle capacity for all orders.
+drift,6,1,3,942,141,115,hspec,1,14.0,1,135,6.0,False,,1.9984999994449026e-05,0,22,Insufficient vehicle capacity for all orders.
+drift,6,1,3,942,141,115,robust,1,24.0,1,155,0.0,True,133.495,0.0032214940000585557,22,22,
+drift,6,1,3,942,141,115,oracle,2,23.0,2,145,0.0,True,180.931,0.0771043859999736,22,22,
+drift,6,2,1,1055,107,100,reactive,0,0.0,0,100,7.0,False,,2.4112000005516165e-05,0,11,Insufficient vehicle capacity for all orders.
+drift,6,2,1,1055,107,100,point,1,9.0,1,110,0.0,False,,1.0026242109998975,0,11,No feasible optimization solution found.
+drift,6,2,1,1055,107,100,buffer,1,9.0,1,110,0.0,False,,1.0026242109998975,0,11,No feasible optimization solution found.
+drift,6,2,1,1055,107,100,pooled,1,9.0,1,110,0.0,False,,1.0026242109998975,0,11,No feasible optimization solution found.
+drift,6,2,1,1055,107,100,hspec,1,9.0,1,110,0.0,False,,1.0026242109998975,0,11,No feasible optimization solution found.
+drift,6,2,1,1055,107,100,robust,1,14.0,1,120,0.0,True,92.152,0.0023505640000394123,11,11,
+drift,6,2,1,1055,107,100,oracle,1,9.0,1,110,0.0,False,,1.0026242109998975,0,11,No feasible optimization solution found.
+drift,6,3,1,950,126,100,reactive,0,0.0,0,100,26.0,False,,2.7935999924011412e-05,0,17,Insufficient vehicle capacity for all orders.
+drift,6,3,1,950,126,100,point,2,23.0,2,130,0.0,False,,1.0013937610000312,0,17,No feasible optimization solution found.
+drift,6,3,1,950,126,100,buffer,1,24.0,1,140,0.0,True,126.603,0.00272457599999143,17,17,
+drift,6,3,1,950,126,100,pooled,1,24.0,1,140,0.0,True,126.603,0.00272457599999143,17,17,
+drift,6,3,1,950,126,100,hspec,1,24.0,1,140,0.0,True,126.603,0.00272457599999143,17,17,
+drift,6,3,1,950,126,100,robust,2,33.0,1,140,0.0,True,126.603,0.00272457599999143,17,17,
+drift,6,3,1,950,126,100,oracle,2,23.0,2,130,0.0,False,,1.0013937610000312,0,17,No feasible optimization solution found.
+drift,6,4,0,863,115,92,reactive,0,0.0,0,92,23.0,False,,2.3682999994889542e-05,0,17,Insufficient vehicle capacity for all orders.
+drift,6,4,0,863,115,92,point,1,14.0,1,112,3.0,False,,1.8298999975741026e-05,0,17,Insufficient vehicle capacity for all orders.
+drift,6,4,0,863,115,92,buffer,2,23.0,2,122,0.0,True,142.438,0.0027021170000125494,17,17,
+drift,6,4,0,863,115,92,pooled,1,14.0,1,112,3.0,False,,1.8298999975741026e-05,0,17,Insufficient vehicle capacity for all orders.
+drift,6,4,0,863,115,92,hspec,1,14.0,1,112,3.0,False,,1.8298999975741026e-05,0,17,Insufficient vehicle capacity for all orders.
+drift,6,4,0,863,115,92,robust,1,24.0,1,132,0.0,True,132.861,0.00226975600003243,17,17,
+drift,6,4,0,863,115,92,oracle,1,14.0,1,112,3.0,False,,1.8298999975741026e-05,0,17,Insufficient vehicle capacity for all orders.
+drift,6,5,3,961,133,115,reactive,0,0.0,0,115,18.0,False,,2.115600000252016e-05,0,16,Insufficient vehicle capacity for all orders.
+drift,6,5,3,961,133,115,point,1,14.0,1,135,0.0,False,,1.0011779850000266,0,16,No feasible optimization solution found.
+drift,6,5,3,961,133,115,buffer,1,14.0,1,135,0.0,False,,1.0011779850000266,0,16,No feasible optimization solution found.
+drift,6,5,3,961,133,115,pooled,1,14.0,1,135,0.0,False,,1.0011779850000266,0,16,No feasible optimization solution found.
+drift,6,5,3,961,133,115,hspec,1,14.0,1,135,0.0,False,,1.0011779850000266,0,16,No feasible optimization solution found.
+drift,6,5,3,961,133,115,robust,2,23.0,1,135,0.0,False,,1.0011779850000266,0,16,No feasible optimization solution found.
+drift,6,5,3,961,133,115,oracle,1,14.0,1,135,0.0,False,,1.0011779850000266,0,16,No feasible optimization solution found.
+drift,7,0,1,1058,133,106,reactive,0,0.0,0,106,27.0,False,,3.926700003376027e-05,0,20,Insufficient vehicle capacity for all orders.
+drift,7,0,1,1058,133,106,point,1,24.0,1,146,0.0,True,141.683,0.0033359160000827615,20,20,
+drift,7,0,1,1058,133,106,buffer,1,24.0,1,146,0.0,True,141.683,0.0033359160000827615,20,20,
+drift,7,0,1,1058,133,106,pooled,1,24.0,1,146,0.0,True,141.683,0.0033359160000827615,20,20,
+drift,7,0,1,1058,133,106,hspec,1,24.0,1,146,0.0,True,141.683,0.0033359160000827615,20,20,
+drift,7,0,1,1058,133,106,robust,2,33.0,1,146,0.0,True,141.683,0.0033359160000827615,20,20,
+drift,7,0,1,1058,133,106,oracle,2,23.0,2,136,0.0,True,142.205,0.012144304000003103,20,20,
+drift,7,1,3,801,95,94,reactive,0,0.0,0,94,1.0,False,,2.681900002698967e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,7,1,3,801,95,94,point,0,0.0,0,94,1.0,False,,2.681900002698967e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,7,1,3,801,95,94,buffer,0,0.0,0,94,1.0,False,,2.681900002698967e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,7,1,3,801,95,94,pooled,0,0.0,0,94,1.0,False,,2.681900002698967e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,7,1,3,801,95,94,hspec,0,0.0,0,94,1.0,False,,2.681900002698967e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,7,1,3,801,95,94,robust,1,9.0,1,104,0.0,True,118.362,0.0026321699999698467,15,15,
+drift,7,1,3,801,95,94,oracle,0,0.0,0,94,1.0,False,,2.681900002698967e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,7,2,3,816,85,94,reactive,0,0.0,0,94,0.0,True,95.468,0.0028422530000398183,11,11,
+drift,7,2,3,816,85,94,point,0,0.0,0,94,0.0,True,95.468,0.0028422530000398183,11,11,
+drift,7,2,3,816,85,94,buffer,0,0.0,0,94,0.0,True,95.468,0.0028422530000398183,11,11,
+drift,7,2,3,816,85,94,pooled,0,0.0,0,94,0.0,True,95.468,0.0028422530000398183,11,11,
+drift,7,2,3,816,85,94,hspec,0,0.0,0,94,0.0,True,95.468,0.0028422530000398183,11,11,
+drift,7,2,3,816,85,94,robust,0,0.0,0,94,0.0,True,95.468,0.0028422530000398183,11,11,
+drift,7,2,3,816,85,94,oracle,0,0.0,0,94,0.0,True,95.468,0.0028422530000398183,11,11,
+drift,7,3,2,900,133,129,reactive,0,0.0,0,129,4.0,False,,2.939699993476097e-05,0,18,Insufficient vehicle capacity for all orders.
+drift,7,3,2,900,133,129,point,1,14.0,1,149,0.0,True,149.488,0.002940971000043646,18,18,
+drift,7,3,2,900,133,129,buffer,1,14.0,1,149,0.0,True,149.488,0.002940971000043646,18,18,
+drift,7,3,2,900,133,129,pooled,1,14.0,1,149,0.0,True,149.488,0.002940971000043646,18,18,
+drift,7,3,2,900,133,129,hspec,1,14.0,1,149,0.0,True,149.488,0.002940971000043646,18,18,
+drift,7,3,2,900,133,129,robust,2,23.0,1,139,0.0,True,142.857,0.013492948000020988,18,18,
+drift,7,3,2,900,133,129,oracle,0,0.0,0,129,4.0,False,,2.939699993476097e-05,0,18,Insufficient vehicle capacity for all orders.
+drift,7,4,0,915,95,96,reactive,0,0.0,0,96,0.0,True,120.522,0.002394406999997045,14,14,
+drift,7,4,0,915,95,96,point,0,0.0,0,96,0.0,True,120.522,0.002394406999997045,14,14,
+drift,7,4,0,915,95,96,buffer,1,9.0,0,96,0.0,True,120.522,0.002394406999997045,14,14,
+drift,7,4,0,915,95,96,pooled,0,0.0,0,96,0.0,True,120.522,0.002394406999997045,14,14,
+drift,7,4,0,915,95,96,hspec,0,0.0,0,96,0.0,True,120.522,0.002394406999997045,14,14,
+drift,7,4,0,915,95,96,robust,1,9.0,0,96,0.0,True,120.522,0.002394406999997045,14,14,
+drift,7,4,0,915,95,96,oracle,0,0.0,0,96,0.0,True,120.522,0.002394406999997045,14,14,
+drift,7,5,0,811,98,96,reactive,0,0.0,0,96,2.0,False,,2.7304000013828045e-05,0,14,Insufficient vehicle capacity for all orders.
+drift,7,5,0,811,98,96,point,1,9.0,1,106,0.0,True,124.465,0.0025110020000056466,14,14,
+drift,7,5,0,811,98,96,buffer,1,9.0,1,106,0.0,True,124.465,0.0025110020000056466,14,14,
+drift,7,5,0,811,98,96,pooled,1,9.0,1,106,0.0,True,124.465,0.0025110020000056466,14,14,
+drift,7,5,0,811,98,96,hspec,1,9.0,1,106,0.0,True,124.465,0.0025110020000056466,14,14,
+drift,7,5,0,811,98,96,robust,1,14.0,1,116,0.0,True,126.456,0.0023892880000175865,14,14,
+drift,7,5,0,811,98,96,oracle,0,0.0,0,96,2.0,False,,2.7304000013828045e-05,0,14,Insufficient vehicle capacity for all orders.
+drift,8,0,0,992,94,79,reactive,0,0.0,0,79,15.0,False,,2.816300002450589e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,8,0,0,992,94,79,point,1,9.0,1,89,5.0,False,,1.539900006264361e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,8,0,0,992,94,79,buffer,1,14.0,1,99,0.0,True,132.708,0.002630250000038359,15,15,
+drift,8,0,0,992,94,79,pooled,1,9.0,1,89,5.0,False,,1.539900006264361e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,8,0,0,992,94,79,hspec,1,9.0,1,89,5.0,False,,1.539900006264361e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,8,0,0,992,94,79,robust,1,14.0,1,99,0.0,True,132.708,0.002630250000038359,15,15,
+drift,8,0,0,992,94,79,oracle,1,14.0,1,99,0.0,True,132.708,0.002630250000038359,15,15,
+drift,8,1,2,1016,165,132,reactive,0,0.0,0,132,33.0,False,,2.962400003525545e-05,0,25,Insufficient vehicle capacity for all orders.
+drift,8,1,2,1016,165,132,point,1,24.0,1,172,0.0,True,150.423,0.0034864860000425324,25,25,
+drift,8,1,2,1016,165,132,buffer,1,24.0,1,172,0.0,True,150.423,0.0034864860000425324,25,25,
+drift,8,1,2,1016,165,132,pooled,1,24.0,1,172,0.0,True,150.423,0.0034864860000425324,25,25,
+drift,8,1,2,1016,165,132,hspec,1,24.0,1,172,0.0,True,150.423,0.0034864860000425324,25,25,
+drift,8,1,2,1016,165,132,robust,2,33.0,1,172,0.0,True,150.423,0.0034864860000425324,25,25,
+drift,8,1,2,1016,165,132,oracle,1,24.0,1,172,0.0,True,150.423,0.0034864860000425324,25,25,
+drift,8,2,1,892,68,95,reactive,0,0.0,0,95,0.0,True,110.807,0.0018644320000476,9,9,
+drift,8,2,1,892,68,95,point,0,0.0,0,95,0.0,True,110.807,0.0018644320000476,9,9,
+drift,8,2,1,892,68,95,buffer,0,0.0,0,95,0.0,True,110.807,0.0018644320000476,9,9,
+drift,8,2,1,892,68,95,pooled,0,0.0,0,95,0.0,True,110.807,0.0018644320000476,9,9,
+drift,8,2,1,892,68,95,hspec,0,0.0,0,95,0.0,True,110.807,0.0018644320000476,9,9,
+drift,8,2,1,892,68,95,robust,0,0.0,0,95,0.0,True,110.807,0.0018644320000476,9,9,
+drift,8,2,1,892,68,95,oracle,0,0.0,0,95,0.0,True,110.807,0.0018644320000476,9,9,
+drift,8,3,2,929,184,132,reactive,0,0.0,0,132,52.0,False,,3.073900006711483e-05,0,29,Insufficient vehicle capacity for all orders.
+drift,8,3,2,929,184,132,point,2,38.0,2,192,0.0,True,169.256,0.0038939889999483057,29,29,
+drift,8,3,2,929,184,132,buffer,3,47.0,2,192,0.0,True,169.256,0.0038939889999483057,29,29,
+drift,8,3,2,929,184,132,pooled,2,38.0,2,192,0.0,True,169.256,0.0038939889999483057,29,29,
+drift,8,3,2,929,184,132,hspec,2,38.0,2,192,0.0,True,169.256,0.0038939889999483057,29,29,
+drift,8,3,2,929,184,132,robust,2,48.0,2,212,0.0,True,173.841,0.004735852000067098,29,29,
+drift,8,3,2,929,184,132,oracle,2,33.0,2,182,2.0,False,,5.18610000881381e-05,0,29,Insufficient vehicle capacity for all orders.
+drift,8,4,2,850,160,132,reactive,0,0.0,0,132,28.0,False,,3.609700002016325e-05,0,22,Insufficient vehicle capacity for all orders.
+drift,8,4,2,850,160,132,point,2,23.0,2,162,0.0,True,149.745,0.2782065930000499,22,22,
+drift,8,4,2,850,160,132,buffer,2,23.0,2,162,0.0,True,149.745,0.2782065930000499,22,22,
+drift,8,4,2,850,160,132,pooled,1,24.0,1,172,0.0,True,133.92,0.0031700399999863293,22,22,
+drift,8,4,2,850,160,132,hspec,1,24.0,1,172,0.0,True,133.92,0.0031700399999863293,22,22,
+drift,8,4,2,850,160,132,robust,1,24.0,1,172,0.0,True,133.92,0.0031700399999863293,22,22,
+drift,8,4,2,850,160,132,oracle,2,23.0,2,162,0.0,True,149.745,0.2782065930000499,22,22,
+drift,8,5,1,857,66,95,reactive,0,0.0,0,95,0.0,True,88.541,0.001968142999999145,11,11,
+drift,8,5,1,857,66,95,point,0,0.0,0,95,0.0,True,88.541,0.001968142999999145,11,11,
+drift,8,5,1,857,66,95,buffer,0,0.0,0,95,0.0,True,88.541,0.001968142999999145,11,11,
+drift,8,5,1,857,66,95,pooled,0,0.0,0,95,0.0,True,88.541,0.001968142999999145,11,11,
+drift,8,5,1,857,66,95,hspec,0,0.0,0,95,0.0,True,88.541,0.001968142999999145,11,11,
+drift,8,5,1,857,66,95,robust,0,0.0,0,95,0.0,True,88.541,0.001968142999999145,11,11,
+drift,8,5,1,857,66,95,oracle,0,0.0,0,95,0.0,True,88.541,0.001968142999999145,11,11,
+drift,9,0,3,931,129,110,reactive,0,0.0,0,110,19.0,False,,3.281700003299193e-05,0,16,Insufficient vehicle capacity for all orders.
+drift,9,0,3,931,129,110,point,1,14.0,1,130,0.0,False,,1.0005975359999866,0,16,No feasible optimization solution found.
+drift,9,0,3,931,129,110,buffer,2,23.0,1,130,0.0,False,,1.0005975359999866,0,16,No feasible optimization solution found.
+drift,9,0,3,931,129,110,pooled,1,14.0,1,130,0.0,False,,1.0005975359999866,0,16,No feasible optimization solution found.
+drift,9,0,3,931,129,110,hspec,1,14.0,1,130,0.0,False,,1.0005975359999866,0,16,No feasible optimization solution found.
+drift,9,0,3,931,129,110,robust,2,23.0,1,130,0.0,False,,1.0005975359999866,0,16,No feasible optimization solution found.
+drift,9,0,3,931,129,110,oracle,1,14.0,1,130,0.0,False,,1.0005975359999866,0,16,No feasible optimization solution found.
+drift,9,1,3,909,128,110,reactive,0,0.0,0,110,18.0,False,,2.7579999937188404e-05,0,20,Insufficient vehicle capacity for all orders.
+drift,9,1,3,909,128,110,point,1,14.0,1,130,0.0,False,,1.0015945600000578,0,20,No feasible optimization solution found.
+drift,9,1,3,909,128,110,buffer,2,23.0,1,130,0.0,False,,1.0015945600000578,0,20,No feasible optimization solution found.
+drift,9,1,3,909,128,110,pooled,1,14.0,1,130,0.0,False,,1.0015945600000578,0,20,No feasible optimization solution found.
+drift,9,1,3,909,128,110,hspec,1,14.0,1,130,0.0,False,,1.0015945600000578,0,20,No feasible optimization solution found.
+drift,9,1,3,909,128,110,robust,2,23.0,1,130,0.0,False,,1.0015945600000578,0,20,No feasible optimization solution found.
+drift,9,1,3,909,128,110,oracle,1,14.0,1,130,0.0,False,,1.0015945600000578,0,20,No feasible optimization solution found.
+drift,9,2,1,898,115,111,reactive,0,0.0,0,111,4.0,False,,2.7341999953023333e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,9,2,1,898,115,111,point,1,9.0,1,121,0.0,True,105.647,0.002708484999971006,15,15,
+drift,9,2,1,898,115,111,buffer,1,14.0,1,131,0.0,True,105.224,0.002196103999949628,15,15,
+drift,9,2,1,898,115,111,pooled,1,14.0,1,131,0.0,True,105.224,0.002196103999949628,15,15,
+drift,9,2,1,898,115,111,hspec,1,14.0,1,131,0.0,True,105.224,0.002196103999949628,15,15,
+drift,9,2,1,898,115,111,robust,2,23.0,1,121,0.0,True,105.647,0.002708484999971006,15,15,
+drift,9,2,1,898,115,111,oracle,0,0.0,0,111,4.0,False,,2.7341999953023333e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,9,3,2,934,131,149,reactive,0,0.0,0,149,0.0,True,125.387,0.002403835999984949,20,20,
+drift,9,3,2,934,131,149,point,0,0.0,0,149,0.0,True,125.387,0.002403835999984949,20,20,
+drift,9,3,2,934,131,149,buffer,0,0.0,0,149,0.0,True,125.387,0.002403835999984949,20,20,
+drift,9,3,2,934,131,149,pooled,0,0.0,0,149,0.0,True,125.387,0.002403835999984949,20,20,
+drift,9,3,2,934,131,149,hspec,0,0.0,0,149,0.0,True,125.387,0.002403835999984949,20,20,
+drift,9,3,2,934,131,149,robust,0,0.0,0,149,0.0,True,125.387,0.002403835999984949,20,20,
+drift,9,3,2,934,131,149,oracle,0,0.0,0,149,0.0,True,125.387,0.002403835999984949,20,20,
+drift,9,4,0,874,100,91,reactive,0,0.0,0,91,9.0,False,,2.219100008460373e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,9,4,0,874,100,91,point,0,0.0,0,91,9.0,False,,2.219100008460373e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,9,4,0,874,100,91,buffer,1,9.0,1,101,0.0,False,,1.0037641310000254,0,15,No feasible optimization solution found.
+drift,9,4,0,874,100,91,pooled,0,0.0,0,91,9.0,False,,2.219100008460373e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,9,4,0,874,100,91,hspec,0,0.0,0,91,9.0,False,,2.219100008460373e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,9,4,0,874,100,91,robust,1,14.0,1,111,0.0,True,115.287,0.0025899610000124085,15,15,
+drift,9,4,0,874,100,91,oracle,1,9.0,1,101,0.0,False,,1.0037641310000254,0,15,No feasible optimization solution found.
+drift,9,5,0,1000,104,91,reactive,0,0.0,0,91,13.0,False,,2.4981000024126843e-05,0,15,Insufficient vehicle capacity for all orders.
+drift,9,5,0,1000,104,91,point,1,14.0,1,111,0.0,True,122.593,0.0024752049999960946,15,15,
+drift,9,5,0,1000,104,91,buffer,1,14.0,1,111,0.0,True,122.593,0.0024752049999960946,15,15,
+drift,9,5,0,1000,104,91,pooled,1,14.0,1,111,0.0,True,122.593,0.0024752049999960946,15,15,
+drift,9,5,0,1000,104,91,hspec,1,14.0,1,111,0.0,True,122.593,0.0024752049999960946,15,15,
+drift,9,5,0,1000,104,91,robust,2,23.0,1,111,0.0,True,122.593,0.0024752049999960946,15,15,
+drift,9,5,0,1000,104,91,oracle,1,14.0,1,111,0.0,True,122.593,0.0024752049999960946,15,15,

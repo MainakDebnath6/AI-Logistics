@@ -1,0 +1,28 @@
+{
+  "source": "UCI Bike Sharing (CC BY 4.0), mirror udacity/deep-learning",
+  "download_date": "2026-10-12",
+  "n_days": 731,
+  "segments": [
+    "night",
+    "morning",
+    "midday",
+    "evening"
+  ],
+  "scale": [
+    0.8654621330677669,
+    0.1302664215992434,
+    0.11053672393377487,
+    0.061809197547275575
+  ],
+  "split": {
+    "T": 731,
+    "t_calibration_start": 365,
+    "t_validation_start": 540,
+    "t_test_start": 600,
+    "t_test_last_origin": 702,
+    "calibration_window": 150
+  },
+  "primary_pi": 4.0,
+  "block": 28,
+  "n_test_origins": 103
+}
