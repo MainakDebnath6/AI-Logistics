@@ -361,7 +361,7 @@ def get_hccr_reservation_decision_endpoint(
         ) from error
 
 
-@router.get("/hccr-research/download/{filename}")
+@router.get("/hccr-research/download/{filename:path}")
 def download_hccr_research_artifact(
     filename: str,
     current_user: User = Depends(get_current_dispatcher),
@@ -379,4 +379,5 @@ def download_hccr_research_artifact(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Research artifact is unavailable.",
         )
-    return FileResponse(artifact_path, filename=filename)
+    media_type = "text/csv" if artifact_path.suffix.lower() == ".csv" else "application/json"
+    return FileResponse(artifact_path, filename=artifact_path.name, media_type=media_type)

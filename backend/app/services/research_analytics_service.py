@@ -9,59 +9,45 @@ from pathlib import Path
 from typing import Any
 
 
-HCCR_CSV_ARTIFACTS = {
-    "forecast_calibration": "forecast_calibration_summary.csv",
-    "model_comparison": "forecast_model_ablation.csv",
-    "policy_levels": "policy_levels_main.csv",
-    "paired_comparisons": "paired_comparisons_main.csv",
-    "paired_horizons": "paired_by_horizon_main.csv",
-    "gate_rates": "gate_open_rate.csv",
-    "sensitivity": "sensitivity_summary.csv",
-    "routing": "routing_summary.csv",
-    "routing_paired": "routing_paired_vs_reactive.csv",
-    "routing_capacity_gap": "routing_capacity_vs_feasibility.csv",
-    "forecast_model_paired": "forecast_model_paired.csv",
-    "replication": "replication_B.csv",
-    "mechanism_primary": "mechanism_confirm_primary.csv",
-    "freshness_primary": "freshness_confirm_primary.csv",
-    "decision_disagreement": "decision_disagreement_summary.csv",
-    "decision_disagreement_primary": "decision_disagreement_primary.csv",
-    "decision_disagreement_replication": "decision_disagreement_replication.csv",
-    "mechanism_residual_summary": "mechanism_confirm_residual_summary.csv",
-    "paired_by_horizon": "paired_by_horizon_main.csv",
-    "forecast_model_ablation": "forecast_model_ablation.csv",
-    "sensitivity_summary": "sensitivity_summary.csv",
-    "routing_summary": "routing_summary.csv",
-    "routing_paired_vs_reactive": "routing_paired_vs_reactive.csv",
-    "routing_capacity_vs_feasibility": "routing_capacity_vs_feasibility.csv",
-    "realdata_delta": "realdata_delta.csv",
-    "realdata_forecast_calibration": "realdata_forecast_calibration.csv",
-    "realdata_policies": "realdata_policies.csv",
-    "comparison_table": "comparison_table.csv",
-    "comparison_forecasters": "comparison_forecasters.csv",
-    "real_data_policies": "realdata_policies.csv",
-    "real_data_delta": "realdata_delta.csv",
-    "real_data_calibration": "realdata_forecast_calibration.csv",
-}
+HCCR_ARTIFACT_SPECS = (
+    ("forecast_calibration", "forecast_calibration_summary.csv", True, ("regime", "h", "mae", "wape", "cov_hspec", "cov_pooled", "width_hspec", "width_pooled")),
+    ("model_comparison", "forecast_model_ablation.csv", False, ("model", "regime", "mae", "wape")),
+    ("policy_levels", "policy_levels_main.csv", True, ("policy", "regime", "cost_total", "cost_reserve", "unmet")),
+    ("paired_comparisons", "paired_comparisons_main.csv", True, ("horizons", "comparison", "regime", "n", "mean_delta", "ci_lo", "ci_hi")),
+    ("paired_horizons", "paired_by_horizon_main.csv", True, ("h", "comparison", "regime", "n", "mean_delta", "ci_lo", "ci_hi")),
+    ("gate_rates", "gate_open_rate.csv", False, ("regime", "policy", "h", "gate_open")),
+    ("sensitivity", "sensitivity_summary.csv", False, ("param", "value", "regime", "comparator", "n", "mean_delta", "ci_lo", "ci_hi")),
+    ("routing", "routing_summary.csv", True, ("policy", "n_instances", "feasibility_rate", "mean_distance_feasible_km")),
+    ("routing_paired", "routing_paired_vs_reactive.csv", False, ("policy", "mean_feas_gain_vs_reactive")),
+    ("routing_capacity_gap", "routing_capacity_vs_feasibility.csv", False, ("policy", "n_agg_ok", "routing_infeasible_despite_agg_ok")),
+    ("forecast_model_paired", "forecast_model_paired.csv", False, ("regime", "comparison", "n", "mean_delta", "ci_lo", "ci_hi")),
+    ("replication", "replication_B.csv", False, ("regime", "horizons", "n", "mean_delta", "ci_lo", "ci_hi")),
+    ("mechanism_primary", "mechanism_confirm_primary.csv", False, ("contrast", "n_sims", "mean", "ci95_lo", "ci95_hi", "p_holm")),
+    ("freshness_primary", "freshness_confirm_primary.csv", False, ("contrast", "n_sims", "mean", "ci95_lo", "ci95_hi", "p_holm")),
+    ("decision_disagreement", "decision_disagreement_summary.csv", False, ("sample", "decisions", "regime", "horizons", "n_sims", "mean", "ci_lo", "ci_hi")),
+    ("mechanism_residual_summary", "mechanism_confirm_residual_summary.csv", False, ("phi", "h")),
+    ("real_data_delta", "realdata_delta.csv", False, ("pi", "h", "delta", "ci_lo", "ci_hi", "n_origins")),
+    ("real_data_calibration", "realdata_forecast_calibration.csv", False, ("h", "mae", "wape", "cov_hspec", "cov_pooled")),
+    ("real_data_policies", "realdata_policies.csv", False, ("pi", "h", "policy", "total_cost", "unmet")),
+    ("comparison_table", "comparison_table.csv", False, ("scope", "regimes", "horizons", "policy", "cost_total", "cost_total_lo", "cost_total_hi", "unmet", "route_feas")),
+    ("comparison_forecasters", "comparison_forecasters.csv", False, ("forecaster", "n_units", "cost", "lo", "hi", "wape")),
+    ("model_horizon_lr_source", "intervals_main.csv", False, ("regime", "seed", "model", "noise_scale", "h", "mae", "wape")),
+    ("model_horizon_ablation_source", "intervals_models.csv", False, ("regime", "seed", "model", "noise_scale", "h", "mae", "wape")),
+)
 
-HCCR_DOWNLOADS = frozenset({
-    *HCCR_CSV_ARTIFACTS.values(),
-    "operational_main.csv",
-    "intervals_main.csv",
-    "operational_models.csv",
-    "operational_sensitivity.csv",
-    "replication_operational.csv",
-    "mechanism_confirm_cells.csv",
-    "mechanism_confirm_paired.csv",
-    "freshness_confirm_cells.csv",
-    "freshness_confirm_paired.csv",
-    "decision_disagreement_primary.csv",
-    "decision_disagreement_replication.csv",
-    "routing_instances.csv",
-    "config_used.json",
-    "experiment_summary.json",
-    "realdata_meta.json",
-})
+HCCR_SUMMARY_FILES = frozenset(spec[1] for spec in HCCR_ARTIFACT_SPECS)
+HCCR_REQUIRED_FILES = frozenset(spec[1] for spec in HCCR_ARTIFACT_SPECS if spec[2])
+if len(HCCR_SUMMARY_FILES) != len(HCCR_ARTIFACT_SPECS):
+    raise RuntimeError("HCCR artifact manifest contains duplicate filenames.")
+
+LEGACY_JSON_SPECS = (
+    ("legacy_forecast_models", "forecast_models.json"),
+    ("legacy_horizon_sensitivity", "horizon_sensitivity.json"),
+    ("legacy_feature_ablation", "feature_ablation.json"),
+    ("legacy_cvrp_benchmark", "cvrp_benchmark.json"),
+    ("legacy_hgfc_advisory", "hgfc_advisory.json"),
+    ("legacy_reactive_vs_hgfc", "reactive_vs_hgfc.json"),
+)
 
 
 def _parse_csv_value(value: str) -> Any:
@@ -99,16 +85,124 @@ class ResearchAnalyticsService:
             return None
         return payload if isinstance(payload, dict) else None
 
-    def _read_csv(self, filename: str) -> list[dict[str, Any]] | None:
-        path = self._results_dir / filename
+    def _read_csv(
+        self,
+        filename: str,
+        required_columns: tuple[str, ...] = (),
+    ) -> list[dict[str, Any]] | None:
+        return self._read_csv_path(self._results_dir / filename, required_columns)
+
+    @staticmethod
+    def _read_csv_path(
+        path: Path,
+        required_columns: tuple[str, ...] = (),
+    ) -> list[dict[str, Any]] | None:
         try:
             with path.open("r", encoding="utf-8", newline="") as handle:
-                return [
-                    {key: _parse_csv_value(value or "") for key, value in row.items() if key is not None}
-                    for row in csv.DictReader(handle)
-                ]
+                reader = csv.DictReader(handle)
+                if not reader.fieldnames or not set(required_columns).issubset(reader.fieldnames):
+                    return None
+                parsed_rows = []
+                for row in reader:
+                    if None in row or any(value is None for value in row.values()):
+                        return None
+                    parsed_rows.append({
+                        key: _parse_csv_value(value or "")
+                        for key, value in row.items()
+                        if key is not None
+                    })
+                if not parsed_rows:
+                    return None
+                return parsed_rows
         except (OSError, UnicodeDecodeError, csv.Error):
             return None
+
+    @staticmethod
+    def _validate_csv_path(path: Path) -> bool:
+        """Validate a discovered raw CSV's header and row structure without retaining all rows."""
+        try:
+            with path.open("r", encoding="utf-8", newline="") as handle:
+                reader = csv.reader(handle)
+                header = next(reader, None)
+                if not header or any(not name for name in header) or len(header) != len(set(header)):
+                    return False
+                first_row = next(reader, None)
+                if first_row is None or len(first_row) != len(header):
+                    return False
+                return all(len(row) == len(header) for row in reader)
+        except (OSError, UnicodeDecodeError, csv.Error):
+            return False
+
+    def get_artifact_manifest(self) -> list[dict[str, Any]]:
+        """List actual package artifacts once each and flag required, optional and malformed files."""
+        specs_by_filename = {filename: (key, required, columns) for key, filename, required, columns in HCCR_ARTIFACT_SPECS}
+        result_root = self._results_dir.resolve()
+        package_root = result_root.parent
+        repository_root = package_root.parent
+        package_files: dict[str, Path] = {}
+        for path in result_root.iterdir() if result_root.is_dir() else ():
+            if path.is_file() and path.suffix.lower() in {".csv", ".json"}:
+                package_files[path.name] = path
+        package_files["study_config.json"] = self._config_path.resolve()
+        for name in ("day.csv", "hour.csv"):
+            source_path = package_root / "realdata" / "data" / name
+            package_files[f"research_hccr/realdata/data/{name}"] = source_path
+        legacy_root = repository_root / "experiments" / "results"
+        for _key, name in LEGACY_JSON_SPECS:
+            package_files[f"experiments/results/{name}"] = legacy_root / name
+
+        manifest: list[dict[str, Any]] = []
+        for filename, spec in specs_by_filename.items():
+            result_key, required, columns = spec
+            path = package_files.get(filename)
+            parsed = self._read_csv_path(path, columns) if path is not None and path.is_file() else None
+            manifest.append({
+                "filename": filename,
+                "result_key": result_key,
+                "required": required,
+                "status": "available" if parsed is not None else "missing" if path is None or not path.is_file() else "malformed",
+                "content_type": "text/csv",
+                "size_bytes": path.stat().st_size if path is not None and path.is_file() else None,
+            })
+
+        config_fields = {"T", "n_regions", "t_calibration_start", "t_validation_start", "t_test_start", "horizons", "n_seeds_main"}
+        config_payload = self._read_json(self._config_path)
+        config_valid = config_payload is not None and config_fields.issubset(config_payload)
+        manifest.append({
+            "filename": "study_config.json",
+            "result_key": "configuration",
+            "required": True,
+            "status": "available" if config_valid else "missing" if not self._config_path.is_file() else "malformed",
+            "content_type": "application/json",
+            "size_bytes": self._config_path.stat().st_size if self._config_path.is_file() else None,
+        })
+
+        represented = set(specs_by_filename) | {"study_config.json"}
+        for filename, path in sorted(package_files.items()):
+            if filename in represented:
+                continue
+            if not path.is_file():
+                parsed_ok = False
+                artifact_status = "missing"
+            elif path.suffix.lower() == ".json":
+                json_payload = self._read_json(path)
+                parsed_ok = json_payload is not None and (
+                    filename not in {f"experiments/results/{name}" for _, name in LEGACY_JSON_SPECS}
+                    or isinstance(json_payload.get("results"), list)
+                )
+                artifact_status = "available" if parsed_ok else "malformed"
+            else:
+                parsed_ok = self._validate_csv_path(path)
+                artifact_status = "available" if parsed_ok else "malformed"
+            manifest.append({
+                "filename": filename,
+                "result_key": next((key for key, name in LEGACY_JSON_SPECS if filename == f"experiments/results/{name}"), None),
+                "required": False,
+                "status": artifact_status,
+                "content_type": "application/json" if path.suffix.lower() == ".json" else "text/csv",
+                "size_bytes": path.stat().st_size if path.is_file() else None,
+            })
+        return sorted(manifest, key=lambda item: item["filename"])
 
     def _model_horizon_accuracy(self, seed_count: int) -> list[dict[str, Any]]:
         """Aggregate matched model-ablation test rows over the same ten seeds."""
@@ -138,25 +232,73 @@ class ResearchAnalyticsService:
             summary.append(output)
         return summary
 
+    def _policy_horizon_metrics(self) -> list[dict[str, Any]]:
+        """Summarize archived gated test policy costs by regime and horizon."""
+        source = self._read_csv("operational_main.csv", ("regime", "seed", "h", "policy", "variant", "cost_total"))
+        if source is None:
+            return []
+        groups: dict[tuple[str, float, str], list[dict[str, Any]]] = {}
+        for row in source:
+            if row.get("variant") != "gated":
+                continue
+            regime = row.get("regime")
+            horizon = row.get("h")
+            policy = row.get("policy")
+            if not isinstance(regime, str) or not isinstance(horizon, (int, float)) or not isinstance(policy, str):
+                continue
+            groups.setdefault((regime, float(horizon), policy), []).append(row)
+
+        metrics = ("cost_total", "cost_reserve", "unmet", "n_reserved", "shortage_day_rate")
+        output: list[dict[str, Any]] = []
+        for (regime, horizon, policy), rows in sorted(groups.items()):
+            item: dict[str, Any] = {
+                "regime": regime,
+                "horizon_days": horizon,
+                "policy": policy,
+                "seed_count": len({row.get("seed") for row in rows}),
+            }
+            for metric in metrics:
+                values = [row[metric] for row in rows if isinstance(row.get(metric), (int, float))]
+                item[metric] = sum(values) / len(values) if values else None
+            output.append(item)
+        return output
+
     def get_hccr_analytics(self) -> dict[str, Any]:
         """Return method, provenance and available summary results for the dashboard."""
         config = self._read_json(self._config_path)
         summary = self._read_json(self._results_dir / "experiment_summary.json")
         real_data = self._read_json(self._results_dir / "realdata_meta.json")
-        artifacts: dict[str, list[dict[str, Any]] | None] = {
-            key: self._read_csv(filename)
-            for key, filename in HCCR_CSV_ARTIFACTS.items()
+        manifest = self.get_artifact_manifest()
+        artifacts = {
+            key: self._read_csv(filename, columns)
+            for key, filename, _required, columns in HCCR_ARTIFACT_SPECS
         }
-        required = ("forecast_calibration", "policy_levels", "paired_comparisons", "routing")
-        status = "available" if config and all(artifacts[key] is not None for key in required) else "partial"
-        missing = [
-            HCCR_CSV_ARTIFACTS[key]
-            for key, rows in artifacts.items()
-            if rows is None
-        ]
+        missing_required = sorted(
+            row["filename"] for row in manifest
+            if row["required"] and row["status"] != "available"
+        )
+        unavailable_optional = sorted(
+            row["filename"] for row in manifest
+            if not row["required"] and row["status"] != "available"
+        )
+        status = "available" if config and not missing_required else "partial"
+        repository_root = self._results_dir.resolve().parent.parent
+        legacy_results_dir = repository_root / "experiments" / "results"
+        legacy_artifacts: dict[str, dict[str, Any] | None] = {}
+        legacy_forecast_artifacts = []
+        for result_key, filename in LEGACY_JSON_SPECS:
+            path = legacy_results_dir / filename
+            payload = self._read_json(path)
+            valid = payload is not None and isinstance(payload.get("results"), list)
+            legacy_artifacts[result_key] = payload if valid else None
+            if valid and result_key in {"legacy_forecast_models", "legacy_horizon_sensitivity"}:
+                legacy_forecast_artifacts.append({"filename": filename, "results": payload["results"]})
+
         return {
             "status": status,
-            "missing_artifacts": missing,
+            "missing_artifacts": missing_required,
+            "unavailable_optional_artifacts": unavailable_optional,
+            "artifact_manifest": manifest,
             "method_discrepancies": [
                 "The latest paper specifies base capacity ceil(kappa * initial-training mean); the supplied aggregate CSVs were generated by source that used nearest-integer np.round. The recomputed single-origin decision now uses the paper's ceiling rule, but aggregate policy, cost and routing outputs have not been regenerated."
             ],
@@ -173,10 +315,15 @@ class ResearchAnalyticsService:
                 "archived_capacity_rule": "nearest-integer np.round(kappa * mean demand over the initial fit period)",
             },
             "results": artifacts,
+            "legacy_artifacts": legacy_artifacts,
+            "legacy_forecast_artifacts": legacy_forecast_artifacts,
             "model_horizon_accuracy": self._model_horizon_accuracy(
                 int((config or {}).get("n_seeds_forecast_models", 0))
             ),
-            "downloads": sorted(HCCR_DOWNLOADS),
+            "policy_horizon_metrics": self._policy_horizon_metrics(),
+            "downloads": sorted(
+                row["filename"] for row in manifest if row["status"] == "available"
+            ),
         }
 
     def get_hccr_decision(
@@ -333,9 +480,22 @@ class ResearchAnalyticsService:
 
     def get_download_path(self, filename: str) -> Path | None:
         """Return an allowlisted artifact path, or None for absent/unsupported names."""
-        if filename not in HCCR_DOWNLOADS:
+        entry = next(
+            (item for item in self.get_artifact_manifest() if item["filename"] == filename),
+            None,
+        )
+        if entry is None or entry["status"] != "available":
             return None
-        path = (self._results_dir / filename).resolve()
-        if path.parent != self._results_dir.resolve() or not path.is_file():
+        research_package = self._results_dir.parent.resolve()
+        repository_root = research_package.parent
+        if filename == "study_config.json":
+            path = self._config_path.resolve()
+        elif filename.startswith("research_hccr/realdata/data/"):
+            path = (repository_root / filename).resolve()
+        elif filename.startswith("experiments/results/"):
+            path = (repository_root / filename).resolve()
+        else:
+            path = (self._results_dir / filename).resolve()
+        if repository_root not in path.parents or not path.is_file():
             return None
         return path
