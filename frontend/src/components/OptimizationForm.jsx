@@ -2,6 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { getDrivers } from "../services/driverService";
 import { getOrders } from "../services/orderService";
 import { getApiErrorMessage, optimizeRoutes } from "../services/optimizationService";
+import { getResearchAnalytics, buildSyntheticDemandSeries } from "../services/analyticsService";
+import {
+  assessForecastCapacity,
+  forecastDemandForHorizon,
+} from "../services/predictionService";
+import { buildForecastReadinessView } from "./forecastReadinessView";
 import { getVehicles } from "../services/vehicleService";
 import {
   getDriverLabel,
@@ -135,6 +141,26 @@ export default function OptimizationForm({
   const [submitError, setSubmitError] = useState("");
   const [validationErrors, setValidationErrors] = useState({});
   const [optimizing, setOptimizing] = useState(false);
+  const [forecastHorizonDays, setForecastHorizonDays] = useState(1);
+  const [demandHistory, setDemandHistory] = useState([]);
+  const [demandSourceStatus, setDemandSourceStatus] = useState("loading");
+  const [readiness, setReadiness] = useState({ status: "loading" });
+
+  const selectedVehicleCapacity = useMemo(
+    () => vehicles
+      .filter((vehicle) => selectedVehicleIds.includes(String(getItemId(vehicle))))
+      .reduce((total, vehicle) => total + Number(vehicle?.capacity || 0), 0),
+    [selectedVehicleIds, vehicles],
+  );
+  const readinessRequestKey = `${forecastHorizonDays}:${selectedVehicleCapacity}`;
+  const currentReadiness = readiness.requestKey === readinessRequestKey
+    ? readiness
+    : { status: "loading" };
+  const readinessView = buildForecastReadinessView(
+    currentReadiness,
+    demandHistory.length,
+    demandSourceStatus,
+  );
 
   useEffect(() => {
     let mounted = true;
@@ -178,6 +204,92 @@ export default function OptimizationForm({
       mounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadDemandHistory() {
+      setDemandSourceStatus("loading");
+      try {
+        const research = await getResearchAnalytics();
+        if (!active) {
+          return;
+        }
+        const history = buildSyntheticDemandSeries(research).map((entry) => entry.demand);
+        setDemandHistory(history);
+        setDemandSourceStatus(history.length > 0 ? "available" : "empty");
+      } catch {
+        if (active) {
+          setDemandHistory([]);
+          setDemandSourceStatus("error");
+        }
+      }
+    }
+
+    loadDemandHistory();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (demandSourceStatus !== "available") {
+      return undefined;
+    }
+
+    let active = true;
+
+    async function loadReadiness() {
+      try {
+        const forecastPayload = {
+          historical_demand_values: demandHistory,
+          horizon_days: forecastHorizonDays,
+        };
+        if (forecastHorizonDays === 1 && selectedVehicleCapacity > 0) {
+          const assessment = await assessForecastCapacity({
+            ...forecastPayload,
+            available_capacity: selectedVehicleCapacity,
+          });
+          if (active) {
+            setReadiness({
+              status: "success",
+              requestKey: readinessRequestKey,
+              ...assessment,
+              source: "Repository synthetic series (not paper simulation)",
+              model: "Exponential smoothing fallback",
+            });
+          }
+          return;
+        }
+
+        const forecast = await forecastDemandForHorizon(forecastPayload);
+        if (active) {
+          setReadiness({
+            status: "success",
+            requestKey: readinessRequestKey,
+            ...forecast,
+            available_capacity: null,
+            capacityUnavailable: forecastHorizonDays > 1,
+            source: "Repository synthetic series (not paper simulation)",
+            model: "Exponential smoothing fallback",
+          });
+        }
+      } catch (requestError) {
+        if (active) {
+          setReadiness({
+            status: "error",
+            requestKey: readinessRequestKey,
+            message: getApiErrorMessage(requestError, "Forecast assessment is unavailable."),
+          });
+        }
+      }
+    }
+
+    loadReadiness();
+    return () => {
+      active = false;
+    };
+  }, [demandHistory, demandSourceStatus, forecastHorizonDays, readinessRequestKey, selectedVehicleCapacity]);
 
   function toggleSelected(setter, id) {
     setter((previous) => {
@@ -327,6 +439,78 @@ export default function OptimizationForm({
         </p>
       </header>
 
+      <section className="space-y-3 rounded-lg border border-slate-700 bg-slate-950/70 p-3" aria-live="polite">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h4 className="text-sm font-semibold text-white">Forecast &amp; Fleet Readiness</h4>
+            <p className="mt-1 text-xs text-slate-400">HGFCI advisory only; separate from the paper's HCCR reservation policy and never used as a routing constraint.</p>
+          </div>
+          <label className="flex items-center gap-2 text-xs text-slate-300">
+            <span>Forecast horizon</span>
+            <select
+              value={forecastHorizonDays}
+              onChange={(event) => setForecastHorizonDays(Number(event.target.value))}
+              disabled={optimizing}
+              className="rounded-md border border-slate-700 bg-slate-900 px-2 py-1.5 text-sm text-white"
+            >
+              {[1, 7, 14].map((days) => (
+                <option key={days} value={days}>{days} day{days === 1 ? "" : "s"}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        {readinessView.state !== "success" ? (
+          <p className={`text-sm ${readinessView.state === "loading" ? "text-slate-300" : "text-amber-200"}`}>
+            {readinessView.message}
+          </p>
+        ) : null}
+        {readinessView.state === "success" ? (
+          <>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div>
+                <p className="text-xs text-slate-400">
+                  {readiness.horizon_days === 1
+                    ? "One-day forecast demand"
+                    : `Cumulative forecast workload over ${readiness.horizon_days} days`}
+                </p>
+                <p className="text-lg font-semibold text-white">{Number(readiness.predicted_demand).toFixed(2)} synthetic units</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-400">Model · provenance</p>
+                <p className="text-sm text-slate-200">{readiness.model} · {readiness.source} ({demandHistory.length} daily observations)</p>
+              </div>
+            </div>
+            {readiness.capacityUnavailable ? (
+              <p className="rounded-md border border-amber-500/40 bg-amber-500/10 p-2 text-xs text-amber-100">
+                {readinessView.capacityMessage}
+              </p>
+            ) : readiness.available_capacity !== null && readiness.available_capacity !== undefined ? (
+              <>
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                  <ReadinessMetric label="Available capacity" value={`${readiness.available_capacity} vehicle units / dispatch cycle`} />
+                  <ReadinessMetric label="Delta" value={`${readiness.capacity_delta?.toFixed(2)} synthetic units`} />
+                  <ReadinessMetric label="Rho" value={readiness.rho === null ? "Undefined (zero capacity)" : readiness.rho?.toFixed(3)} />
+                  <ReadinessMetric label="Nonnegative risk" value={`${readiness.capacity_risk?.toFixed(2)} synthetic units`} />
+                </div>
+                <p className={`text-xs ${readiness.preparation_recommended ? "text-amber-200" : "text-emerald-200"}`}>
+                  {readiness.preparation_recommended
+                    ? `Preparation recommendation: review ${readiness.recommended_additional_capacity.toFixed(2)} additional capacity units. Informational only; no vehicles are added to the solver.`
+                    : "Preparation recommendation: no additional capacity indicated for this one-day scenario."}
+                </p>
+              </>
+            ) : (
+              <p className="text-xs text-amber-200">Select an available vehicle to compare one-day synthetic demand with fleet capacity.</p>
+            )}
+            <p className="text-xs text-amber-200">Synthetic demand units are not validated against operational vehicle-capacity units; treat this forecast comparison as illustrative, not operational advice.</p>
+            <p className="text-xs text-amber-200">{readinessView.calibrationMessage}</p>
+            {readinessView.historyMessage ? (
+              <p className="text-xs text-amber-200">{readinessView.historyMessage}</p>
+            ) : null}
+          </>
+        ) : null}
+      </section>
+
       {loadingOptions ? (
         <div className="rounded-lg border border-slate-800 bg-slate-950/50 p-4">
           <div className="flex items-center gap-3 text-slate-300">
@@ -434,5 +618,14 @@ export default function OptimizationForm({
         )}
       </button>
     </form>
+  );
+}
+
+function ReadinessMetric({ label, value }) {
+  return (
+    <div className="rounded-md border border-slate-800 bg-slate-900 p-2">
+      <p className="text-[11px] text-slate-400">{label}</p>
+      <p className="mt-1 wrap-break-word text-sm font-medium text-white">{value ?? "Unavailable"}</p>
+    </div>
   );
 }

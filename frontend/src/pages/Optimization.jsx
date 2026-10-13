@@ -16,6 +16,7 @@ export default function Optimization() {
   const [optimizing, setOptimizing] = useState(false);
   const [error, setError] = useState("");
   const [selectedRouteIndex, setSelectedRouteIndex] = useState(0);
+  const [requestedOrderCount, setRequestedOrderCount] = useState(null);
 
   const routes = useMemo(
     () => (Array.isArray(optimizationResult?.routes) ? optimizationResult.routes : []),
@@ -32,10 +33,15 @@ export default function Optimization() {
   );
 
   const selectedRoute = routes[selectedRouteIndex] || null;
+  const requestedOrders = optimizationResult?.requested_orders ?? requestedOrderCount;
+  const routeFeasible = requestedOrders !== null
+    && requestedOrders !== undefined
+    && Number(requestedOrders) === Number(summary.totalOrders);
 
-  function handleOptimized(result) {
+  function handleOptimized(result, requestPayload) {
     setError("");
     setOptimizationResult(result);
+    setRequestedOrderCount(requestPayload?.order_ids?.length ?? result?.requested_orders ?? null);
     setSelectedRouteIndex(0);
   }
 
@@ -47,6 +53,7 @@ export default function Optimization() {
     setOptimizing(isOptimizing);
     if (isOptimizing) {
       setOptimizationResult(null);
+      setRequestedOrderCount(null);
       setSelectedRouteIndex(0);
       setError("");
     }
@@ -101,10 +108,16 @@ export default function Optimization() {
                 </article>
 
                 <article className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-                  <p className="text-xs uppercase tracking-wide text-slate-400">Total Orders</p>
-                  <p className="mt-2 text-2xl font-bold text-white">{summary.totalOrders}</p>
+                  <p className="text-xs uppercase tracking-wide text-slate-400">Served / Requested Orders</p>
+                  <p className="mt-2 text-2xl font-bold text-white">
+                    {summary.totalOrders} / {optimizationResult.requested_orders ?? requestedOrderCount ?? "--"}
+                  </p>
                 </article>
               </div>
+
+              <p role="status" className={`text-sm ${routeFeasible ? "text-emerald-200" : "text-amber-200"}`}>
+                Solver status: solution returned; {routeFeasible ? "all requested confirmed orders were served." : "requested and served order counts differ."} Advisory forecast was informational only.
+              </p>
 
               <MapView route={selectedRoute} loading={optimizing} />
 
