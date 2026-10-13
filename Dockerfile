@@ -23,6 +23,7 @@ RUN pip install --upgrade pip \
 COPY alembic.ini ./
 COPY alembic ./alembic
 COPY backend ./backend
+COPY research_hccr ./research_hccr
 COPY experiments/results/forecast_models.json ./experiments/results/forecast_models.json
 COPY experiments/results/horizon_sensitivity.json ./experiments/results/horizon_sensitivity.json
 COPY experiments/results/feature_ablation.json ./experiments/results/feature_ablation.json
@@ -30,6 +31,15 @@ COPY experiments/results/cvrp_benchmark.json ./experiments/results/cvrp_benchmar
 COPY experiments/results/hgfc_advisory.json ./experiments/results/hgfc_advisory.json
 COPY experiments/results/reactive_vs_hgfc.json ./experiments/results/reactive_vs_hgfc.json
 COPY data/raw/synthetic_demand.csv ./data/raw/synthetic_demand.csv
+
+RUN test -f research_hccr/study.py \
+    && test -f research_hccr/configs/study_config.json \
+    && test -f research_hccr/results/forecast_calibration_summary.csv \
+    && test -f research_hccr/results/operational_main.csv \
+    && test -f research_hccr/results/routing_summary.csv \
+    && test -f research_hccr/realdata/data/day.csv \
+    && test -f research_hccr/realdata/data/hour.csv \
+    && test -f data/raw/synthetic_demand.csv
 
 RUN useradd -m -u 10001 appuser \
     && chown -R appuser:appuser /app
