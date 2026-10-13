@@ -7,12 +7,14 @@ from types import SimpleNamespace
 
 import pytest
 from fastapi import HTTPException
+from sqlalchemy.exc import OperationalError, ProgrammingError
 
 from app.api.analytics import (
     download_hccr_research_artifact,
     get_hccr_research_endpoint,
     get_hccr_reservation_decision_endpoint,
     get_research_analytics,
+    summarize_synthetic_demand,
     summarize_synthetic_demand_rows,
 )
 from app.services.research_analytics_service import ResearchAnalyticsService
@@ -27,6 +29,9 @@ class FakeResult:
 
     def all(self):
         return self._rows
+
+    def first(self):
+        return self._rows[0] if self._rows else None
 
 
 class FakeSession:
@@ -66,6 +71,79 @@ def test_summarize_synthetic_demand_returns_ordered_metrics():
     assert result["observations"][0]["demand"] == 100.0
 
 
+def test_synthetic_demand_prefers_populated_database_rows():
+    class Database:
+        def execute(self, statement, _params=None):
+            if "COUNT(*)" in str(statement):
+                return FakeResult([{"count": 2}])
+            return FakeResult([
+                {"date": "2025-01-01", "demand": 12.5},
+                {"date": "2025-01-02", "demand": 18.5},
+            ])
+
+    result = summarize_synthetic_demand(Database())
+    assert result["source"] == "public.synthetic_demand"
+    assert result["observation_count"] == 2
+    assert result["average_demand"] == 15.5
+    assert result["split"] == {
+        "train_observations": 2,
+        "holdout_observations": 0,
+        "chronological": True,
+    }
+
+
+@pytest.mark.parametrize("database_error", [
+    OperationalError("query", {}, OSError("connection refused")),
+    ProgrammingError("query", {}, SimpleNamespace(sqlstate="42P01")),
+])
+def test_synthetic_demand_falls_back_to_csv_when_database_is_unavailable(database_error):
+    class Database:
+        def execute(self, _statement, _params=None):
+            raise database_error
+
+    result = summarize_synthetic_demand(Database())
+    assert result["source"] == "data/raw/synthetic_demand.csv"
+    assert result["count"] == result["observation_count"] == 730
+    assert result["start_date"] == "2024-01-01"
+    assert result["end_date"] == "2025-12-30"
+    assert result["split"]["train_observations"] == 670
+    assert result["split"]["holdout_observations"] == 60
+    assert result["fallback_reason"] == "The public.synthetic_demand table could not be read."
+
+
+def test_empty_database_uses_checked_in_synthetic_csv():
+    class EmptyDatabase:
+        def execute(self, statement, _params=None):
+            return FakeResult([{"count": 0}]) if "COUNT(*)" in str(statement) else FakeResult([])
+
+    result = summarize_synthetic_demand(EmptyDatabase())
+    assert result["source"] == "data/raw/synthetic_demand.csv"
+    assert result["observation_count"] == 730
+    assert result["fallback_reason"] == "The public.synthetic_demand table is empty."
+
+
+def test_unrelated_database_failure_is_not_hidden_by_csv_fallback():
+    class BrokenDatabase:
+        def execute(self, _statement, _params=None):
+            raise RuntimeError("unexpected query bug")
+
+    with pytest.raises(HTTPException) as error:
+        summarize_synthetic_demand(BrokenDatabase())
+    assert error.value.status_code == 503
+    assert "Synthetic demand dataset is unavailable" in error.value.detail
+
+
+def test_missing_csv_returns_diagnostic_without_fabricated_metrics(tmp_path, monkeypatch):
+    from app.api import analytics
+
+    monkeypatch.setattr(analytics, "SYNTHETIC_DEMAND_CSV_PATH", tmp_path / "missing.csv")
+    result = summarize_synthetic_demand()
+    assert result["source"] == "unavailable"
+    assert result["observation_count"] == 0
+    assert result["average_demand"] is None
+    assert result["error"].startswith("Synthetic demand CSV is missing")
+
+
 def test_get_research_analytics_uses_real_experiment_results():
     payload = get_research_analytics()
 
@@ -96,6 +174,23 @@ def test_runtime_image_declares_research_artifact_inputs():
     assert "COPY data/raw/synthetic_demand.csv ./data/raw/synthetic_demand.csv" in dockerfile
     assert "COPY research_hccr ./research_hccr" in dockerfile
     assert (repository_root / "research_hccr/configs/study_config.json").is_file()
+    for filename in ("day.csv", "hour.csv"):
+        assert (repository_root / "research_hccr/realdata/data" / filename).is_file()
+
+
+def test_public_dataset_response_uses_bundled_daily_bike_sharing_rows():
+    result = ResearchAnalyticsService().get_hccr_analytics()["public_dataset"]
+
+    assert result["status"] == "available"
+    assert result["source_path"] == "research_hccr/realdata/data/day.csv"
+    assert result["observation_count"] == result["expected_observation_count"] == 731
+    assert result["start_date"] == "2011-01-01"
+    assert result["end_date"] == "2012-12-31"
+    assert len(result["monthly_observations"]) == 24
+    assert result["monthly_observations"][0]["month"] == "2011-01"
+    assert result["monthly_observations"][0]["total_rentals"] == 38189
+    assert sum(row["total_rentals"] for row in result["monthly_observations"]) == result["total_rentals"]
+    assert result["mean_daily_rentals"] > 0
 
 
 def test_research_artifact_loader_reports_missing_and_malformed_files(tmp_path, monkeypatch):

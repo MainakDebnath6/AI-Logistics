@@ -33,6 +33,30 @@ export function buildSyntheticDemandSeries(payload) {
     .filter((entry) => typeof entry.date === "string" && entry.demand !== null);
 }
 
+export function buildSyntheticDemandChartData(payload) {
+  const observations = buildSyntheticDemandSeries(payload);
+  const trainCount = toFiniteNumber(payload?.synthetic_demand?.split?.train_observations);
+  if (trainCount === null) return [];
+  return observations.map((entry, index) => ({
+    ...entry,
+    trainingDemand: index < trainCount ? entry.demand : null,
+    holdoutDemand: index >= trainCount ? entry.demand : null,
+  }));
+}
+
+export function buildPublicBikeMonthlyData(payload) {
+  const observations = payload?.monthly_observations;
+  if (!Array.isArray(observations)) return [];
+  return observations.map((entry) => ({
+    month: entry?.month,
+    observationDays: toFiniteNumber(entry?.observation_days),
+    totalRentals: toFiniteNumber(entry?.total_rentals),
+    casualRentals: toFiniteNumber(entry?.casual_rentals),
+    registeredRentals: toFiniteNumber(entry?.registered_rentals),
+    meanDailyRentals: toFiniteNumber(entry?.mean_daily_rentals),
+  })).filter((entry) => typeof entry.month === "string" && entry.totalRentals !== null);
+}
+
 export function buildForecastComparisonData(payload) {
   return getResults(payload, "forecast_models")
     .map((entry) => ({
@@ -113,14 +137,27 @@ export function buildHgfcAdvisoryData(payload) {
 
 export function buildPairedRoutingData(payload) {
   return getResults(payload, "reactive_vs_hgfc")
-    .map((entry) => ({
-      scenarioId: toFiniteNumber(entry.scenario_id),
-      leadDays: toFiniteNumber(entry.forecast_lead_days),
-      reactiveDistance: toFiniteNumber(entry.reactive_route_distance_km),
-      advisoryDistance: toFiniteNumber(entry.hgfc_route_distance_km),
-      reactiveServiceLevel: toFiniteNumber(entry.reactive_service_level_percent),
-      advisoryServiceLevel: toFiniteNumber(entry.hgfc_service_level_percent),
-    }))
+    .map((entry) => {
+      const reactiveFeasible = typeof entry.reactive_feasible === "boolean" ? entry.reactive_feasible : null;
+      const advisoryFeasible = typeof entry.hgfc_feasible === "boolean" ? entry.hgfc_feasible : null;
+      return {
+        scenarioId: toFiniteNumber(entry.scenario_id),
+        leadDays: toFiniteNumber(entry.forecast_lead_days),
+        reactiveFeasible,
+        advisoryFeasible,
+        reactiveDistance: reactiveFeasible === false ? null : toFiniteNumber(entry.reactive_route_distance_km),
+        advisoryDistance: advisoryFeasible === false ? null : toFiniteNumber(entry.hgfc_route_distance_km),
+        reactiveServiceLevel: toFiniteNumber(entry.reactive_service_level_percent),
+        advisoryServiceLevel: toFiniteNumber(entry.hgfc_service_level_percent),
+      };
+    })
     .filter((entry) => entry.scenarioId !== null)
-    .map((entry) => ({ ...entry, scenario: `Lead ${entry.leadDays ?? "?"}d` }));
+    .map((entry) => {
+      const infeasible = entry.reactiveFeasible === false && entry.advisoryFeasible === false;
+      return {
+        ...entry,
+        infeasible,
+        scenario: infeasible ? `Lead ${entry.leadDays ?? "?"}d (infeasible)` : `Lead ${entry.leadDays ?? "?"}d`,
+      };
+    });
 }

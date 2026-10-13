@@ -28,6 +28,8 @@ import {
 } from "../services/researchHccrService";
 import { resolveHccrDashboardState } from "../services/researchHccrDashboardState";
 import {
+  buildPublicBikeMonthlyData,
+  buildSyntheticDemandChartData,
   buildCvrpBenchmarkData,
   buildFeatureAblationData,
   buildForecastComparisonData,
@@ -35,6 +37,7 @@ import {
   buildHorizonSensitivityData,
   buildPairedRoutingData,
 } from "../services/researchAnalyticsData";
+import { getResearchAnalytics } from "../services/analyticsService";
 
 const TABS = [
   ["forecast", "Forecast & calibration"],
@@ -159,9 +162,34 @@ function ForecastTab({ research, regime, horizon, modelFilter, setModelFilter })
   const selectedHorizon = byHorizon.find((row) => row.horizonDays === Number(horizon));
   const modelCount = research?.configuration?.n_seeds_forecast_models;
   const mainSeeds = research?.configuration?.n_seeds_main;
+  const syntheticDemand = research?.synthetic_demand;
+  const syntheticSeries = buildSyntheticDemandChartData(research);
 
   return (
     <div className="space-y-6">
+      <Panel title="Daily synthetic demand" description="Checked-in controlled synthetic series or populated public.synthetic_demand table; chronological split only, not measured logistics demand or an HCCR result.">
+        <div className="grid gap-4 border-b border-slate-800 pb-4 sm:grid-cols-2 xl:grid-cols-4">
+          <Metric label="Returned observations" value={syntheticDemand?.observation_count ?? "Unavailable"} detail="Daily synthetic demand units" />
+          <Metric label="Date range" value={syntheticDemand?.start_date && syntheticDemand?.end_date ? `${syntheticDemand.start_date} to ${syntheticDemand.end_date}` : "Unavailable"} detail={syntheticDemand?.source || "Source unavailable"} />
+          <Metric label="Chronological training" value={syntheticDemand?.split?.train_observations ?? "Unavailable"} detail="First observations; no shuffling" />
+          <Metric label="Chronological holdout" value={syntheticDemand?.split?.holdout_observations ?? "Unavailable"} detail="Final observations" />
+        </div>
+        {syntheticDemand?.provenance ? <p className="text-xs text-slate-400">{syntheticDemand.provenance}{syntheticDemand.fallback_reason ? ` Fallback reason: ${syntheticDemand.fallback_reason}` : ""}</p> : null}
+        <AnalyticsChart
+          type="line"
+          title="Daily synthetic demand (units/day)"
+          description="Original dated observations; the series is split at the documented 670/60 boundary when all 730 points are present."
+          data={syntheticSeries}
+          xKey="date"
+          series={[
+            { key: "trainingDemand", name: "Training", color: "#60a5fa" },
+            { key: "holdoutDemand", name: "Holdout", color: "#f59e0b" },
+          ]}
+          unit=" synthetic units/day"
+          emptyMessage={research?.synthetic_demand_error || syntheticDemand?.error || "No valid daily synthetic demand observations were returned."}
+        />
+      </Panel>
+
       <div className="grid gap-5 border-b border-slate-800 pb-4 sm:grid-cols-3">
         <Metric label="Test forecast MAE" value={number(selectedHorizon?.mae)} detail="Synthetic load units; direct-horizon Seasonal LR" />
         <Metric label="Test forecast WAPE" value={percent(selectedHorizon ? selectedHorizon.wapePercent : null)} detail="Sum absolute error / sum actual demand" />
@@ -662,6 +690,8 @@ function RoutingTab({ research }) {
 
 function RealDataTab({ research }) {
   const meta = research?.real_data_metadata;
+  const publicDataset = research?.public_dataset;
+  const monthlyRentals = buildPublicBikeMonthlyData(publicDataset);
   const [penalty, setPenalty] = useState(String(meta?.primary_pi ?? 4));
   const calibration = buildHccrRealDataCalibration(research);
   const differences = buildHccrRealDataMetrics(research, Number(penalty));
@@ -670,11 +700,29 @@ function RealDataTab({ research }) {
       <aside className="border-l-2 border-sky-400 py-1 pl-3 text-sm text-sky-100">
         Separate descriptive public-data check: UCI Bike Sharing rental counts are supply-censored and are not logistics orders. This dataset has no vehicle capacities, coordinates or routing evaluation and is not combined with synthetic simulation results.
       </aside>
-      <div className="grid gap-5 sm:grid-cols-3">
-        <Metric label="Public-data days" value={meta?.n_days ?? "Unavailable"} detail="UCI daily bike-sharing record" />
+      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <Metric label="Public-data days" value={publicDataset?.observation_count ?? "Unavailable"} detail="Rows read from day.csv" />
+        <Metric label="Daily date range" value={publicDataset?.start_date && publicDataset?.end_date ? `${publicDataset.start_date} to ${publicDataset.end_date}` : "Unavailable"} detail={publicDataset?.source_path || "Source file unavailable"} />
+        <Metric label="Total rentals" value={publicDataset?.total_rentals?.toLocaleString?.() ?? "Unavailable"} detail="Sum of daily cnt values" />
+        <Metric label="Mean rentals per day" value={number(publicDataset?.mean_daily_rentals)} detail="Actual daily cnt observations" />
+      </div>
+      <div className="grid gap-5 sm:grid-cols-2">
         <Metric label="Held-out origins" value={meta?.n_test_origins ?? "Unavailable"} detail="Block-bootstrap unit remains temporal origins" />
         <Metric label="Segments" value={Array.isArray(meta?.segments) ? meta.segments.length : "Unavailable"} detail={Array.isArray(meta?.segments) ? meta.segments.join(", ") : "Unavailable"} />
       </div>
+      <Panel title="Bike-sharing rental time series (monthly totals)" description={`${publicDataset?.source || "UCI Bike Sharing"}; source ${publicDataset?.source_path || "research_hccr/realdata/data/day.csv"}. Monthly totals are aggregated from daily cnt values; rentals/month, not logistics demand.`}>
+        {publicDataset?.error ? <p className="text-sm text-amber-200">{publicDataset.error}</p> : null}
+        <AnalyticsChart
+          type="line"
+          title="Monthly rental counts"
+          description="24 monthly points aggregated from the original daily public dataset."
+          data={monthlyRentals}
+          xKey="month"
+          series={[{ key: "totalRentals", name: "Total rentals", color: "#60a5fa" }]}
+          unit=" rentals/month"
+          emptyMessage={publicDataset?.error || "The bundled public daily bike-sharing CSV is missing or contains no valid monthly rental totals."}
+        />
+      </Panel>
       <div className="flex flex-wrap items-end gap-3">
         <SelectControl label="Shortage penalty" value={penalty} onChange={setPenalty} options={[[1, "1"], [2, "2"], [4, "4 (primary)"], [9, "9"], [19, "19"]]} />
       </div>
@@ -796,18 +844,24 @@ export default function HccrResearchDashboard() {
 
   useEffect(() => {
     let active = true;
-    getHccrResearchAnalytics()
-      .then((payload) => {
-        if (active) {
-          setResearch(payload);
-          setLoadState({ status: payload?.status === "available" ? "success" : "partial", message: "" });
-        }
-      })
-      .catch((error) => {
-        if (active) {
-          setLoadState({ status: "error", message: error?.message || "Research artifacts could not be loaded." });
-        }
+    Promise.allSettled([getHccrResearchAnalytics(), getResearchAnalytics()]).then(([hccr, legacy]) => {
+      if (!active) return;
+      if (hccr.status === "rejected") {
+        setLoadState({ status: "error", message: hccr.reason?.message || "Research artifacts could not be loaded." });
+        return;
+      }
+      const syntheticDemand = legacy.status === "fulfilled"
+        ? legacy.value?.synthetic_demand
+        : null;
+      setResearch({
+        ...hccr.value,
+        synthetic_demand: syntheticDemand,
+        synthetic_demand_error: legacy.status === "rejected"
+          ? legacy.reason?.message || "The synthetic demand endpoint could not be loaded."
+          : syntheticDemand?.error || null,
       });
+      setLoadState({ status: hccr.value?.status === "available" ? "success" : "partial", message: "" });
+    });
     return () => { active = false; };
   }, []);
 
