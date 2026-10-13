@@ -36,6 +36,9 @@ RUN test -f research_hccr/study.py \
     && test -f research_hccr/configs/study_config.json \
     && test -f research_hccr/results/forecast_calibration_summary.csv \
     && test -f research_hccr/results/operational_main.csv \
+    && test -f research_hccr/results/paired_by_horizon_main.csv \
+    && test -f research_hccr/results/paired_comparisons_main.csv \
+    && test -f research_hccr/results/policy_levels_main.csv \
     && test -f research_hccr/results/routing_summary.csv \
     && test -f research_hccr/realdata/data/day.csv \
     && test -f research_hccr/realdata/data/hour.csv \

@@ -173,12 +173,18 @@ def test_runtime_image_declares_research_artifact_inputs():
         assert (repository_root / "experiments/results" / filename).is_file()
     assert "COPY data/raw/synthetic_demand.csv ./data/raw/synthetic_demand.csv" in dockerfile
     assert "COPY research_hccr ./research_hccr" in dockerfile
-    assert "test -f research_hccr/realdata/data/day.csv" in dockerfile
-    assert "test -f research_hccr/results/operational_main.csv" in dockerfile
-    assert (repository_root / "research_hccr/configs/study_config.json").is_file()
-    assert (repository_root / "research_hccr/study.py").is_file()
-    for filename in ("forecast_calibration_summary.csv", "operational_main.csv", "routing_summary.csv"):
+    for filename in (
+        "forecast_calibration_summary.csv",
+        "paired_by_horizon_main.csv",
+        "paired_comparisons_main.csv",
+        "policy_levels_main.csv",
+        "routing_summary.csv",
+    ):
+        assert f"test -f research_hccr/results/{filename}" in dockerfile
         assert (repository_root / "research_hccr/results" / filename).is_file()
+    assert (repository_root / "research_hccr/configs/study_config.json").is_file()
+    assert "test -f research_hccr/configs/study_config.json" in dockerfile
+    assert "test -f research_hccr/realdata/data/day.csv" in dockerfile
     for filename in ("day.csv", "hour.csv"):
         assert (repository_root / "research_hccr/realdata/data" / filename).is_file()
 
@@ -228,6 +234,31 @@ def test_research_artifact_loader_resolves_paths_from_module_not_current_directo
         for row in result["artifact_manifest"]
     )
     assert (repository_root / "research_hccr/results/forecast_calibration_summary.csv").is_file()
+
+
+def test_required_hccr_artifacts_and_uci_day_csv_resolve_from_repo_root(tmp_path, monkeypatch):
+    repository_root = Path(__file__).resolve().parents[2]
+    monkeypatch.chdir(tmp_path)
+    service = ResearchAnalyticsService()
+    manifest = {entry["filename"]: entry for entry in service.get_artifact_manifest()}
+    required = (
+        "forecast_calibration_summary.csv",
+        "paired_by_horizon_main.csv",
+        "paired_comparisons_main.csv",
+        "policy_levels_main.csv",
+        "routing_summary.csv",
+        "study_config.json",
+    )
+
+    for filename in required:
+        entry = manifest[filename]
+        assert entry["status"] == "available", entry["error"]
+        assert Path(entry["path"]) == (repository_root / "research_hccr" / ("configs" if filename == "study_config.json" else "results") / filename).resolve()
+        assert entry["error"] is None
+
+    day = manifest["research_hccr/realdata/data/day.csv"]
+    assert day["status"] == "available", day["error"]
+    assert Path(day["path"]) == (repository_root / "research_hccr/realdata/data/day.csv").resolve()
 
 
 def test_hccr_dashboard_metrics_match_frozen_result_csvs():
@@ -363,6 +394,46 @@ def test_optional_absence_does_not_mark_dashboard_partial_and_required_schema_is
     malformed = service.get_hccr_analytics()
     assert malformed["status"] == "partial"
     assert malformed["missing_artifacts"].count("forecast_calibration_summary.csv") == 1
+    missing_entry = next(
+        row for row in malformed["artifact_manifest"]
+        if row["filename"] == "forecast_calibration_summary.csv"
+    )
+    assert missing_entry["status"] == "malformed"
+    assert str(results_dir / "forecast_calibration_summary.csv") in missing_entry["error"]
+
+
+def test_missing_required_artifact_reports_exact_resolved_path(tmp_path):
+    results_dir = tmp_path / "research_hccr" / "results"
+    config_path = tmp_path / "research_hccr" / "configs" / "study_config.json"
+    results_dir.mkdir(parents=True)
+    config_path.parent.mkdir()
+    config_path.write_text(json.dumps({
+        "T": 10,
+        "n_regions": 1,
+        "t_calibration_start": 2,
+        "t_validation_start": 4,
+        "t_test_start": 6,
+        "horizons": [1],
+        "n_seeds_main": 1,
+    }), encoding="utf-8")
+
+    service = ResearchAnalyticsService(results_dir=results_dir, config_path=config_path)
+    payload = service.get_hccr_analytics()
+    missing = {row["filename"]: row for row in payload["artifact_manifest"]}
+    for filename in (
+        "forecast_calibration_summary.csv",
+        "paired_by_horizon_main.csv",
+        "paired_comparisons_main.csv",
+        "policy_levels_main.csv",
+        "routing_summary.csv",
+    ):
+        entry = missing[filename]
+        assert entry["status"] == "missing"
+        assert entry["path"] == str((results_dir / filename).resolve())
+        assert entry["error"] == f"File does not exist: {(results_dir / filename).resolve()}"
+    day = missing["research_hccr/realdata/data/day.csv"]
+    assert day["status"] == "missing"
+    assert str(tmp_path / "research_hccr/realdata/data/day.csv") in day["error"]
 
 
 def test_hccr_research_api_authorizes_and_exposes_frozen_artifact_values():
