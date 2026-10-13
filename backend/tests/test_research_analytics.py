@@ -159,6 +159,12 @@ def test_hccr_dashboard_metrics_match_frozen_result_csvs():
     assert model_row["seed_count"] == 10
     assert result["legacy_artifacts"]["legacy_forecast_models"]["results"]
     assert result["legacy_artifacts"]["legacy_feature_ablation"]["results"]
+    aggregate_forecasters = result["results"]["comparison_forecasters"]
+    assert {row["forecaster"] for row in aggregate_forecasters} == {"lr", "hw", "naive"}
+    lr_aggregate = next(row for row in aggregate_forecasters if row["forecaster"] == "lr")
+    assert lr_aggregate["n_units"] == 40.0
+    assert lr_aggregate["cost"] == pytest.approx(13.153126585216047)
+    assert lr_aggregate["wape"] == pytest.approx(0.045664144460362995)
     aggregate = next(
         row for row in result["results"]["comparison_table"]
         if row["scope"] == "aggregate" and row["policy"] == "hspec"

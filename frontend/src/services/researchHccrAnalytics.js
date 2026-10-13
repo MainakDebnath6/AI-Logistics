@@ -56,7 +56,7 @@ export function buildHccrModelMetrics(payload, regime, horizonDays = null) {
         hccrCost: null,
         reactiveCost: null,
       }))
-      .filter((entry) => entry.mae !== null);
+        .filter((entry) => entry.mae !== null || entry.wapePercent !== null);
   }
   const modelRows = rows(payload, "model_comparison")
     .filter((entry) => entry.regime === regime)
@@ -71,7 +71,7 @@ export function buildHccrModelMetrics(payload, regime, horizonDays = null) {
       hccrCost: numeric(entry.cost_hspec),
       reactiveCost: numeric(entry.cost_reactive),
     }))
-    .filter((entry) => entry.mae !== null);
+    .filter((entry) => entry.mae !== null || entry.wapePercent !== null);
 }
 
 export function buildHccrHorizonMetrics(payload, regime) {
@@ -363,7 +363,7 @@ export function buildAggregateForecasterMetrics(payload) {
     costCiHigh: numeric(entry.hi),
     wapePercent: numeric(entry.wape) === null ? null : numeric(entry.wape) * 100,
     reactiveCost: numeric(entry.reactive_cost),
-  })).filter((entry) => entry.model && entry.cost !== null);
+  })).filter((entry) => entry.model && (entry.cost !== null || entry.wapePercent !== null));
 }
 
 export function buildHccrCapacityFeasibilityMetrics(payload) {

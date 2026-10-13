@@ -185,9 +185,11 @@ function ForecastTab({ research, regime, horizon, modelFilter, setModelFilter })
           xKey="model"
           series={[{ key: "mae", name: "MAE", color: "#2dd4bf" }]}
           unit=" load units"
-          emptyMessage={selectedModelMetrics.length === 0
-            ? `No ${modelNames[modelFilter]} forecast rows exist for ${regime.toUpperCase()} at H${horizon}.`
-            : "Forecast-model metrics are unavailable."}
+              emptyMessage={selectedModelMetrics.length === 0
+                ? modelFilter === "all"
+                  ? `No finite MAE rows from intervals_main.csv and intervals_models.csv exist for ${regime.toUpperCase()} at H${horizon}.`
+                  : `No finite MAE row for ${modelNames[modelFilter]} exists in intervals_main.csv or intervals_models.csv for ${regime.toUpperCase()} at H${horizon}.`
+                : `No finite MAE values from intervals_main.csv or intervals_models.csv exist for ${regime.toUpperCase()} at H${horizon}.`}
         />
         <AnalyticsChart
           title="Aggregate forecaster ablation: cost (simulation units)"
@@ -196,7 +198,7 @@ function ForecastTab({ research, regime, horizon, modelFilter, setModelFilter })
           xKey="model"
           series={[{ key: "cost", name: "HCCR objective", color: "#f59e0b" }]}
           unit=" cost units"
-          emptyMessage="The optional aggregate forecaster comparison is unavailable."
+              emptyMessage="comparison_forecasters.csv is absent, malformed, or contains no finite cost values."
         />
         <AnalyticsChart
           title="Aggregate forecaster ablation: WAPE (%)"
@@ -205,7 +207,7 @@ function ForecastTab({ research, regime, horizon, modelFilter, setModelFilter })
           xKey="model"
           series={[{ key: "wapePercent", name: "WAPE", color: "#60a5fa" }]}
           unit="%"
-          emptyMessage="The optional aggregate forecaster comparison is unavailable."
+              emptyMessage="comparison_forecasters.csv is absent, malformed, or contains no finite WAPE values."
         />
         <AnalyticsChart
           title="Forecast model comparison: WAPE (%)"
@@ -214,7 +216,7 @@ function ForecastTab({ research, regime, horizon, modelFilter, setModelFilter })
           xKey="model"
           series={[{ key: "wapePercent", name: "WAPE", color: "#f59e0b" }]}
           unit="%"
-          emptyMessage="Model WAPE is unavailable for this regime."
+              emptyMessage={`No finite WAPE values from intervals_main.csv or intervals_models.csv exist for ${regime.toUpperCase()} at H${horizon}.`}
         />
         <AnalyticsChart
           type="line"
@@ -224,7 +226,7 @@ function ForecastTab({ research, regime, horizon, modelFilter, setModelFilter })
           xKey="horizon"
           series={[{ key: "mae", name: "MAE", color: "#60a5fa" }]}
           unit=" load units"
-          emptyMessage="Horizon-specific forecast error is unavailable."
+              emptyMessage={`forecast_calibration_summary.csv has no finite MAE values for ${regime.toUpperCase()}.`}
         />
         <AnalyticsChart
           type="line"
@@ -234,7 +236,7 @@ function ForecastTab({ research, regime, horizon, modelFilter, setModelFilter })
           xKey="horizon"
           series={[{ key: "wapePercent", name: "WAPE", color: "#f472b6" }]}
           unit="%"
-          emptyMessage="Horizon-specific WAPE is unavailable."
+              emptyMessage={`forecast_calibration_summary.csv has no finite WAPE values for ${regime.toUpperCase()}.`}
         />
         <AnalyticsChart
           type="line"
@@ -248,7 +250,7 @@ function ForecastTab({ research, regime, horizon, modelFilter, setModelFilter })
             { key: "nominalCoveragePercent", name: "Nominal 80%", color: "#94a3b8" },
           ]}
           unit="%"
-          emptyMessage="Residual interval coverage is unavailable."
+              emptyMessage={`forecast_calibration_summary.csv has no finite interval-coverage values for ${regime.toUpperCase()}.`}
         />
         <AnalyticsChart
           type="line"
@@ -261,7 +263,7 @@ function ForecastTab({ research, regime, horizon, modelFilter, setModelFilter })
             { key: "pooledIntervalWidth", name: "Pooled residuals", color: "#f59e0b" },
           ]}
           unit=" load units"
-          emptyMessage="Residual interval width is unavailable."
+              emptyMessage={`forecast_calibration_summary.csv has no finite interval-width values for ${regime.toUpperCase()}.`}
         />
       </div>
 
@@ -292,13 +294,13 @@ function ForecastTab({ research, regime, horizon, modelFilter, setModelFilter })
       <Panel title="Earlier repository forecast experiment" description="Separate 730-day aggregate synthetic series; not mixed with the four-regime HCCR simulation. The archived 60-day model comparison and ablation each use one holdout origin.">
         <SelectControl label="Legacy forecast horizon" value={legacyHorizon} onChange={setLegacyHorizon} options={[[7, "7 days"], [14, "14 days"], [30, "30 days"], [60, "60 days"]]} />
         <div className="grid gap-5 xl:grid-cols-2">
-          <AnalyticsChart type="bar" title="Legacy model comparison: MAE (legacy units)" description="Source forecast_models.json; one 60-day origin." data={legacyForecastComparison} xKey="model" series={[{ key: "mae", name: "MAE", color: "#60a3fa" }]} unit=" legacy units" emptyMessage="Legacy model comparison is not included in this runtime." />
+          <AnalyticsChart type="bar" title="Legacy model comparison: MAE (legacy units)" description="Source forecast_models.json; one 60-day origin." data={legacyForecastComparison} xKey="model" series={[{ key: "mae", name: "MAE", color: "#60a5fa" }]} unit=" legacy units" emptyMessage="experiments/results/forecast_models.json is absent, malformed, or has no finite MAE values." />
           <AnalyticsChart type="bar" title={`Legacy horizon sensitivity H${legacyHorizon}: MAE (legacy units)`} description="Source horizon_sensitivity.json; rolling-origin results filtered by its supported horizon selector." data={legacySelectedHorizon} xKey="horizon" series={[
             { key: "naive_previous_week", name: "Previous-week naive", color: "#34d399" },
             { key: "holt_winters_weekly", name: "Holt-Winters", color: "#60a5fa" },
             { key: "seasonal_linear_regression", name: "Seasonal linear regression", color: "#f59e0b" },
-          ]} unit=" legacy units" emptyMessage={`No legacy horizon result exists at H${legacyHorizon}.`} />
-          <AnalyticsChart type="bar" title="Legacy feature ablation: MAE (legacy units)" description="Source feature_ablation.json; single 60-day origin." data={legacyFeatureAblations} xKey="ablation" series={[{ key: "mae", name: "MAE", color: "#f472b6" }]} unit=" legacy units" emptyMessage="Legacy feature ablation is not included in this runtime." />
+          ]} unit=" legacy units" emptyMessage={`horizon_sensitivity.json contains no finite supported-model MAE values at H${legacyHorizon}.`} />
+          <AnalyticsChart type="bar" title="Legacy feature ablation: MAE (legacy units)" description="Source feature_ablation.json; single 60-day origin." data={legacyFeatureAblations} xKey="ablation" series={[{ key: "mae", name: "MAE", color: "#f472b6" }]} unit=" legacy units" emptyMessage="experiments/results/feature_ablation.json is absent, malformed, or has no finite MAE values." />
         </div>
       </Panel>
     </div>
@@ -419,9 +421,9 @@ function ReservationTab({ research, regime, horizon, setSensitivityParameter, se
       <ReservationDecision regime={regime} horizon={horizon} />
       <Panel title="Gated policy comparison" description="Means over gated test decisions at horizons 1, 7 and 14, averaged by simulation seed. Costs are synthetic objective units; shortages are synthetic load units.">
         <div className="grid gap-5 xl:grid-cols-3">
-          <AnalyticsChart type="bar" title="Aggregate total objective (cost units)" description="H1/H7/H14 aggregate means and 95% CIs are listed below; archived aggregate capacity uses nearest rounding." data={aggregatePolicies} xKey="policy" series={[{ key: "totalCost", name: "Total cost", color: "#2dd4bf" }]} unit=" cost units" emptyMessage="Aggregate comparison_table.csv is unavailable." />
-          <AnalyticsChart title="Reservation cost (simulation cost units)" description="Mean paid reserve cost, separate from shortage penalty and routing cost." data={policies} xKey="policy" series={[{ key: "reservationCost", name: "Reservation cost", color: "#60a5fa" }]} unit=" cost units" emptyMessage="Reservation cost rows are unavailable." />
-          <AnalyticsChart type="bar" title="Aggregate realized shortage (load units)" description="Unmet load units from the same aggregate policy table; not a count of unserved routes/orders." data={aggregatePolicies} xKey="policy" series={[{ key: "unmetUnits", name: "Unmet units", color: "#f59e0b" }]} unit=" load units" emptyMessage="Aggregate shortage output is unavailable." />
+          <AnalyticsChart type="bar" title="Aggregate total objective (cost units)" description="H1/H7/H14 aggregate means and 95% CIs are listed below; archived aggregate capacity uses nearest rounding." data={aggregatePolicies} xKey="policy" series={[{ key: "totalCost", name: "Total cost", color: "#2dd4bf" }]} unit=" cost units" emptyMessage="comparison_table.csv has no aggregate-scope rows with finite total costs." />
+          <AnalyticsChart title="Reservation cost (simulation cost units)" description="Mean paid reserve cost, separate from shortage penalty and routing cost." data={policies} xKey="policy" series={[{ key: "reservationCost", name: "Reservation cost", color: "#60a5fa" }]} unit=" cost units" emptyMessage={`policy_levels_main.csv has no finite reservation costs for ${regime.toUpperCase()}.`} />
+          <AnalyticsChart type="bar" title="Aggregate realized shortage (load units)" description="Unmet load units from the same aggregate policy table; not a count of unserved routes/orders." data={aggregatePolicies} xKey="policy" series={[{ key: "unmetUnits", name: "Unmet units", color: "#f59e0b" }]} unit=" load units" emptyMessage="comparison_table.csv has no aggregate-scope rows with finite unmet-load values." />
         </div>
         <ResearchTable rows={aggregatePolicies} columns={[
           { key: "policy", label: "Policy" },
@@ -455,7 +457,7 @@ function ReservationTab({ research, regime, horizon, setSensitivityParameter, se
             xKey="policy"
             series={[{ key: "totalCost", name: "Total objective", color: "#2dd4bf" }]}
             unit=" cost units"
-            emptyMessage="The consolidated comparison table is unavailable."
+            emptyMessage="comparison_table.csv has no aggregate-scope rows with finite total costs."
           />
           <AnalyticsChart
             type="bar"
@@ -465,7 +467,7 @@ function ReservationTab({ research, regime, horizon, setSensitivityParameter, se
             xKey="policy"
             series={[{ key: "unmetUnits", name: "Unmet load units", color: "#f59e0b" }]}
             unit=" load units"
-            emptyMessage="Aggregate shortage values are unavailable."
+            emptyMessage="comparison_table.csv has no aggregate-scope rows with finite unmet-load values."
           />
         </div>
         <ResearchTable rows={aggregatePolicies} columns={[
@@ -497,7 +499,7 @@ function ReservationTab({ research, regime, horizon, setSensitivityParameter, se
             { key: "oracle", name: "Oracle (unattainable)", color: "#34d399" },
           ]}
           unit=" cost units"
-          emptyMessage="The operational-by-horizon artifact is unavailable. Aggregate policy charts above remain available."
+          emptyMessage={`operational_main.csv has no finite gated cost rows for ${regime.toUpperCase()} at the included horizons.`}
         />
       </Panel>
 
@@ -584,7 +586,7 @@ function ReservationTab({ research, regime, horizon, setSensitivityParameter, se
         <div className="mb-3">
           <SelectControl label="Sensitivity parameter" value={sensitivityParameter} onChange={setSensitivityParameter} options={Object.keys(params).length ? Object.keys(params).map((key) => [key, SENSITIVITY_OPTIONS.find((entry) => entry[0] === key)?.[1] || key]) : SENSITIVITY_OPTIONS} />
         </div>
-        <AnalyticsChart type="line" title="Pooled cost minus HCCR cost (synthetic cost units)" description="Positive values favor HCCR. Error intervals are listed in the table from the stored seed-bootstrap artifact." data={sensitivity} xKey="setting" series={[{ key: "pooledMinusHccr", name: "Pooled - HCCR", color: "#f59e0b" }]} unit=" cost units" emptyMessage="Sensitivity results for this parameter are unavailable." />
+        <AnalyticsChart type="line" title="Pooled cost minus HCCR cost (synthetic cost units)" description="Positive values favor HCCR. Error intervals are listed in the table from the stored seed-bootstrap artifact." data={sensitivity} xKey="setting" series={[{ key: "pooledMinusHccr", name: "Pooled - HCCR", color: "#f59e0b" }]} unit=" cost units" emptyMessage={`sensitivity_summary.csv has no finite pooled-comparison rows for ${regime.toUpperCase()} and ${sensitivityParameter}.`} />
         <ResearchTable rows={sensitivity} columns={[
           { key: "setting", label: "Setting" },
           { key: "pooledMinusHccr", label: "Paired delta", format: number },
@@ -610,8 +612,8 @@ function RoutingTab({ research }) {
         Forecasts influence only simulated reservation and confirmed-demand activation. OR-Tools receives confirmed orders and active-fleet capacities; forecasts are never CVRP demand or capacity constraints. Results are synthetic, not operational or road-network validation.
       </aside>
       <div className="grid gap-5 xl:grid-cols-2">
-        <AnalyticsChart title="Confirmed-order CVRP feasibility (%)" description="Share of routing instances where OR-Tools served all confirmed orders; bars are policy means, intervals are in the table." data={routing} xKey="policy" series={[{ key: "feasiblePercent", name: "Feasible instances", color: "#2dd4bf" }]} unit="%" emptyMessage="Routing feasibility results are unavailable." />
-        <AnalyticsChart title="Solver distance on solved instances (km)" description="Mean Haversine objective distance among successful routes only; infeasible instances do not contribute zero-distance observations." data={routing} xKey="policy" series={[{ key: "distanceSolvedKm", name: "Solved-route distance", color: "#60a5fa" }]} unit=" km" emptyMessage="Solved-route distance is unavailable." />
+        <AnalyticsChart title="Confirmed-order CVRP feasibility (%)" description="Share of routing instances where OR-Tools served all confirmed orders; bars are policy means, intervals are in the table." data={routing} xKey="policy" series={[{ key: "feasiblePercent", name: "Feasible instances", color: "#2dd4bf" }]} unit="%" emptyMessage="routing_summary.csv has no policy rows with a finite feasibility rate." />
+        <AnalyticsChart title="Solver distance on solved instances (km)" description="Mean Haversine objective distance among successful routes only; infeasible instances do not contribute zero-distance observations." data={routing} xKey="policy" series={[{ key: "distanceSolvedKm", name: "Solved-route distance", color: "#60a5fa" }]} unit=" km" emptyMessage="routing_summary.csv has no finite successful-route distances; infeasible routes have no measured distance." />
       </div>
       <ResearchTable rows={routing} columns={[
         { key: "policy", label: "Policy" },
@@ -636,7 +638,7 @@ function RoutingTab({ research }) {
           { key: "routingInfeasibleDespiteAggregate", name: "Still unroutable", color: "#f59e0b" },
         ]}
         unit=" instances"
-        emptyMessage="Capacity-versus-routing gap output is unavailable."
+        emptyMessage="routing_capacity_vs_feasibility.csv has no policy rows with finite aggregate-feasible counts."
       />
       <Panel title="Earlier repository CVRP and HGFCI artifacts" description="Legacy six-scenario outputs use a different aggregate synthetic series and the older HGFCI advisory experiment. They are not merged with the paper HCCR routing study.">
         {legacyCvrp.length || legacyHgfc.length || legacyPaired.length ? (
@@ -644,12 +646,12 @@ function RoutingTab({ research }) {
             <AnalyticsChart type="bar" title="Legacy CVRP: confirmed demand versus capacity" description="Six stored synthetic cases; feasibility is separate from advisory outputs." data={legacyCvrp} xKey="scenario" series={[
               { key: "demand", name: "Confirmed demand", color: "#60a5fa" },
               { key: "capacity", name: "Fleet capacity", color: "#2dd4bf" },
-            ]} unit=" load units" emptyMessage="Legacy CVRP benchmark is unavailable." />
-            <AnalyticsChart type="bar" title="Legacy HGFCI point-advisory risk" description="Legacy HGFCI risk artifact; it is not horizon-specific residual calibration or HCCR." data={legacyHgfc} xKey="leadDays" series={[{ key: "risk", name: "Capacity risk", color: "#f59e0b" }]} unit=" legacy units" emptyMessage="Legacy HGFCI advisory output is unavailable." />
+            ]} unit=" load units" emptyMessage="experiments/results/cvrp_benchmark.json has no valid demand/capacity cases." />
+            <AnalyticsChart type="bar" title="Legacy HGFCI point-advisory risk" description="Legacy HGFCI risk artifact; it is not horizon-specific residual calibration or HCCR." data={legacyHgfc} xKey="leadDays" series={[{ key: "risk", name: "Capacity risk", color: "#f59e0b" }]} unit=" legacy units" emptyMessage="experiments/results/hgfc_advisory.json has no finite capacity-risk values." />
             <AnalyticsChart type="bar" title="Legacy reactive versus HGFCI route distance (km)" description="Paired artifacts reuse identical CVRP arms by design. Infeasible routes have no distance and are not shown as zero." data={legacyPaired} xKey="scenario" series={[
               { key: "reactiveDistance", name: "Reactive", color: "#60a5fa" },
               { key: "advisoryDistance", name: "HGFCI arm", color: "#f59e0b" },
-            ]} unit=" km" emptyMessage="Legacy paired routing artifact is unavailable." />
+            ]} unit=" km" emptyMessage="experiments/results/reactive_vs_hgfc.json has no measured feasible-route distances." />
           </div>
         ) : <p className="py-5 text-sm text-slate-400">Legacy CVRP/HGFCI JSON outputs are absent from this runtime; HCCR routing charts above remain available.</p>}
       </Panel>
@@ -677,12 +679,12 @@ function RealDataTab({ research }) {
         <SelectControl label="Shortage penalty" value={penalty} onChange={setPenalty} options={[[1, "1"], [2, "2"], [4, "4 (primary)"], [9, "9"], [19, "19"]]} />
       </div>
       <div className="grid gap-5 xl:grid-cols-2">
-        <AnalyticsChart type="line" title="Public-data forecast WAPE by horizon (%)" description="Measured on bike rental counts after training-period-only scaling; no routing inference." data={calibration} xKey="horizon" series={[{ key: "wapePercent", name: "WAPE", color: "#60a5fa" }]} unit="%" emptyMessage="Public-data forecast metrics are unavailable." />
+        <AnalyticsChart type="line" title="Public-data forecast WAPE by horizon (%)" description="Measured on bike rental counts after training-period-only scaling; no routing inference." data={calibration} xKey="horizon" series={[{ key: "wapePercent", name: "WAPE", color: "#60a5fa" }]} unit="%" emptyMessage="realdata_forecast_calibration.csv has no finite WAPE values by horizon." />
         <AnalyticsChart type="line" title="Public-data central 80% coverage (%)" description="Horizon-specific versus pooled residual intervals; nominal coverage is 80%. This remains a single-city diagnostic." data={calibration} xKey="horizon" series={[
           { key: "hccrCoveragePercent", name: "HCCR", color: "#2dd4bf" },
           { key: "pooledCoveragePercent", name: "Pooled", color: "#f59e0b" },
           { key: "nominalCoveragePercent", name: "Nominal 80%", color: "#94a3b8" },
-        ]} unit="%" emptyMessage="Public-data interval coverage is unavailable." />
+        ]} unit="%" emptyMessage="realdata_forecast_calibration.csv has no finite interval-coverage values by horizon." />
       </div>
       <AnalyticsChart
         type="line"
@@ -692,7 +694,7 @@ function RealDataTab({ research }) {
         xKey="horizon"
         series={[{ key: "pooledMinusHccr", name: "Pooled - HCCR", color: "#f59e0b" }]}
         unit=" normalized cost units"
-        emptyMessage="Public-data policy comparison is unavailable."
+        emptyMessage={`realdata_delta.csv has no finite cost deltas for shortage penalty ${penalty}.`}
       />
       <Panel title={`Public-data pooled-minus-HCCR cost at penalty ${penalty}`} description="Positive favors HCCR. The confidence interval uses the study's 28-day block bootstrap; these are normalized scenario cost units, not observed monetary cost.">
         <ResearchTable rows={differences} columns={[

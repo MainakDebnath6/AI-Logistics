@@ -37,6 +37,7 @@ const fixture = {
     comparison_forecasters: [
       { forecaster: "lr", n_units: 40, cost: 13.15, lo: 12.28, hi: 14.14, wape: 0.0457, reactive_cost: 24.68 },
       { forecaster: "hw", n_units: 40, cost: 13.48, lo: 12.59, hi: 14.46, wape: 0.0521, reactive_cost: 24.68 },
+      { forecaster: "naive", n_units: 40, cost: 14.23, lo: 13.31, hi: 15.26, wape: 0.0602, reactive_cost: 24.68 },
     ],
     paired_comparisons: [
       { horizons: "h1-7-14", comparison: "vs_pooled(B)", regime: "ar", mean_delta: 0.077, ci_lo: 0.055, ci_hi: 0.103, n: 30, p_wilcoxon: 0.001, p_holm: 0.02 },
@@ -64,6 +65,7 @@ const fixture = {
     ],
   },
   model_horizon_accuracy: [
+    { model: "hw", regime: "ar", horizon_days: 7, mae: 7.9, wape: 0.067, seed_count: 10 },
     { model: "lr", regime: "ar", horizon_days: 7, mae: 7.1, wape: 0.06, seed_count: 10 },
     { model: "naive", regime: "ar", horizon_days: 7, mae: 8.2, wape: 0.07, seed_count: 10 },
     { model: "hw", regime: "ar", horizon_days: 14, mae: 8.3, wape: 0.08, seed_count: 10 },
@@ -77,8 +79,12 @@ const fixture = {
 
 test("forecast and policy views filter by regime and retain source units", () => {
   const modelSlice = buildHccrModelMetrics(fixture, "ar", 7);
-  assert.deepEqual(modelSlice.map((row) => row.model), ["Seasonal linear regression", "Previous-week naive"]);
-  assert.equal(modelSlice[0].mae, 7.1);
+  assert.deepEqual(modelSlice.map((row) => row.model), [
+    "Holt-Winters",
+    "Seasonal linear regression",
+    "Previous-week naive",
+  ]);
+  assert.equal(modelSlice[1].mae, 7.1);
   const modelAblation = buildHccrModelMetrics({
     results: {
       model_comparison: [
@@ -111,7 +117,36 @@ test("forecast and policy views filter by regime and retain source units", () =>
   const aggregatePolicies = buildHccrAggregatePolicyComparison(fixture);
   assert.equal(aggregatePolicies.length, 2);
   assert.equal(aggregatePolicies[1].routeFeasibilityPercent, 62.1);
-  assert.equal(buildAggregateForecasterMetrics(fixture)[0].observations, 40);
+  const aggregateForecasters = buildAggregateForecasterMetrics(fixture);
+  assert.deepEqual(aggregateForecasters.map((row) => row.model), [
+    "Seasonal linear regression",
+    "Holt-Winters",
+    "Previous-week naive",
+  ]);
+  assert.equal(aggregateForecasters[0].observations, 40);
+  assert.equal(aggregateForecasters[0].cost, 13.15);
+  assert.ok(Math.abs(aggregateForecasters[0].wapePercent - 4.57) < 1e-9);
+});
+
+test("AR H7 model rows and aggregate forecasters remain separate and missing metrics stay absent", () => {
+  const arH7 = buildHccrModelMetrics(fixture, "ar", 7);
+  assert.deepEqual(arH7.map((row) => row.model), [
+    "Holt-Winters",
+    "Seasonal linear regression",
+    "Previous-week naive",
+  ]);
+  assert.equal(arH7[1].wapePercent, 6);
+  assert.deepEqual(buildHccrModelMetrics(fixture, "iid", 7), []);
+  assert.deepEqual(buildAggregateForecasterMetrics({ results: {} }), []);
+  const wapeOnly = buildAggregateForecasterMetrics({ results: {
+    comparison_forecasters: [{ forecaster: "hw", wape: "0.05", cost: null }],
+  } });
+  assert.equal(wapeOnly.length, 1);
+  assert.equal(wapeOnly[0].cost, null);
+  assert.equal(wapeOnly[0].wapePercent, 5);
+  assert.deepEqual(buildAggregateForecasterMetrics({ results: {
+    comparison_forecasters: [{ forecaster: "hw", cost: "not recorded", wape: null }],
+  } }), []);
 });
 
 test("confirmatory primary contrasts and exploratory horizon contrasts stay distinct", () => {

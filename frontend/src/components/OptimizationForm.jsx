@@ -481,11 +481,7 @@ export default function OptimizationForm({
                 <p className="text-sm text-slate-200">{readiness.model} · {readiness.source} ({demandHistory.length} daily observations)</p>
               </div>
             </div>
-            {readiness.capacityUnavailable ? (
-              <p className="rounded-md border border-amber-500/40 bg-amber-500/10 p-2 text-xs text-amber-100">
-                {readinessView.capacityMessage}
-              </p>
-            ) : readiness.available_capacity !== null && readiness.available_capacity !== undefined ? (
+            {!readiness.capacityUnavailable && readiness.available_capacity !== null && readiness.available_capacity !== undefined ? (
               <>
                 <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
                   <ReadinessMetric label="Available capacity" value={`${readiness.available_capacity} vehicle units / dispatch cycle`} />
@@ -499,11 +495,7 @@ export default function OptimizationForm({
                     : "Preparation recommendation: no additional capacity indicated for this one-day scenario."}
                 </p>
               </>
-            ) : (
-              <p className="text-xs text-amber-200">Select an available vehicle to compare one-day synthetic demand with fleet capacity.</p>
-            )}
-            <p className="text-xs text-amber-200">Synthetic demand units are not validated against operational vehicle-capacity units; treat this forecast comparison as illustrative, not operational advice.</p>
-            <p className="text-xs text-amber-200">{readinessView.calibrationMessage}</p>
+            ) : null}
             {readinessView.historyMessage ? (
               <p className="text-xs text-amber-200">{readinessView.historyMessage}</p>
             ) : null}
