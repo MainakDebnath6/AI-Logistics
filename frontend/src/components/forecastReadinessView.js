@@ -40,12 +40,8 @@ export function buildForecastReadinessView(readiness, historyCount, sourceStatus
 
   return {
     state: "success",
-    calibrationMessage: "Paper-defined HCCR is not implemented here: this path has no causal, horizon-specific residual window or reservation-set objective.",
     historyMessage: historyCount < 7
       ? `Limited history: only ${historyCount} daily observations are available.`
-      : null,
-    capacityMessage: readiness.capacityUnavailable
-      ? "Capacity risk is not calculated for a multi-day horizon: no fleet availability schedule defines reusable capacity across these days."
       : null,
   };
 }

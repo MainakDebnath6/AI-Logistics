@@ -14,14 +14,6 @@ import {
   YAxis,
 } from "recharts";
 
-function EmptyState({ message }) {
-  return (
-    <div className="flex h-65 items-center justify-center rounded-lg border border-dashed border-slate-700 px-4 text-center text-sm text-slate-400 sm:h-70">
-      {message}
-    </div>
-  );
-}
-
 function formatTooltipValue(value, unit) {
   if (typeof value !== "number") {
     return value;
@@ -44,6 +36,13 @@ export default function AnalyticsChart({
   className = "",
 }) {
   const chartSeries = series.length > 0 ? series : [{ key: dataKey, name: dataKey, color: colors[0] }];
+  const chartData = Array.isArray(data)
+    ? data.filter((entry) => chartSeries.some((item) => Number.isFinite(entry?.[item.key])))
+    : [];
+
+  if (chartData.length === 0) {
+    return <p role="status" className={`py-3 text-sm text-slate-400 ${className}`}>{emptyMessage}</p>;
+  }
 
   return (
     <section className={`rounded-xl border border-slate-800 bg-slate-900/70 p-4 ${className}`}>
@@ -52,22 +51,19 @@ export default function AnalyticsChart({
         {description ? <p className="mt-1 text-xs text-slate-400">{description}</p> : null}
       </header>
 
-      {!Array.isArray(data) || data.length === 0 ? (
-        <EmptyState message={emptyMessage} />
-      ) : (
-        <div className="w-full" style={{ height }}>
+      <div className="w-full" style={{ height }}>
           <ResponsiveContainer>
             {type === "pie" ? (
               <PieChart>
                 <Pie
-                  data={data}
+                  data={chartData}
                   dataKey={dataKey}
                   nameKey={xKey}
                   innerRadius={55}
                   outerRadius={95}
                   paddingAngle={3}
                 >
-                  {data.map((entry, index) => (
+                  {chartData.map((entry, index) => (
                     <Cell
                       key={`${entry?.[xKey] || "segment"}-${index}`}
                       fill={colors[index % colors.length]}
@@ -78,7 +74,7 @@ export default function AnalyticsChart({
                 <Legend />
               </PieChart>
             ) : type === "line" ? (
-              <LineChart data={data} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
+              <LineChart data={chartData} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
                 <CartesianGrid stroke="#334155" strokeDasharray="3 3" />
                 <XAxis dataKey={xKey} stroke="#94a3b8" tick={{ fill: "#94a3b8", fontSize: 12 }} />
                 <YAxis stroke="#94a3b8" tick={{ fill: "#94a3b8", fontSize: 12 }} />
@@ -98,7 +94,7 @@ export default function AnalyticsChart({
                 ))}
               </LineChart>
             ) : (
-              <BarChart data={data} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
+              <BarChart data={chartData} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
                 <CartesianGrid stroke="#334155" strokeDasharray="3 3" />
                 <XAxis dataKey={xKey} stroke="#94a3b8" tick={{ fill: "#94a3b8", fontSize: 12 }} />
                 <YAxis stroke="#94a3b8" tick={{ fill: "#94a3b8", fontSize: 12 }} />
@@ -116,8 +112,7 @@ export default function AnalyticsChart({
               </BarChart>
             )}
           </ResponsiveContainer>
-        </div>
-      )}
+      </div>
     </section>
   );
 }
