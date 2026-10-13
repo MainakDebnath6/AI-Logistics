@@ -4,10 +4,14 @@ from __future__ import annotations
 
 import csv
 import json
+import logging
 import math
 from datetime import date
 from pathlib import Path
 from typing import Any
+
+
+logger = logging.getLogger(__name__)
 
 
 HCCR_ARTIFACT_SPECS = (
@@ -134,6 +138,27 @@ class ResearchAnalyticsService:
         except (OSError, UnicodeDecodeError, csv.Error):
             return False
 
+    @staticmethod
+    def _csv_artifact_error(path: Path, required_columns: tuple[str, ...]) -> str:
+        if not path.is_file():
+            return f"File does not exist: {path.resolve()}"
+        try:
+            with path.open("r", encoding="utf-8", newline="") as handle:
+                reader = csv.DictReader(handle)
+                if not reader.fieldnames:
+                    return f"CSV has no header: {path.resolve()}"
+                missing_columns = sorted(set(required_columns) - set(reader.fieldnames))
+                if missing_columns:
+                    return f"CSV is missing columns {missing_columns}: {path.resolve()}"
+                first_row = next(reader, None)
+                if first_row is None:
+                    return f"CSV has a valid header but no data rows: {path.resolve()}"
+                if None in first_row or any(value is None for value in first_row.values()):
+                    return f"CSV row does not match its header: {path.resolve()}"
+        except (OSError, UnicodeDecodeError, csv.Error) as error:
+            return f"CSV could not be read ({type(error).__name__}): {path.resolve()}"
+        return f"CSV is malformed or contains no valid rows: {path.resolve()}"
+
     def get_artifact_manifest(self) -> list[dict[str, Any]]:
         """List actual package artifacts once each and flag required, optional and malformed files."""
         specs_by_filename = {filename: (key, required, columns) for key, filename, required, columns in HCCR_ARTIFACT_SPECS}
@@ -157,11 +182,14 @@ class ResearchAnalyticsService:
             result_key, required, columns = spec
             path = package_files.get(filename)
             parsed = self._read_csv_path(path, columns) if path is not None and path.is_file() else None
+            resolved_path = path.resolve() if path is not None else (result_root / filename).resolve()
             manifest.append({
                 "filename": filename,
+                "path": str(resolved_path),
                 "result_key": result_key,
                 "required": required,
                 "status": "available" if parsed is not None else "missing" if path is None or not path.is_file() else "malformed",
+                "error": None if parsed is not None else self._csv_artifact_error(resolved_path, columns),
                 "content_type": "text/csv",
                 "size_bytes": path.stat().st_size if path is not None and path.is_file() else None,
             })
@@ -169,11 +197,21 @@ class ResearchAnalyticsService:
         config_fields = {"T", "n_regions", "t_calibration_start", "t_validation_start", "t_test_start", "horizons", "n_seeds_main"}
         config_payload = self._read_json(self._config_path)
         config_valid = config_payload is not None and config_fields.issubset(config_payload)
+        if not self._config_path.is_file():
+            config_error = f"File does not exist: {self._config_path.resolve()}"
+        elif config_payload is None:
+            config_error = f"JSON is unreadable or invalid: {self._config_path.resolve()}"
+        elif missing_fields := sorted(config_fields - config_payload.keys()):
+            config_error = f"JSON is missing required fields {missing_fields}: {self._config_path.resolve()}"
+        else:
+            config_error = None
         manifest.append({
             "filename": "study_config.json",
+            "path": str(self._config_path.resolve()),
             "result_key": "configuration",
             "required": True,
             "status": "available" if config_valid else "missing" if not self._config_path.is_file() else "malformed",
+            "error": config_error,
             "content_type": "application/json",
             "size_bytes": self._config_path.stat().st_size if self._config_path.is_file() else None,
         })
@@ -197,9 +235,11 @@ class ResearchAnalyticsService:
                 artifact_status = "available" if parsed_ok else "malformed"
             manifest.append({
                 "filename": filename,
+                "path": str(path.resolve()),
                 "result_key": next((key for key, name in LEGACY_JSON_SPECS if filename == f"experiments/results/{name}"), None),
                 "required": False,
                 "status": artifact_status,
+                "error": None if artifact_status == "available" else f"Artifact is {artifact_status}: {path.resolve()}",
                 "content_type": "application/json" if path.suffix.lower() == ".json" else "text/csv",
                 "size_bytes": path.stat().st_size if path.is_file() else None,
             })
@@ -387,6 +427,14 @@ class ResearchAnalyticsService:
             row["filename"] for row in manifest
             if not row["required"] and row["status"] != "available"
         )
+        for row in manifest:
+            if row["required"] and row["status"] != "available":
+                logger.error(
+                    "Required HCCR artifact %s (%s): %s",
+                    row["filename"],
+                    row["status"],
+                    row["error"],
+                )
         status = "available" if config and not missing_required else "partial"
         repository_root = self._results_dir.resolve().parent.parent
         legacy_results_dir = repository_root / "experiments" / "results"

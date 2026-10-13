@@ -815,9 +815,11 @@ function ReproducibilityTab({ research, onDownload }) {
         <summary className="cursor-pointer font-medium text-slate-200">Artifact audit ({manifest.filter((item) => item.status === "available").length} available / {manifest.length} listed)</summary>
         <ResearchTable rows={manifest} columns={[
           { key: "filename", label: "Artifact" },
+          { key: "path", label: "Resolved path" },
           { key: "result_key", label: "Dashboard use", format: (value) => value || "Download only" },
           { key: "required", label: "Requirement", format: (value) => value ? "Required" : "Optional" },
           { key: "status", label: "Status" },
+          { key: "error", label: "Diagnostic", format: (value) => value || "" },
           { key: "size_bytes", label: "Bytes", format: (value) => typeof value === "number" ? value.toLocaleString() : "Unavailable" },
         ]} emptyMessage="No artifacts were discovered." />
         {research?.unavailable_optional_artifacts?.length ? (
