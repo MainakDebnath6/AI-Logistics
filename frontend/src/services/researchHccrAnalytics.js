@@ -40,11 +40,28 @@ const COMPARISON_LABELS = {
 };
 
 export function buildHccrModelMetrics(payload, regime, horizonDays = null) {
-  const horizonRows = rows(payload, "model_horizon_accuracy")
+  const modelHorizonRows = Array.isArray(payload?.model_horizon_accuracy)
+    ? payload.model_horizon_accuracy
+    : rows(payload, "model_horizon_accuracy");
+  const horizonRows = modelHorizonRows
     .filter((entry) => entry.regime === regime && (horizonDays === null || numeric(entry.horizon_days) === horizonDays));
-  const sourceRows = horizonRows.length > 0
-    ? horizonRows
-    : rows(payload, "model_comparison").filter((entry) => entry.regime === regime);
+  if (horizonDays !== null) {
+    return horizonRows
+      .map((entry) => ({
+        model: MODEL_LABELS[entry.model] || entry.model,
+        horizonDays: numeric(entry.horizon_days),
+        seedCount: numeric(entry.seed_count),
+        mae: numeric(entry.mae),
+        wapePercent: numeric(entry.wape) === null ? null : numeric(entry.wape) * 100,
+        hccrCost: null,
+        reactiveCost: null,
+      }))
+      .filter((entry) => entry.mae !== null);
+  }
+  const modelRows = rows(payload, "model_comparison")
+    .filter((entry) => entry.regime === regime)
+    .map((entry) => ({ ...entry, evaluation: "operational_horizons_1_7_14" }));
+  const sourceRows = horizonRows.length > 0 ? horizonRows : modelRows;
   return sourceRows
     .map((entry) => ({
       model: MODEL_LABELS[entry.model] || entry.model,
@@ -93,6 +110,42 @@ export function buildHccrPolicyMetrics(payload, regime) {
         : numeric(entry.shortage_day_rate) * 100,
     }))
     .sort((left, right) => order.indexOf(left.policyCode) - order.indexOf(right.policyCode));
+}
+
+export function buildHccrAggregatePolicyComparison(payload) {
+  return rows(payload, "comparison_table")
+    .filter((entry) => entry.scope === "aggregate")
+    .map((entry) => ({
+      policy: POLICY_LABELS[entry.policy] || entry.policy,
+      policyCode: entry.policy,
+      totalCost: numeric(entry.cost_total),
+      costCiLow: numeric(entry.cost_total_lo),
+      costCiHigh: numeric(entry.cost_total_hi),
+      reservationCost: numeric(entry.cost_reserve),
+      unmetUnits: numeric(entry.unmet),
+      reservedVehicles: numeric(entry.n_reserved),
+      routeFeasibilityPercent: numeric(entry.route_feas) === null ? null : numeric(entry.route_feas) * 100,
+      routingInstances: numeric(entry.route_n_instances),
+    }))
+    .filter((entry) => entry.totalCost !== null);
+}
+
+export function buildHccrPolicyHorizonMetrics(payload, regime) {
+  const rowsByHorizon = new Map();
+  for (const entry of payload?.policy_horizon_metrics || []) {
+    if (entry?.regime !== regime) {
+      continue;
+    }
+    const horizonDays = numeric(entry.horizon_days);
+    if (horizonDays === null) {
+      continue;
+    }
+    const row = rowsByHorizon.get(horizonDays) || { horizon: `H${horizonDays}`, horizonDays };
+    row[entry.policy] = numeric(entry.cost_total);
+    row[`${entry.policy}SeedCount`] = numeric(entry.seed_count);
+    rowsByHorizon.set(horizonDays, row);
+  }
+  return [...rowsByHorizon.values()].sort((left, right) => left.horizonDays - right.horizonDays);
 }
 
 export function buildHccrPrimaryComparisons(payload, regime) {
@@ -260,4 +313,65 @@ export function buildHccrModelPairingMetrics(payload, regime) {
       ciLow: numeric(entry.ci_lo),
       ciHigh: numeric(entry.ci_hi),
     }));
+}
+
+export function buildLegacyForecastModelData(payload) {
+  const values = payload?.results;
+  if (!Array.isArray(values)) return [];
+  return values.map((entry) => ({
+    model: MODEL_LABELS[entry.model] || entry.model,
+    horizonDays: numeric(entry.horizon_days),
+    mae: numeric(entry.mae),
+    rmse: numeric(entry.rmse),
+    mapePercent: numeric(entry.mape_percent),
+    origins: numeric(entry.forecast_origins),
+  })).filter((entry) => entry.model && entry.mae !== null);
+}
+
+export function buildLegacyHorizonMetrics(payload) {
+  const values = payload?.results;
+  if (!Array.isArray(values)) return [];
+  return values.map((entry) => ({
+    horizon: `H${numeric(entry.horizon_days) ?? "?"}`,
+    horizonDays: numeric(entry.horizon_days),
+    model: MODEL_LABELS[entry.model] || entry.model,
+    mae: numeric(entry.mae),
+    rmse: numeric(entry.rmse),
+    mapePercent: numeric(entry.mape_percent),
+    origins: numeric(entry.forecast_origins),
+  })).filter((entry) => entry.horizonDays !== null && entry.mae !== null);
+}
+
+export function buildLegacyAblationMetrics(payload) {
+  const values = payload?.results;
+  if (!Array.isArray(values)) return [];
+  return values.map((entry) => ({
+    ablation: entry.ablation,
+    mae: numeric(entry.mae),
+    rmse: numeric(entry.rmse),
+    mapePercent: numeric(entry.mape_percent),
+  })).filter((entry) => entry.ablation && entry.mae !== null);
+}
+
+export function buildAggregateForecasterMetrics(payload) {
+  const values = rows(payload, "comparison_forecasters");
+  return values.map((entry) => ({
+    model: MODEL_LABELS[entry.forecaster] || entry.forecaster,
+    observations: numeric(entry.n_units),
+    cost: numeric(entry.cost),
+    costCiLow: numeric(entry.lo),
+    costCiHigh: numeric(entry.hi),
+    wapePercent: numeric(entry.wape) === null ? null : numeric(entry.wape) * 100,
+    reactiveCost: numeric(entry.reactive_cost),
+  })).filter((entry) => entry.model && entry.cost !== null);
+}
+
+export function buildHccrCapacityFeasibilityMetrics(payload) {
+  return rows(payload, "routing_capacity_gap")
+    .map((entry) => ({
+      policy: POLICY_LABELS[entry.policy] || entry.policy,
+      aggregateFeasibleInstances: numeric(entry.n_agg_ok),
+      routingInfeasibleDespiteAggregate: numeric(entry.routing_infeasible_despite_agg_ok),
+    }))
+    .filter((entry) => entry.aggregateFeasibleInstances !== null);
 }

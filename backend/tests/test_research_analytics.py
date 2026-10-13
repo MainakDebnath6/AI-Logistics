@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import csv
+import json
 from types import SimpleNamespace
 
 import pytest
@@ -93,6 +94,8 @@ def test_runtime_image_declares_research_artifact_inputs():
         assert f"COPY experiments/results/{filename} ./experiments/results/{filename}" in dockerfile
         assert (repository_root / "experiments/results" / filename).is_file()
     assert "COPY data/raw/synthetic_demand.csv ./data/raw/synthetic_demand.csv" in dockerfile
+    assert "COPY research_hccr ./research_hccr" in dockerfile
+    assert (repository_root / "research_hccr/configs/study_config.json").is_file()
 
 
 def test_research_artifact_loader_reports_missing_and_malformed_files(tmp_path, monkeypatch):
@@ -112,6 +115,19 @@ def test_research_artifact_loader_reports_missing_and_malformed_files(tmp_path, 
     invalid = analytics._load_research_result_file("wrong-shape.json")
     assert invalid["results"] == []
     assert "invalid structure" in invalid["error"]
+
+
+def test_research_artifact_loader_resolves_paths_from_module_not_current_directory(tmp_path, monkeypatch):
+    repository_root = Path(__file__).resolve().parents[2]
+    monkeypatch.chdir(tmp_path)
+    result = ResearchAnalyticsService().get_hccr_analytics()
+
+    assert result["status"] == "available"
+    assert any(
+        row["filename"] == "forecast_calibration_summary.csv" and row["status"] == "available"
+        for row in result["artifact_manifest"]
+    )
+    assert (repository_root / "research_hccr/results/forecast_calibration_summary.csv").is_file()
 
 
 def test_hccr_dashboard_metrics_match_frozen_result_csvs():
@@ -141,6 +157,106 @@ def test_hccr_dashboard_metrics_match_frozen_result_csvs():
         if row["regime"] == "ar" and row["model"] == "lr" and row["horizon_days"] == 7.0
     )
     assert model_row["seed_count"] == 10
+    assert result["legacy_artifacts"]["legacy_forecast_models"]["results"]
+    assert result["legacy_artifacts"]["legacy_feature_ablation"]["results"]
+    aggregate = next(
+        row for row in result["results"]["comparison_table"]
+        if row["scope"] == "aggregate" and row["policy"] == "hspec"
+    )
+    assert aggregate["cost_total"] == pytest.approx(12.9575632714)
+    assert any(
+        row["filename"] == "experiments/results/forecast_models.json"
+        and row["result_key"] == "legacy_forecast_models"
+        and row["status"] == "available"
+        for row in result["artifact_manifest"]
+    )
+
+
+def test_hccr_manifest_is_unique_complete_and_ar_h7_rows_are_present():
+    repository_root = Path(__file__).resolve().parents[2]
+    service = ResearchAnalyticsService()
+    payload = service.get_hccr_analytics()
+    manifest = payload["artifact_manifest"]
+    filenames = [entry["filename"] for entry in manifest]
+    actual_outputs = {
+        path.name for path in (repository_root / "research_hccr/results").iterdir()
+        if path.is_file() and path.suffix.lower() in {".csv", ".json"}
+    }
+
+    assert len(filenames) == len(set(filenames))
+    assert actual_outputs.issubset(set(filenames))
+    assert all(entry["status"] == "available" for entry in manifest if entry["filename"] in actual_outputs)
+    assert payload["missing_artifacts"] == []
+    assert len(payload["unavailable_optional_artifacts"]) == len(set(payload["unavailable_optional_artifacts"]))
+    assert set(payload["downloads"]) == {
+        entry["filename"] for entry in manifest if entry["status"] == "available"
+    }
+
+    ar_h7_models = [
+        row for row in payload["model_horizon_accuracy"]
+        if row["regime"] == "ar" and row["horizon_days"] == 7.0
+    ]
+    assert {row["model"] for row in ar_h7_models} == {"lr", "naive", "hw"}
+    assert all(row["mae"] is not None for row in ar_h7_models)
+    ar_h7_calibration = next(
+        row for row in payload["results"]["forecast_calibration"]
+        if row["regime"] == "ar" and row["h"] == 7.0
+    )
+    assert ar_h7_calibration["mae"] == pytest.approx(7.338486126363191)
+    raw_models = payload["results"]["model_horizon_ablation_source"]
+    assert raw_models is not None
+    assert any(
+        row["regime"] == "ar" and row["model"] == "naive" and row["h"] == 7.0
+        for row in raw_models
+    )
+    assert any(
+        row["regime"] == "ar" and row["policy"] == "hspec" and row["horizon_days"] == 7.0
+        for row in payload["policy_horizon_metrics"]
+    )
+    policy_h7 = [
+        row for row in payload["policy_horizon_metrics"]
+        if row["regime"] == "ar" and row["horizon_days"] == 7.0
+    ]
+    assert {row["policy"] for row in policy_h7} >= {"reactive", "point", "buffer", "pooled", "hspec"}
+
+
+def test_optional_absence_does_not_mark_dashboard_partial_and_required_schema_is_checked(tmp_path):
+    results_dir = tmp_path / "results"
+    config_path = tmp_path / "configs" / "study_config.json"
+    results_dir.mkdir()
+    config_path.parent.mkdir()
+    config_path.write_text(json.dumps({
+        "T": 10,
+        "n_regions": 1,
+        "t_calibration_start": 2,
+        "t_validation_start": 4,
+        "t_test_start": 6,
+        "horizons": [1],
+        "n_seeds_main": 1,
+        "n_seeds_forecast_models": 0,
+    }), encoding="utf-8")
+
+    required_csvs = {
+        "forecast_calibration_summary.csv": "regime,h,mae,wape,cov_hspec,cov_pooled,width_hspec,width_pooled\nar,7,1,1,.8,.8,2,2\n",
+        "policy_levels_main.csv": "policy,regime,cost_total,cost_reserve,unmet\nreactive,ar,1,0,0\n",
+        "paired_comparisons_main.csv": "horizons,comparison,regime,n,mean_delta,ci_lo,ci_hi\nh1-7-14,vs_pooled,ar,1,0,0,0\n",
+        "paired_by_horizon_main.csv": "h,comparison,regime,n,mean_delta,ci_lo,ci_hi\n7,vs_pooled,ar,1,0,0,0\n",
+        "routing_summary.csv": "policy,n_instances,feasibility_rate,mean_distance_feasible_km\nhspec,1,1,1\n",
+    }
+    for filename, content in required_csvs.items():
+        (results_dir / filename).write_text(content, encoding="utf-8")
+
+    service = ResearchAnalyticsService(results_dir=results_dir, config_path=config_path)
+    payload = service.get_hccr_analytics()
+    assert payload["status"] == "available"
+    assert payload["missing_artifacts"] == []
+    assert "comparison_table.csv" in payload["unavailable_optional_artifacts"]
+    assert len(payload["artifact_manifest"]) == len({row["filename"] for row in payload["artifact_manifest"]})
+
+    (results_dir / "forecast_calibration_summary.csv").write_text("wrong,columns\n1,2\n", encoding="utf-8")
+    malformed = service.get_hccr_analytics()
+    assert malformed["status"] == "partial"
+    assert malformed["missing_artifacts"].count("forecast_calibration_summary.csv") == 1
 
 
 def test_hccr_research_api_authorizes_and_exposes_frozen_artifact_values():
@@ -168,6 +284,33 @@ def test_hccr_download_route_allows_named_artifacts_only():
         research_service=ResearchAnalyticsService(),
     )
     assert Path(response.path).name == "forecast_calibration_summary.csv"
+    assert response.media_type == "text/csv"
+
+    json_response = download_hccr_research_artifact(
+        filename="study_config.json",
+        current_user=admin,
+        research_service=ResearchAnalyticsService(),
+    )
+    assert json_response.media_type == "application/json"
+    legacy_response = download_hccr_research_artifact(
+        filename="experiments/results/forecast_models.json",
+        current_user=admin,
+        research_service=ResearchAnalyticsService(),
+    )
+    assert Path(legacy_response.path).name == "forecast_models.json"
+    assert legacy_response.filename == "forecast_models.json"
+    assert legacy_response.media_type == "application/json"
+
+
+def test_hccr_download_route_uses_path_converter_for_nested_filenames():
+    from app.api.analytics import router
+
+    admin = SimpleNamespace(role="admin")
+    route = next(
+        route for route in router.routes
+        if getattr(route, "name", "") == "download_hccr_research_artifact"
+    )
+    assert route.path == "/analytics/hccr-research/download/{filename:path}"
 
     with pytest.raises(HTTPException) as error:
         download_hccr_research_artifact(

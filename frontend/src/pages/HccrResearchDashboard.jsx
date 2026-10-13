@@ -2,14 +2,18 @@ import { useEffect, useMemo, useState } from "react";
 import AnalyticsChart from "../components/AnalyticsChart";
 import LoadingSpinner from "../components/LoadingSpinner";
 import {
+  buildHccrAggregatePolicyComparison,
   buildHccrDisagreementMetrics,
+  buildHccrCapacityFeasibilityMetrics,
   buildHccrGateMetrics,
   buildHccrHorizonComparisons,
   buildHccrHorizonMetrics,
   buildHccrMechanismMetrics,
   buildHccrModelMetrics,
   buildHccrModelPairingMetrics,
+  buildAggregateForecasterMetrics,
   buildHccrPolicyMetrics,
+  buildHccrPolicyHorizonMetrics,
   buildHccrPrimaryComparisons,
   buildHccrReplicationMetrics,
   buildHccrRealDataCalibration,
@@ -23,6 +27,14 @@ import {
   getHccrResearchAnalytics,
 } from "../services/researchHccrService";
 import { resolveHccrDashboardState } from "../services/researchHccrDashboardState";
+import {
+  buildCvrpBenchmarkData,
+  buildFeatureAblationData,
+  buildForecastComparisonData,
+  buildHgfcAdvisoryData,
+  buildHorizonSensitivityData,
+  buildPairedRoutingData,
+} from "../services/researchAnalyticsData";
 
 const TABS = [
   ["forecast", "Forecast & calibration"],
@@ -125,6 +137,7 @@ function FilterBar({ regime, setRegime, horizon, setHorizon }) {
 }
 
 function ForecastTab({ research, regime, horizon, modelFilter, setModelFilter }) {
+  const [legacyHorizon, setLegacyHorizon] = useState("7");
   const allModels = buildHccrModelMetrics(research, regime, Number(horizon));
   const modelNames = {
     lr: "Seasonal linear regression",
@@ -134,7 +147,14 @@ function ForecastTab({ research, regime, horizon, modelFilter, setModelFilter })
   const models = modelFilter === "all"
     ? allModels
     : allModels.filter((entry) => entry.model === modelNames[modelFilter]);
+  const selectedModelMetrics = models;
   const modelPairs = buildHccrModelPairingMetrics(research, regime);
+  const aggregateForecasters = buildAggregateForecasterMetrics(research);
+  const legacyArtifacts = research?.legacy_artifacts || {};
+  const legacyForecastComparison = buildForecastComparisonData({ forecast_models: legacyArtifacts.legacy_forecast_models });
+  const legacyHorizonRows = buildHorizonSensitivityData({ horizon_sensitivity: legacyArtifacts.legacy_horizon_sensitivity });
+  const legacySelectedHorizon = legacyHorizonRows.filter((row) => row.horizon === `H${legacyHorizon}`);
+  const legacyFeatureAblations = buildFeatureAblationData({ feature_ablation: legacyArtifacts.legacy_feature_ablation });
   const byHorizon = buildHccrHorizonMetrics(research, regime);
   const selectedHorizon = byHorizon.find((row) => row.horizonDays === Number(horizon));
   const modelCount = research?.configuration?.n_seeds_forecast_models;
@@ -160,12 +180,32 @@ function ForecastTab({ research, regime, horizon, modelFilter, setModelFilter })
       <div className="grid gap-5 xl:grid-cols-2">
         <AnalyticsChart
           title="Forecast model comparison: MAE (synthetic load units)"
-          description={`HCCR cost/forecast ablation; ${modelCount ?? "Unavailable"} matched seeds, same simulator and operational horizons 1, 7 and 14.`}
+          description={`Direct forecast accuracy at H${horizon}; ${modelCount ?? "Unavailable"} matched seeds, same simulator and origin cohort.`}
           data={models}
           xKey="model"
           series={[{ key: "mae", name: "MAE", color: "#2dd4bf" }]}
           unit=" load units"
-          emptyMessage="Model comparison artifact is unavailable for this regime."
+          emptyMessage={selectedModelMetrics.length === 0
+            ? `No ${modelNames[modelFilter]} forecast rows exist for ${regime.toUpperCase()} at H${horizon}.`
+            : "Forecast-model metrics are unavailable."}
+        />
+        <AnalyticsChart
+          title="Aggregate forecaster ablation: cost (simulation units)"
+          description="Archived comparison_forecasters.csv, n=40 units. This summary is not regime/horizon-specific and is shown separately from the AR/H7 model filter."
+          data={aggregateForecasters}
+          xKey="model"
+          series={[{ key: "cost", name: "HCCR objective", color: "#f59e0b" }]}
+          unit=" cost units"
+          emptyMessage="The optional aggregate forecaster comparison is unavailable."
+        />
+        <AnalyticsChart
+          title="Aggregate forecaster ablation: WAPE (%)"
+          description="Archived source WAPE by model, not mixed with per-regime horizon metrics."
+          data={aggregateForecasters}
+          xKey="model"
+          series={[{ key: "wapePercent", name: "WAPE", color: "#60a5fa" }]}
+          unit="%"
+          emptyMessage="The optional aggregate forecaster comparison is unavailable."
         />
         <AnalyticsChart
           title="Forecast model comparison: WAPE (%)"
@@ -248,6 +288,18 @@ function ForecastTab({ research, regime, horizon, modelFilter, setModelFilter })
           { key: "ciHigh", label: "95% CI high", format: number },
           { key: "simulations", label: "Seeds", format: (value) => value ?? "Unavailable" },
         ]} />
+      </Panel>
+      <Panel title="Earlier repository forecast experiment" description="Separate 730-day aggregate synthetic series; not mixed with the four-regime HCCR simulation. The archived 60-day model comparison and ablation each use one holdout origin.">
+        <SelectControl label="Legacy forecast horizon" value={legacyHorizon} onChange={setLegacyHorizon} options={[[7, "7 days"], [14, "14 days"], [30, "30 days"], [60, "60 days"]]} />
+        <div className="grid gap-5 xl:grid-cols-2">
+          <AnalyticsChart type="bar" title="Legacy model comparison: MAE (legacy units)" description="Source forecast_models.json; one 60-day origin." data={legacyForecastComparison} xKey="model" series={[{ key: "mae", name: "MAE", color: "#60a3fa" }]} unit=" legacy units" emptyMessage="Legacy model comparison is not included in this runtime." />
+          <AnalyticsChart type="bar" title={`Legacy horizon sensitivity H${legacyHorizon}: MAE (legacy units)`} description="Source horizon_sensitivity.json; rolling-origin results filtered by its supported horizon selector." data={legacySelectedHorizon} xKey="horizon" series={[
+            { key: "naive_previous_week", name: "Previous-week naive", color: "#34d399" },
+            { key: "holt_winters_weekly", name: "Holt-Winters", color: "#60a5fa" },
+            { key: "seasonal_linear_regression", name: "Seasonal linear regression", color: "#f59e0b" },
+          ]} unit=" legacy units" emptyMessage={`No legacy horizon result exists at H${legacyHorizon}.`} />
+          <AnalyticsChart type="bar" title="Legacy feature ablation: MAE (legacy units)" description="Source feature_ablation.json; single 60-day origin." data={legacyFeatureAblations} xKey="ablation" series={[{ key: "mae", name: "MAE", color: "#f472b6" }]} unit=" legacy units" emptyMessage="Legacy feature ablation is not included in this runtime." />
+        </div>
       </Panel>
     </div>
   );
@@ -350,6 +402,8 @@ function ReservationDecision({ regime, horizon }) {
 
 function ReservationTab({ research, regime, horizon, setSensitivityParameter, sensitivityParameter }) {
   const policies = buildHccrPolicyMetrics(research, regime);
+  const aggregatePolicies = buildHccrAggregatePolicyComparison(research);
+  const policyHorizons = buildHccrPolicyHorizonMetrics(research, regime);
   const primary = buildHccrPrimaryComparisons(research, regime);
   const byHorizon = buildHccrHorizonComparisons(research, regime);
   const gates = buildHccrGateMetrics(research, regime, Number(horizon));
@@ -364,10 +418,22 @@ function ReservationTab({ research, regime, horizon, setSensitivityParameter, se
     <div className="space-y-6">
       <ReservationDecision regime={regime} horizon={horizon} />
       <Panel title="Gated policy comparison" description="Means over gated test decisions at horizons 1, 7 and 14, averaged by simulation seed. Costs are synthetic objective units; shortages are synthetic load units.">
-        <div className="grid gap-5 xl:grid-cols-2">
-          <AnalyticsChart title="Total reserve-plus-shortage objective (cost units)" description="Policy mean across test seeds in the selected regime; oracle uses future demand and is not deployable." data={policies} xKey="policy" series={[{ key: "totalCost", name: "Total cost", color: "#2dd4bf" }]} unit=" cost units" emptyMessage="No policy costs are available." />
-          <AnalyticsChart title="Expected unmet demand (synthetic load units)" description="Mean realized shortage after reservation; not a routing feasibility metric." data={policies} xKey="policy" series={[{ key: "unmetUnits", name: "Unmet units", color: "#f59e0b" }]} unit=" units" emptyMessage="No shortage outputs are available." />
+        <div className="grid gap-5 xl:grid-cols-3">
+          <AnalyticsChart type="bar" title="Aggregate total objective (cost units)" description="H1/H7/H14 aggregate means and 95% CIs are listed below; archived aggregate capacity uses nearest rounding." data={aggregatePolicies} xKey="policy" series={[{ key: "totalCost", name: "Total cost", color: "#2dd4bf" }]} unit=" cost units" emptyMessage="Aggregate comparison_table.csv is unavailable." />
+          <AnalyticsChart title="Reservation cost (simulation cost units)" description="Mean paid reserve cost, separate from shortage penalty and routing cost." data={policies} xKey="policy" series={[{ key: "reservationCost", name: "Reservation cost", color: "#60a5fa" }]} unit=" cost units" emptyMessage="Reservation cost rows are unavailable." />
+          <AnalyticsChart type="bar" title="Aggregate realized shortage (load units)" description="Unmet load units from the same aggregate policy table; not a count of unserved routes/orders." data={aggregatePolicies} xKey="policy" series={[{ key: "unmetUnits", name: "Unmet units", color: "#f59e0b" }]} unit=" load units" emptyMessage="Aggregate shortage output is unavailable." />
         </div>
+        <ResearchTable rows={aggregatePolicies} columns={[
+          { key: "policy", label: "Policy" },
+          { key: "totalCost", label: "Total objective", format: number },
+          { key: "costCiLow", label: "95% CI low", format: number },
+          { key: "costCiHigh", label: "95% CI high", format: number },
+          { key: "reservationCost", label: "Reserve cost", format: number },
+          { key: "unmetUnits", label: "Unmet units", format: number },
+          { key: "routeFeasibilityPercent", label: "Route feasible", format: percent },
+        ]} />
+        <details className="border-t border-slate-800 pt-3">
+          <summary className="cursor-pointer text-sm text-slate-300">Per-regime, seed-aggregated detail</summary>
         <ResearchTable rows={policies} columns={[
           { key: "policy", label: "Policy" },
           { key: "totalCost", label: "Total objective", format: number },
@@ -376,6 +442,63 @@ function ReservationTab({ research, regime, horizon, setSensitivityParameter, se
           { key: "shortageDayRatePercent", label: "Shortage days", format: percent },
           { key: "reservedVehicles", label: "Vehicles reserved", format: number },
         ]} />
+        </details>
+      </Panel>
+
+      <Panel title="Archived aggregate policy comparison" description="H1/H7/H14 aggregate means and 95% confidence intervals from comparison_table.csv. These archived results use nearest-integer base-capacity rounding; the paper's ceiling rule has not been rerun for these aggregates.">
+        <div className="grid gap-5 xl:grid-cols-2">
+          <AnalyticsChart
+            type="bar"
+            title="Aggregate total objective by policy (cost units)"
+            description="Bars are stored aggregate means over the paper's primary horizons; confidence limits are listed below."
+            data={aggregatePolicies}
+            xKey="policy"
+            series={[{ key: "totalCost", name: "Total objective", color: "#2dd4bf" }]}
+            unit=" cost units"
+            emptyMessage="The consolidated comparison table is unavailable."
+          />
+          <AnalyticsChart
+            type="bar"
+            title="Aggregate realized shortage (synthetic load units)"
+            description="Mean unmet units for the same aggregate policy rows; not CVRP unserved orders."
+            data={aggregatePolicies}
+            xKey="policy"
+            series={[{ key: "unmetUnits", name: "Unmet load units", color: "#f59e0b" }]}
+            unit=" load units"
+            emptyMessage="Aggregate shortage values are unavailable."
+          />
+        </div>
+        <ResearchTable rows={aggregatePolicies} columns={[
+          { key: "policy", label: "Policy" },
+          { key: "totalCost", label: "Total objective", format: number },
+          { key: "costCiLow", label: "95% CI low", format: number },
+          { key: "costCiHigh", label: "95% CI high", format: number },
+          { key: "reservationCost", label: "Reservation cost", format: number },
+          { key: "unmetUnits", label: "Unmet units", format: number },
+          { key: "routeFeasibilityPercent", label: "CVRP feasible", format: percent },
+          { key: "routingInstances", label: "Routing instances", format: (value) => value ?? "Unavailable" },
+        ]} />
+      </Panel>
+
+      <Panel title="Horizon-specific gated policy cost" description="Mean total reservation-plus-shortage objective at each test horizon for the selected regime. These are archived aggregate outputs and retain their original rounding rule.">
+        <AnalyticsChart
+          type="bar"
+          title="Mean objective by policy and horizon (synthetic cost units)"
+          description="Each series is one archived gated policy; horizons are H1, H7, H14 and H28."
+          data={policyHorizons}
+          xKey="horizon"
+          series={[
+            { key: "reactive", name: "Reactive", color: "#94a3b8" },
+            { key: "point", name: "Point forecast", color: "#60a5fa" },
+            { key: "buffer", name: "Fixed buffer", color: "#f59e0b" },
+            { key: "pooled", name: "Pooled residuals", color: "#f472b6" },
+            { key: "hspec", name: "HCCR", color: "#2dd4bf" },
+            { key: "robust", name: "Robust cover", color: "#a78bfa" },
+            { key: "oracle", name: "Oracle (unattainable)", color: "#34d399" },
+          ]}
+          unit=" cost units"
+          emptyMessage="The operational-by-horizon artifact is unavailable. Aggregate policy charts above remain available."
+        />
       </Panel>
 
       <Panel title={`Validation gate at horizon ${horizon} days`} description="Gate-open rates over seeds; each policy is gated by whether its validation-window mean cost is below reactive. This is not a test-period selection.">
@@ -476,6 +599,11 @@ function ReservationTab({ research, regime, horizon, setSensitivityParameter, se
 
 function RoutingTab({ research }) {
   const routing = buildHccrRoutingMetrics(research);
+  const capacityGap = buildHccrCapacityFeasibilityMetrics(research);
+  const legacyArtifacts = research?.legacy_artifacts || {};
+  const legacyCvrp = buildCvrpBenchmarkData({ cvrp_benchmark: legacyArtifacts.legacy_cvrp_benchmark });
+  const legacyHgfc = buildHgfcAdvisoryData({ hgfc_advisory: legacyArtifacts.legacy_hgfc_advisory });
+  const legacyPaired = buildPairedRoutingData({ reactive_vs_hgfc: legacyArtifacts.legacy_reactive_vs_hgfc });
   return (
     <div className="space-y-6">
       <aside className="border-l-2 border-amber-400 py-1 pl-3 text-sm text-amber-100">
@@ -497,6 +625,34 @@ function RoutingTab({ research }) {
         { key: "reservationCost", label: "Reserve cost", format: number },
         { key: "activatedVehicles", label: "Activated vehicles", format: number },
       ]} />
+      <AnalyticsChart
+        type="bar"
+        title="Aggregate-capacity feasible, but CVRP unroutable (instances)"
+        description="The paper separates a scalar capacity shortfall from actual indivisible-order routing feasibility. This is the count where aggregate capacity covered demand but OR-Tools still failed."
+        data={capacityGap}
+        xKey="policy"
+        series={[
+          { key: "aggregateFeasibleInstances", name: "Aggregate capacity sufficient", color: "#60a5fa" },
+          { key: "routingInfeasibleDespiteAggregate", name: "Still unroutable", color: "#f59e0b" },
+        ]}
+        unit=" instances"
+        emptyMessage="Capacity-versus-routing gap output is unavailable."
+      />
+      <Panel title="Earlier repository CVRP and HGFCI artifacts" description="Legacy six-scenario outputs use a different aggregate synthetic series and the older HGFCI advisory experiment. They are not merged with the paper HCCR routing study.">
+        {legacyCvrp.length || legacyHgfc.length || legacyPaired.length ? (
+          <div className="grid gap-5 xl:grid-cols-2">
+            <AnalyticsChart type="bar" title="Legacy CVRP: confirmed demand versus capacity" description="Six stored synthetic cases; feasibility is separate from advisory outputs." data={legacyCvrp} xKey="scenario" series={[
+              { key: "demand", name: "Confirmed demand", color: "#60a5fa" },
+              { key: "capacity", name: "Fleet capacity", color: "#2dd4bf" },
+            ]} unit=" load units" emptyMessage="Legacy CVRP benchmark is unavailable." />
+            <AnalyticsChart type="bar" title="Legacy HGFCI point-advisory risk" description="Legacy HGFCI risk artifact; it is not horizon-specific residual calibration or HCCR." data={legacyHgfc} xKey="leadDays" series={[{ key: "risk", name: "Capacity risk", color: "#f59e0b" }]} unit=" legacy units" emptyMessage="Legacy HGFCI advisory output is unavailable." />
+            <AnalyticsChart type="bar" title="Legacy reactive versus HGFCI route distance (km)" description="Paired artifacts reuse identical CVRP arms by design. Infeasible routes have no distance and are not shown as zero." data={legacyPaired} xKey="scenario" series={[
+              { key: "reactiveDistance", name: "Reactive", color: "#60a5fa" },
+              { key: "advisoryDistance", name: "HGFCI arm", color: "#f59e0b" },
+            ]} unit=" km" emptyMessage="Legacy paired routing artifact is unavailable." />
+          </div>
+        ) : <p className="py-5 text-sm text-slate-400">Legacy CVRP/HGFCI JSON outputs are absent from this runtime; HCCR routing charts above remain available.</p>}
+      </Panel>
       <p className="text-xs text-slate-400">The routing study used 10 seeds x 6 outcome-blind instances per seed at horizon 7. Distance is the optimizer's local Haversine objective, not OSRM road distance. A route-infeasible instance has no measured route distance.</p>
     </div>
   );
@@ -556,6 +712,8 @@ function RealDataTab({ research }) {
 function ReproducibilityTab({ research, onDownload }) {
   const config = research?.configuration || {};
   const real = research?.real_data_metadata || {};
+  const manifest = research?.artifact_manifest || [];
+  const methodWarnings = research?.method_discrepancies || [];
   const [artifact, setArtifact] = useState("operational_main.csv");
   const downloads = research?.downloads || [];
   const downloadChoices = downloads.map((filename) => [filename, filename]);
@@ -596,11 +754,27 @@ function ReproducibilityTab({ research, onDownload }) {
         ]} />
       </Panel>
       <Panel title="Artifact export" description="Download the original stored CSV/JSON evidence; no chart values are hard-coded in the browser.">
-        <div className="flex flex-wrap items-end gap-3">
-          <SelectControl label="Research artifact" value={artifact} onChange={setArtifact} options={downloadChoices} />
-          <button type="button" onClick={() => onDownload(artifact)} className="rounded-md border border-teal-500 px-4 py-2 text-sm font-medium text-teal-100 hover:bg-teal-500/10">Download artifact</button>
-        </div>
+        {downloadChoices.length > 0 ? (
+          <div className="flex flex-wrap items-end gap-3">
+            <SelectControl label="Research artifact" value={artifact} onChange={setArtifact} options={downloadChoices} />
+            <button type="button" onClick={() => onDownload(artifact)} className="rounded-md border border-teal-500 px-4 py-2 text-sm font-medium text-teal-100 hover:bg-teal-500/10">Download artifact</button>
+          </div>
+        ) : <p className="py-3 text-sm text-slate-400">No downloadable research artifacts are available.</p>}
       </Panel>
+      <details className="border-t border-slate-800 pt-4 text-sm text-slate-300">
+        <summary className="cursor-pointer font-medium text-slate-200">Artifact audit ({manifest.filter((item) => item.status === "available").length} available / {manifest.length} listed)</summary>
+        <ResearchTable rows={manifest} columns={[
+          { key: "filename", label: "Artifact" },
+          { key: "result_key", label: "Dashboard use", format: (value) => value || "Download only" },
+          { key: "required", label: "Requirement", format: (value) => value ? "Required" : "Optional" },
+          { key: "status", label: "Status" },
+          { key: "size_bytes", label: "Bytes", format: (value) => typeof value === "number" ? value.toLocaleString() : "Unavailable" },
+        ]} emptyMessage="No artifacts were discovered." />
+        {research?.unavailable_optional_artifacts?.length ? (
+          <p className="mt-2 text-xs text-slate-400">Optional artifacts absent or invalid: {research.unavailable_optional_artifacts.join(", ")}</p>
+        ) : null}
+        {methodWarnings.map((warning) => <p key={warning} className="mt-2 border-l-2 border-amber-500 pl-3 text-xs text-amber-200">Method audit: {warning}</p>)}
+      </details>
       <p className="text-xs text-slate-400">The supplied paper package also reports independent-seed, mechanism, sensitivity and model-ablation outputs. See the downloadable result CSVs and bundled preregistration/audit documents for sample counts and study-specific boundaries.</p>
     </div>
   );
@@ -616,7 +790,7 @@ export default function HccrResearchDashboard() {
   const [sensitivityParameter, setSensitivityParameter] = useState("capacity_pressure_kappa");
   const [downloadError, setDownloadError] = useState("");
   const dashboardState = resolveHccrDashboardState(loadState.status, research, loadState.message);
-  const methodWarnings = research?.method_discrepancies || [];
+  const unavailableOptionalCount = research?.unavailable_optional_artifacts?.length || 0;
 
   useEffect(() => {
     let active = true;
@@ -635,7 +809,6 @@ export default function HccrResearchDashboard() {
     return () => { active = false; };
   }, []);
 
-  const modelMetrics = useMemo(() => buildHccrModelMetrics(research, regime), [research, regime]);
   const horizonMetrics = useMemo(() => buildHccrHorizonMetrics(research, regime), [research, regime]);
   const horizonValue = Number(horizon);
   const selectedHorizon = horizonMetrics.find((row) => row.horizonDays === horizonValue);
@@ -668,10 +841,10 @@ export default function HccrResearchDashboard() {
         <p className="mt-1 max-w-4xl text-sm text-slate-300">Horizon-specific residual calibration versus pooled residuals, reservation policy outcomes, and confirmed-order routing diagnostics from the frozen research study.</p>
       </header>
 
-      <aside className={`space-y-2 border-l-2 py-2 pl-3 text-sm ${dashboardState.status === "partial" || methodWarnings.length > 0 ? "border-amber-400 text-amber-100" : "border-teal-400 text-teal-100"}`}>
-        Synthetic simulation and public bike-sharing diagnostics are kept separate. HCCR informs advance reservation only; activation uses confirmed demand, and the CVRP solver never receives forecast demand.
-        {dashboardState.status === "partial" ? ` Some artifacts are missing: ${dashboardState.message || "configuration or core result files"}.` : " The source bundle does not record an execution timestamp."}
-        {methodWarnings.map((warning) => <p key={warning} className="text-xs">Method audit: {warning}</p>)}
+      <aside className={`border-l-2 py-2 pl-3 text-sm ${dashboardState.status === "partial" ? "border-amber-400 text-amber-100" : "border-teal-400 text-teal-100"}`}>
+        Research outputs loaded. Synthetic and public-data diagnostics are separate; forecasts guide reservation only and never enter CVRP demand or capacity.
+        {dashboardState.status === "partial" ? ` Required artifacts unavailable: ${dashboardState.message || "see artifact audit"}.` : null}
+        {unavailableOptionalCount > 0 ? ` ${unavailableOptionalCount} optional artifacts unavailable; core charts remain enabled.` : null}
       </aside>
 
       <div className="flex flex-wrap gap-1 border-b border-slate-700" role="tablist" aria-label="Research analytics sections">
@@ -686,9 +859,7 @@ export default function HccrResearchDashboard() {
         <FilterBar regime={regime} setRegime={setRegime} horizon={horizon} setHorizon={setHorizon} />
       ) : null}
 
-      {activeTab === "forecast" && modelMetrics.length === 0 && horizonMetrics.length === 0 ? (
-        <p className="py-8 text-sm text-slate-400">Forecast artifacts are unavailable for the selected regime.</p>
-      ) : activeContent}
+      {activeContent}
 
       {activeTab === "forecast" && selectedHorizon ? (
         <p className="text-xs text-slate-500">Selected forecast: horizon {horizonValue} days; HCCR interval empirical coverage {percent(selectedHorizon.hccrCoveragePercent)}. Model comparison contains {research?.configuration?.n_seeds_forecast_models ?? "unavailable"} seeds per regime; calibration results contain {research?.configuration?.n_seeds_main ?? "unavailable"} main-study seeds.</p>
