@@ -1,0 +1,8 @@
+policy,n_agg_ok,routing_infeasible_despite_agg_ok
+buffer,199,32
+hspec,172,23
+oracle,184,39
+point,161,27
+pooled,175,22
+reactive,70,7
+robust,177,20

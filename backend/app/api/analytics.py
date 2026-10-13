@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
+from fastapi.responses import FileResponse
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
@@ -25,6 +26,7 @@ from app.repositories.vehicle_repository import VehicleRepository
 from app.schemas.analytics import FleetAnalyticsResponse
 from app.schemas.optimization import OptimizationResponse
 from app.services.analytics_service import AnalyticsService
+from app.services.research_analytics_service import ResearchAnalyticsService
 
 
 router = APIRouter(
@@ -42,6 +44,11 @@ DASHBOARD_ROUTE_HISTORY_LIMIT = 100
 def get_analytics_service() -> AnalyticsService:
     """Create an analytics service instance."""
     return AnalyticsService()
+
+
+def get_research_analytics_service() -> ResearchAnalyticsService:
+    """Create a reader for the frozen HCCR research artifacts."""
+    return ResearchAnalyticsService()
 
 
 def get_driver_repository(db: Session = Depends(get_db)) -> DriverRepository:
@@ -307,3 +314,69 @@ def get_research_endpoint(
         )
 
     return get_research_analytics(db=db)
+
+
+@router.get("/hccr-research")
+def get_hccr_research_endpoint(
+    current_user: User = Depends(get_current_dispatcher),
+    research_service: ResearchAnalyticsService = Depends(get_research_analytics_service),
+) -> dict[str, Any]:
+    """Return HCCR research results, separate from live fleet analytics and HGFCI."""
+    if not _is_dispatcher_or_admin(current_user):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only dispatcher or admin users can access research analytics.",
+        )
+    return research_service.get_hccr_analytics()
+
+
+@router.get("/hccr-research/decision")
+def get_hccr_reservation_decision_endpoint(
+    regime: str = Query(default="iid", pattern="^(iid|ar|surge|drift)$"),
+    seed: int = Query(default=0, ge=0, le=29),
+    region: int = Query(default=0, ge=0, le=3),
+    horizon_days: int = Query(default=7),
+    origin: int = Query(default=800, ge=800, le=1071),
+    current_user: User = Depends(get_current_dispatcher),
+    research_service: ResearchAnalyticsService = Depends(get_research_analytics_service),
+) -> dict[str, Any]:
+    """Compute one test-origin HCCR/pooled reservation record from the frozen simulator."""
+    if not _is_dispatcher_or_admin(current_user):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only dispatcher or admin users can access research analytics.",
+        )
+    try:
+        return research_service.get_hccr_decision(
+            regime=regime,
+            seed=seed,
+            region=region,
+            horizon_days=horizon_days,
+            origin=origin,
+        )
+    except ValueError as error:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(error),
+        ) from error
+
+
+@router.get("/hccr-research/download/{filename}")
+def download_hccr_research_artifact(
+    filename: str,
+    current_user: User = Depends(get_current_dispatcher),
+    research_service: ResearchAnalyticsService = Depends(get_research_analytics_service),
+) -> FileResponse:
+    """Download a named allowlisted HCCR result CSV or metadata JSON."""
+    if not _is_dispatcher_or_admin(current_user):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only dispatcher or admin users can download research artifacts.",
+        )
+    artifact_path = research_service.get_download_path(filename)
+    if artifact_path is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Research artifact is unavailable.",
+        )
+    return FileResponse(artifact_path, filename=filename)

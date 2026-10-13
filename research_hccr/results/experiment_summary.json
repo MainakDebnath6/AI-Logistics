@@ -1,0 +1,169 @@
+{
+  "status": "Synthetic simulation study plus one descriptive real-data check; not operational validation.",
+  "primary_B_pooled_minus_hccr_h1_7_14": {
+    "iid": {
+      "mean": -0.0003,
+      "ci": [
+        -0.0026,
+        0.0021
+      ],
+      "pct_of_hccr_cost": -0.0,
+      "n_seeds": 30
+    },
+    "ar": {
+      "mean": 0.0773,
+      "ci": [
+        0.0549,
+        0.1033
+      ],
+      "pct_of_hccr_cost": 0.53,
+      "n_seeds": 30
+    },
+    "surge": {
+      "mean": 0.0126,
+      "ci": [
+        0.0055,
+        0.0199
+      ],
+      "pct_of_hccr_cost": 0.09,
+      "n_seeds": 30
+    },
+    "drift": {
+      "mean": 0.0362,
+      "ci": [
+        0.0232,
+        0.0504
+      ],
+      "pct_of_hccr_cost": 0.29,
+      "n_seeds": 30
+    }
+  },
+  "decision_disagreement_pct": {
+    "primary:iid": {
+      "mean": 0.4,
+      "ci": [
+        0.3,
+        0.4
+      ],
+      "n_sims": 30
+    },
+    "primary:ar": {
+      "mean": 8.3,
+      "ci": [
+        7.4,
+        9.1
+      ],
+      "n_sims": 30
+    },
+    "primary:surge": {
+      "mean": 3.8,
+      "ci": [
+        3.4,
+        4.2
+      ],
+      "n_sims": 30
+    },
+    "primary:drift": {
+      "mean": 3.6,
+      "ci": [
+        3.1,
+        4.1
+      ],
+      "n_sims": 30
+    },
+    "replication:iid": {
+      "mean": 0.4,
+      "ci": [
+        0.3,
+        0.4
+      ],
+      "n_sims": 30
+    },
+    "replication:ar": {
+      "mean": 9.0,
+      "ci": [
+        8.2,
+        9.9
+      ],
+      "n_sims": 30
+    },
+    "replication:surge": {
+      "mean": 3.7,
+      "ci": [
+        3.4,
+        4.1
+      ],
+      "n_sims": 30
+    },
+    "replication:drift": {
+      "mean": 4.2,
+      "ci": [
+        3.7,
+        4.7
+      ],
+      "n_sims": 30
+    }
+  },
+  "mechanism_experiment_1_anticipative_diagnostic": {
+    "Theta_h14": {
+      "mean": 0.032,
+      "ci95": [
+        0.009,
+        0.055
+      ],
+      "p_holm": 0.0057695093104705,
+      "n_sims": 60
+    },
+    "Theta_h28": {
+      "mean": 0.323,
+      "ci95": [
+        0.282,
+        0.365
+      ],
+      "p_holm": 3.4282987963432325e-11,
+      "n_sims": 60
+    }
+  },
+  "mechanism_experiment_2_relative_freshness_deployable": {
+    "Psi_h14": {
+      "mean": 0.097,
+      "ci95": [
+        0.065,
+        0.131
+      ],
+      "p_holm": 1.1556692243175348e-06,
+      "n_sims": 45
+    },
+    "Psi_h28": {
+      "mean": 0.096,
+      "ci95": [
+        0.061,
+        0.131
+      ],
+      "p_holm": 7.479576879632077e-06,
+      "n_sims": 45
+    }
+  },
+  "real_data_bike_sharing": {
+    "n_test_origins": 103,
+    "max_abs_delta_pct_of_hccr_cost": 0.325,
+    "disagreement_pct_range": [
+      2.9,
+      16.5
+    ],
+    "routing_evaluated": false
+  },
+  "preregistration_sha256": {
+    "experiment1": "5a86d4ba799fe0efdc7361c3c4ef34cf711004b2351eaa8746b36a2d055da788",
+    "experiment2": "937f9766abaa409b8c50ba6ac8f87f8ad15a176b791111c2aa86cdcf7c15dd01",
+    "realdata": "b79dcab1426c45456e7f874d308c5aae8aef2159f1fed72930a8a188214d981b"
+  },
+  "verification": {
+    "claim_checks": 144,
+    "research_tests": 33,
+    "backend_tests": "88 passed, 1 failed (bcrypt environment)",
+    "frontend_tests": "9 passed",
+    "frontend_lint": "7 pre-existing errors",
+    "frontend_build": "ok"
+  }
+}
